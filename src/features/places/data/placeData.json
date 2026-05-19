@@ -1,0 +1,55 @@
+{
+  "name": "National Museum of Art",
+  "district": "Grand Central District",
+  "description": "The National Museum of Art is a gold-standard facility for accessibility. Every gallery is reachable via wide, level walkways or spacious elevators. The museum provides complementary wheelchairs and has trained staff on hand to assist with navigation. Tactile paving and audio guides are available for all exhibitions.",
+  "rating": 4.9,
+  "reviewCount": 124,
+  "heroSrc": "https://lh3.googleusercontent.com/aida-public/AB6AXuDz7op3c46MkeoRxhJ46UIvSGbT2Bb-kT_2v_eB_uwhSTug8MaxP-F6K5O22p0NBuya5jWHMYjszJ__tcftHufgPZShrfqU_yYWdhgr3Ffv1WrKs4nvyhOR_IfEkKieJWDRrVQIX7p-qDlS9mR2cTB2pz28jWlAP5BlqqJOgldXEMaKMuRB7nvqB0q0NfYQ7fMpi7uFVJjAiaH-nEb81IhfzmO2egiWUZJjzqcwqrQa62qMqvAioZttAeyI4qSpFTQ8jiSMpbw2eiY",
+  "heroAlt": "A bright and spacious museum lobby featuring a smooth, wide ramp integrated seamlessly into the modern architecture.",
+  "secondarySrc1": "https://lh3.googleusercontent.com/aida-public/AB6AXuBCZe9UKVVf2Ud1i7cYMtRvRKSo8_IoE9ejAre7JBXHWaW043diI1ves7YSainCsl7MC0iWlMZZRlBR0w6TEc8qwMqFEq4EoiMLWToCNZMvEqv0X4EEYk7enq1_RBKnJlhfcNtMkfBiJpVDA6l2ttq31xwma5WTicNcjWLIzmLjDYX7iJshh6dE-YpBWk6Jh0OzS4EhDr_E3BNEIxapDy1qtkLZlrb7XEC-4Iky6hvld8FGCQn9uvDyBhkVdFGW2NjC_ovPmvGJehg",
+  "secondaryAlt1": "A close-up shot of a modern, glass-walled elevator in a bright atrium with Braille markings.",
+  "secondarySrc2": "https://lh3.googleusercontent.com/aida-public/AB6AXuBeqwxtj2b6JWatmsTH1q23bBZnwAUozC7Eu2ABmbh2CrIf9gbX32c8_XG3jopjv7IC9_WW4zEzVxkGrwFUbYNJaVEOqzSHZkR6oJ9TzTLSiNzE_5vb0bpG47DwrK8C9la-Ol85pWaJx1NHBc0u2B3sw_FF-Bn5M9VEwBz29iwsFqcyFn7W1YcYdnSmacCeS41nKEZKBzaicUaAYRBJ_SR6xSVcl5vHgEATQLRwwxcljOsoYGLpkC4wzK9uibGZTxcXr1VlIc_ZMz4",
+  "secondaryAlt2": "An expansive view of an accessible parking area near the museum entrance.",
+  "features": [
+    { "icon": "horizontal_distribute", "label": "Wide Ramps", "subtext": "All galleries covered" },
+    { "icon": "elevator", "label": "Glass Elevators", "subtext": "Braille + audio buttons" },
+    { "icon": "wc", "label": "Adapted Toilets", "subtext": "Every floor" },
+    { "icon": "local_parking", "label": "VIP Parking", "subtext": "20 wide-bay spots" }
+  ],
+  "reviews": [
+    {
+      "id": "r1",
+      "author": "Marcus T.",
+      "rating": 5,
+      "text": "As a manual wheelchair user, I found the gradients on the ramps here incredibly manageable. No steep surprises! The sensory-friendly hours are also a huge plus.",
+      "avatarSrc": "https://lh3.googleusercontent.com/aida-public/AB6AXuAQyCX6grsVLD1wgyUOedGcPvHeR0PR2nLN9dccFLxljKbPKzKtcUO4ABWVeAMHX0zjn2lkbgSnaB11S-pOGVp_EZ6en6uXJ3zrcJCikKHs4nd7LmyAz4Cc-t_RAvsmx5_Tbq8G5-67dWZkknc33RZk8MWjsuk1jUFNLT4sddwLUUGHTFigo4wPrYizttbvCRWOMVD0ektLvdVwXk2rA5nGuZNIfyc-Z4klP12Xsf_3tgeC8wZb9pb8LIrLtFS_iVkBgCmqZD0_IhM",
+      "avatarAlt": "Smiling man in his 30s, professional look.",
+      "date": "Apr 28, 2026"
+    },
+    {
+      "id": "r2",
+      "author": "Elena R.",
+      "rating": 4,
+      "text": "The accessible parking is right next to the entrance and actually wide enough to deploy a side ramp. Very rare and much appreciated.",
+      "avatarSrc": "https://lh3.googleusercontent.com/aida-public/AB6AXuCHpqSXcoC0KOrNiWhYJ9VfaZ_ce0Y-DbBEd1gVtX7y2hS2KLKGbT1g8iZGbwDMxFF0Jvr5VTPXAedU6Fp-cH4lYJIkIxDCS2SYONJqAj16ivCuotBoTBvxYgPv5Hj7OPb8Gb-X5rurKaN85FSq-zyL6SElY0yH3XghH1txZj6oDO2J6YUI0A1Ro-rAeu2Wt18whersvJ1RMS1NYom9EAKmoLrXVHT8tUDXGCLweTTRiATw3X_6dWVKK3EpPcGnn1QcnC5QnQC7-TU",
+      "avatarAlt": "Cheerful woman with a warm smile outdoors.",
+      "date": "Mar 12, 2026"
+    }
+  ],
+  "drivers": [
+    {
+      "id": "d1",
+      "name": "David Wilson",
+      "phone": "+1 202-555-0147",
+      "avatarSrc": "https://lh3.googleusercontent.com/aida-public/AB6AXuBy0uiH0x5GTiVHcnN3VHhUp_sE3OTj1-fsjG0uGzwyJ4kxdqVt9mu8PQeskhs51gTL-YCduSKksRhL5kgJw65f2L1b5rn2W1pWnOulgweIoEOoGbB7QkWeVWY3t9OqWnS1JEGYYa45DeWDy_eJuciiEwFuWlD0linufuYp85A6J6ru2WfmCu1uql8YWRQgXwjXNzhKRyCGUqhg0Yqt9qSv_PRAAZ5CPaz0LojSUc9VG43W8wRoqhVSmO9jcn4KGqTM21SpQZ8FSJE",
+      "avatarAlt": "Friendly driver in professional uniform."
+    },
+    {
+      "id": "d2",
+      "name": "Sarah Chen",
+      "phone": "+1 202-555-0192",
+      "avatarSrc": "https://lh3.googleusercontent.com/aida-public/AB6AXuArfBxVKasfrrnQHecijlySocEACwRhYbcBLRkawmWRUkS9XBfmdq-jhLPGjBJ76wST-bMtaj4erey_gYNPWido-BIUS3OAvYBkz8KiUjKyYhGydeITWdDWERdtU-NqtwggU3kyx4q34TAjjk7n5mhTdgmzJVUJC7TnCfCsfZ1WOTbzT8Bar20G6MhHIUN-xSmTMHbF8TYZPdgCVaSD8iff-5Q1Ab2_X7kjfF89MqMjxGzA3ftyjnRiksA3fCyDdv060O5PiGVM6QQ",
+      "avatarAlt": "Warm female driver in modern car."
+    }
+  ]
+}

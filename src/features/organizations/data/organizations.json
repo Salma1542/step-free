@@ -1,0 +1,42 @@
+[
+  {
+    "id": "org1",
+    "name": "Baseera Foundation for Visual Impairment",
+    "description": "An Egyptian non-profit established in 2004 to empower people with visual impairment to realize their potential and become independent, productive individuals in an inclusive society. Provides early detection, intervention, rehabilitation, and education services, along with strong support for families, teachers, and legislators.",
+    "logo": "https://baseerafoundation.org/wp-content/uploads/2022/12/logo3.png",
+    "website": "https://baseerafoundation.org",
+    "services": ["Early Detection", "Braille Education", "Visual Rehabilitation", "Legal Advocacy"]
+  },
+  {
+    "id": "org2",
+    "name": "Alhassan Foundation for the Integration of Persons with Special Needs",
+    "description": "A developmental Egyptian foundation registered with the Ministry of Social Solidarity in 2015, specializing in serving permanent wheelchair users. Managed and heavily staffed by people with physical disabilities, it runs 8 developmental projects across all governorates, including Paralympic sports, community awareness, and psychological support.",
+    "logo": "https://alhassan-fdn.org/wp-content/uploads/2021/06/Al-Hassan-Logo.jpg",
+    "website": "https://alhassan-fdn.org",
+    "services": ["Wheelchairs", "Paralympic Sports", "Psychological Support", "Community Awareness"]
+  },
+  {
+    "id": "org3",
+    "name": "Helm Foundation",
+    "description": "A non-profit organization that promotes the employment and full participation of persons with disabilities in Egypt. Provides consulting to companies and governments to make workplaces, markets, and events inclusive. Has trained over 5,000 employees and empowered more than 1,500 people with disabilities.",
+    "logo": "https://static.wixstatic.com/media/aec7e5_e9c6e1fe5a804173a23b661e80073794~mv2.png",
+    "website": "https://www.helmegypt.org",
+    "services": ["Inclusive Employment", "Accessibility Audits", "Institutional Training", "Inclusive Consultancy"]
+  },
+  {
+    "id": "org4",
+    "name": "Egyptian Society for the Advancement of People with Disabilities and Autism (Advanced Society)",
+    "description": "Founded in 1998 as an advocate for the rights of persons with disabilities, offering a wide range of professional, educational, therapeutic and rehabilitation services for children and adults to increase their social integration and independence.",
+    "logo": "https://cdn-share.almentor.net/images/f2a38b2a3f5da78fcb4bf984a96021027164d3d12be22ee9efef0b925301fd54",
+    "website": "https://www.almentor.net/partners/Advance-Society-for-Autism-and-Other-Disabilities",
+    "services": ["Early Intervention", "Vocational Rehabilitation", "Behavioral Therapy", "Educational Inclusion"]
+  },
+  {
+    "id": "org5",
+    "name": "Kayan Association for People with Disabilities",
+    "description": "A pioneering Egyptian association developing an integrated model of rehabilitation centers for children with disabilities. Provides speech therapy, psychological support, skill development, and day-care hosting to enable persons with disabilities to participate actively in society.",
+    "logo": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd9thfcvC9ybzh4SZUhq-9DlYxUjc6McGIuQ&s",
+    "website": "https://kayan-egypt.org",
+    "services": ["Speech Therapy", "Psychological Support", "Skill Development", "Day-Care Hosting"]
+  }
+]
