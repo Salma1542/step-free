@@ -1,8 +1,165 @@
+Custom teal overrides for Bootstrap
+:root {
+  --bs-teal: #0f766e;
+  --bs-teal-dark: #115e59;
+  --bs-teal-light: #f0fdfa;
+}
+.text-teal { color: var(--bs-teal) !important; }
+.bg-teal { background-color: var(--bs-teal) !important; }
+.border-teal { border-color: var(--bs-teal) !important; }
+.btn-teal {
+  --bs-btn-bg: var(--bs-teal);
+  --bs-btn-border-color: var(--bs-teal);
+  --bs-btn-hover-bg: var(--bs-teal-dark);
+  --bs-btn-hover-border-color: var(--bs-teal-dark);
+  --bs-btn-color: #fff;
+}
+.btn-outline-teal {
+  --bs-btn-color: var(--bs-teal);
+  --bs-btn-border-color: var(--bs-teal);
+  --bs-btn-hover-bg: var(--bs-teal);
+  --bs-btn-hover-border-color: var(--bs-teal);
+  --bs-btn-hover-color: #fff;
+}
+
+/* Softer shadows matching the original aesthetic */
+.shadow-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.shadow-soft {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -6px rgba(0, 0, 0, 0.04);
+}
+.shadow-card-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -6px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* ── Fade‑in‑up on scroll ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Pulse button ── */
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.4); }
+  70%  { box-shadow: 0 0 0 12px rgba(15, 118, 110, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
+}
+
+.btn-pulse {
+  animation: pulse 2s infinite;
+}
+
+/* ── Star hover effect ── */
+.star-btn {
+  transition: transform 0.15s ease;
+}
+.star-btn:hover {
+  transform: scale(1.2);
+}
+
+/* ── Slight lift on cards ── */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.12);
+}
+
+
+
+
+
+
+/* Custom teal overrides for Bootstrap */
+:root {
+  --bs-teal: #0f766e;
+  --bs-teal-dark: #115e59;
+  --bs-teal-light: #f0fdfa;
+}
+.text-teal { color: var(--bs-teal) !important; }
+.bg-teal { background-color: var(--bs-teal) !important; }
+.border-teal { border-color: var(--bs-teal) !important; }
+.btn-teal {
+  --bs-btn-bg: var(--bs-teal);
+  --bs-btn-border-color: var(--bs-teal);
+  --bs-btn-hover-bg: var(--bs-teal-dark);
+  --bs-btn-hover-border-color: var(--bs-teal-dark);
+  --bs-btn-color: #fff;
+}
+.btn-outline-teal {
+  --bs-btn-color: var(--bs-teal);
+  --bs-btn-border-color: var(--bs-teal);
+  --bs-btn-hover-bg: var(--bs-teal);
+  --bs-btn-hover-border-color: var(--bs-teal);
+  --bs-btn-hover-color: #fff;
+}
+
+/* Driver status badges */
+.driver-badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+.driver-badge.avail {
+  background: rgba(15, 118, 110, 0.12);
+  color: var(--bs-teal);
+}
+.driver-badge.busy {
+  background: rgba(180, 83, 9, 0.1);
+  color: #b45309;
+}
+
+/* Driver card base */
+.driver-card {
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+}
+.driver-card:hover {
+  border-color: rgba(15, 118, 110, 0.25) !important;
+}
+
+/* Softer shadows */
+.shadow-card {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+.shadow-soft {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -6px rgba(0, 0, 0, 0.04);
+}
+.shadow-card-hover:hover {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -6px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Fade-in-up on scroll */
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(16px);
@@ -13,11 +170,23 @@
   transform: translateY(0);
 }
 
+/* Pulse button */
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.4); }
+  70%  { box-shadow: 0 0 0 12px rgba(15, 118, 110, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
+}
+.btn-pulse { animation: pulse 2s infinite; }
+
+/* Star hover */
+.star-btn { transition: transform 0.15s ease; }
+.star-btn:hover { transform: scale(1.2); }
+
+/* Card lift */
 .hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 .hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08), 0 4px 10px -6px rgba(0,0,0,0.04);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.1);
 }
