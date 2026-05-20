@@ -1,0 +1,343 @@
+.homePage {
+  overflow-x: hidden;
+  background: #eef4f1;
+  font-family: "Poppins", sans-serif;
+}
+ 
+/* ================= HERO ================= */
+ 
+.heroSection {
+  padding: 70px 0;
+}
+ 
+.heroLeft h1 {
+  font-size: 60px;
+  font-weight: 800;
+  line-height: 1.2;
+  color: #0f1c1e;
+}
+ 
+.heroLeft h1 span {
+  color: #006d67;
+}
+ 
+.heroLeft p {
+  font-size: 23px;
+  color: #607274;
+  line-height: 1.8;
+  margin: 30px 0;
+  max-width: 580px;
+}
+ 
+.mainBtn {
+  background: #ff7a59;
+  color: white;
+  border: none;
+  padding: 18px 35px;
+  border-radius: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  transition: 0.3s;
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  cursor: pointer;
+}
+ 
+.mainBtn:hover {
+  transform: translateY(-4px);
+}
+ 
+/* Hero Image */
+ 
+.heroImageBox {
+  position: relative;
+  border-radius: 35px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+ 
+.heroImageBox img {
+  width: 100%;
+  height: 620px;
+  object-fit: cover;
+}
+ 
+.floatingCard {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: white;
+  border-radius: 25px;
+  padding: 22px;
+  display: flex;
+  gap: 18px;
+  align-items: center;
+}
+ 
+.iconBox {
+  width: 60px;
+  height: 60px;
+  border-radius: 18px;
+  background: #15b8aa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 22px;
+}
+ 
+/* ================= SECTION TITLE ================= */
+ 
+.sectionTitle {
+  margin-bottom: 50px;
+  text-align: center;
+}
+ 
+.sectionTitle h2 {
+  font-size: 48px;
+  font-weight: 800;
+  color: #0f1c1e;
+  margin-bottom: 15px;
+}
+ 
+.sectionTitle p {
+  font-size: 20px;
+  color: #607274;
+  max-width: 750px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+ 
+/* ================= FEATURES ================= */
+ 
+.featuresSection {
+  padding: 80px 0;
+}
+ 
+.featureCard {
+  background: white;
+  border-radius: 28px;
+  padding: 35px;
+  height: 100%;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+ 
+/* BIG CARD */
+.bigCard {
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+}
+ 
+/* REVERSE CARD — image on left, text on right */
+.reverseCard {
+  flex-direction: row;
+}
+ 
+.featureText {
+  flex: 1;
+  max-width: 55%;
+}
+ 
+.bigCard img {
+  width: 300px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+ 
+.reverseCard img {
+  width: 300px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+ 
+.featureCard h4 {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 18px 0 10px;
+  color: #0f1c1e;
+}
+ 
+.featureCard p {
+  color: #607274;
+  font-size: 17px;
+  line-height: 1.7;
+}
+ 
+.smallIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: #e7f1ef;
+  color: #006d67;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+ 
+/* DARK CARD */
+ 
+.darkCard {
+  background: #006d67;
+  color: white;
+}
+ 
+.darkCard h4 {
+  color: white;
+}
+ 
+.darkCard p {
+  color: rgba(255, 255, 255, 0.8);
+}
+ 
+.white {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+}
+ 
+.accuracy {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 30px;
+  font-weight: 700;
+  font-size: 15px;
+  color: white;
+}
+ 
+.accuracyDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #7ee8a2;
+  flex-shrink: 0;
+}
+ 
+/* LIGHT CARD — muted grey background */
+.lightCard {
+  background: #e8eeec;
+}
+ 
+.lightCard h4 {
+  color: #0f1c1e;
+}
+ 
+/* ================= PARTNERS ================= */
+ 
+.partnersSection {
+  padding: 60px 0;
+}
+ 
+.partnersSection p {
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: #607274;
+}
+ 
+.partners {
+  display: flex;
+  justify-content: center;
+  gap: 50px;
+  flex-wrap: wrap;
+  margin-top: 30px;
+}
+ 
+.partners span {
+  color: #94a2a4;
+  font-weight: 700;
+  font-size: 22px;
+}
+ 
+/* ================= CTA ================= */
+ 
+.ctaSection {
+  background: #004a45;
+  padding: 70px;
+  border-radius: 35px;
+  color: white;
+  margin: 70px auto;
+  text-align: center;
+}
+ 
+.ctaSection h2 {
+  font-size: 45px;
+  font-weight: 800;
+}
+ 
+.ctaSection p {
+  font-size: 20px;
+  margin: 20px 0;
+  opacity: 0.9;
+}
+ 
+/* ================= RESPONSIVE ================= */
+ 
+@media (max-width: 992px) {
+  .heroLeft h1 {
+    font-size: 42px;
+  }
+ 
+  .heroLeft p {
+    font-size: 18px;
+  }
+ 
+  .heroImageBox {
+    margin-top: 40px;
+  }
+ 
+  .bigCard,
+  .reverseCard {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+ 
+  .featureText {
+    max-width: 100%;
+  }
+ 
+  .bigCard img,
+  .reverseCard img {
+    width: 100%;
+    height: auto;
+  }
+ 
+  .sectionTitle h2 {
+    font-size: 35px;
+  }
+ 
+  .featureCard h4 {
+    font-size: 24px;
+  }
+}
+ 
+@media (max-width: 576px) {
+  .heroLeft h1 {
+    font-size: 34px;
+  }
+ 
+  .mainBtn {
+    width: 100%;
+    font-size: 17px;
+  }
+ 
+  .ctaSection {
+    padding: 35px 20px;
+  }
+ 
+  .ctaSection h2 {
+    font-size: 28px;
+  }
+}
+ 
