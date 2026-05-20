@@ -1,19 +1,14 @@
-import Layout from "./components/layout/Layout";
 import { Routes, Route } from "react-router-dom";
-import AboutPage from "./pages/AboutPage/AboutPage";
 
-function App() {
+import Layout from "../components/layout/Layout";
+import AboutPage from "../pages/AboutPage";
+
+export default function AppRoutes() {
   return (
-     <Routes>
+    <Routes>
       <Route path="/" element={<Layout />}>
-
-      
-
         <Route path="about" element={<AboutPage />} />
-
       </Route>
     </Routes>
   );
 }
-
-export default App;
