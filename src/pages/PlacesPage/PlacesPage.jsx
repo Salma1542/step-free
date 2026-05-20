@@ -4,7 +4,7 @@ import AboutSection from "../../features/places/AboutSection";
 import CommunityReviews from "../../features/reviews/CommunityReviews";
 import DriversSidebar from "../../features/places/DriversSidebar";
 import placeData from "../../features/places/data/placeData.json";
-import "./PlacesPage.css";
+import styles from "./PlacesPage.module.css"; // نستورد فقط للأنماط المحلية (إن وجدت)
 
 export default function PlacesPage() {
   const { description, rating, reviewCount, features, reviews, drivers } = placeData;
@@ -14,6 +14,7 @@ export default function PlacesPage() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
+            // نضيف الكلاس العام "is-visible"
             entry.target.classList.add("is-visible");
             observer.unobserve(entry.target);
           }
@@ -22,37 +23,13 @@ export default function PlacesPage() {
       { threshold: 0.15 }
     );
 
+    // نختار كل العناصر ذات الكلاس العام "animate-on-scroll"
     document.querySelectorAll(".animate-on-scroll").forEach((el) => observer.observe(el));
-
     return () => observer.disconnect();
   }, []);
 
   return (
     <div className="min-vh-100 bg-light">
-      <style>{`
-        @keyframes fadeInUp {
-          from { opacity: 0; transform: translateY(16px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .animate-on-scroll {
-          opacity: 0;
-          transform: translateY(16px);
-          transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        .hover-lift {
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-        }
-        .hover-lift:hover {
-          transform: translateY(-4px);
-          box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08), 0 4px 10px -6px rgba(0,0,0,0.04);
-        }
-      `}</style>
-
       <div className="container-xl px-3 px-sm-4 py-4 py-lg-5">
         <div className="animate-on-scroll">
           <HeroSection place={placeData} />
@@ -85,3 +62,5 @@ export default function PlacesPage() {
     </div>
   );
 }
+
+

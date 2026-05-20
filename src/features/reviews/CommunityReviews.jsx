@@ -3,6 +3,15 @@ import ReviewCard from "./ReviewCard";
 import StarRating from "../../components/common/StarRating";
 import Icon from "../../components/common/Icon";
 
+// ✅ إضافة مصفوفة المستخدمين الوهمية
+const dummyUsers = [
+
+  {
+    name: "Basmala Emad",
+    avatar: "https://i.pravatar.cc/150?img=5",
+  },
+];
+
 const ratingBars = [
   { stars: 5, percent: 78 },
   { stars: 4, percent: 16 },
@@ -14,7 +23,7 @@ const ratingBars = [
 export default function CommunityReviews({ reviews, rating, reviewCount }) {
   const [showForm, setShowForm] = useState(false);
   const [localReviews, setLocalReviews] = useState([]);
-  const [newName, setNewName] = useState("");
+  // 🗑️ حذفنا: const [newName, setNewName] = useState("");
   const [newRating, setNewRating] = useState(0);
   const [newText, setNewText] = useState("");
 
@@ -22,17 +31,20 @@ export default function CommunityReviews({ reviews, rating, reviewCount }) {
     e.preventDefault();
     if (!newText.trim()) return;
 
+    // ✅ اختيار مستخدم عشوائي من المصفوفة
+    const randomUser = dummyUsers[Math.floor(Math.random() * dummyUsers.length)];
+
     const reviewToAdd = {
       id: Date.now(),
-      author: newName.trim() || "Anonymous",
-      avatarSrc: "https://via.placeholder.com/40/0f766e/ffffff?text=👤",
-      avatarAlt: newName.trim() || "Anonymous",
+      author: randomUser.name,                // اسم المستخدم الوهمي
+      avatarSrc: randomUser.avatar,           // صورته الوهمية
+      avatarAlt: randomUser.name,
       rating: newRating,
       text: newText.trim(),
     };
 
     setLocalReviews([reviewToAdd, ...localReviews]);
-    setNewName("");
+    // 🗑️ حذفنا إعادة تعيين الاسم
     setNewRating(0);
     setNewText("");
     setShowForm(false);
@@ -42,6 +54,7 @@ export default function CommunityReviews({ reviews, rating, reviewCount }) {
 
   return (
     <div>
+      {/* ... باقي الكود من غير تغيير ... */}
       <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
         <h3 className="h3 fw-bold mb-0">Community Reviews</h3>
         <div className="d-flex align-items-center gap-2">
@@ -51,7 +64,7 @@ export default function CommunityReviews({ reviews, rating, reviewCount }) {
         </div>
       </div>
 
-      <div className="card shadow-card border-0 rounded-4 p-3 p-sm-4 mb-4 hover-lift">
+            <div className="card shadow-card border-0 rounded-4 p-3 p-sm-4 mb-4 hover-lift">
         <div className="row align-items-center g-4">
           <div className="col-auto">
             <span className="display-3 fw-extrabold lh-1">{rating}</span>
@@ -92,17 +105,6 @@ export default function CommunityReviews({ reviews, rating, reviewCount }) {
         ) : (
           <div className="card shadow-card border-0 rounded-4 p-3 p-sm-4 mb-3 hover-lift">
             <form onSubmit={handleSubmit}>
-              <div className="mb-3">
-                <label htmlFor="reviewerName" className="form-label fw-semibold">Your Name</label>
-                <input
-                  type="text"
-                  className="form-control rounded-3"
-                  id="reviewerName"
-                  placeholder="Your name (optional)"
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                />
-              </div>
               <div className="mb-3">
                 <label className="form-label fw-semibold d-block">Your Rating</label>
                 <div className="d-flex gap-1">

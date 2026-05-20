@@ -1,0 +1,211 @@
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* === Page Layout === */
+.page {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.bgImage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.decorBlobs {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.blob1 {
+  position: absolute;
+  top: -10%;
+  left: -5%;
+  width: 50%;
+  height: 60%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(15, 118, 110, 0.22) 0%, transparent 70%);
+  filter: blur(40px);
+}
+
+.blob2 {
+  position: absolute;
+  bottom: -10%;
+  right: -5%;
+  width: 45%;
+  height: 55%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(31, 168, 159, 0.16) 0%, transparent 70%);
+  filter: blur(48px);
+}
+
+/* === Content Area === */
+.content {
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 3rem 1.5rem 2.5rem;
+  font-family: var(--font-body, sans-serif);
+}
+
+/* === Header === */
+.header {
+  text-align: center;
+  max-width: 42rem;
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.6s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.title {
+  font-family: var(--font-display, sans-serif);
+  font-weight: 800;
+  font-size: clamp(1.75rem, 4.5vw, 3rem);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 0.9rem;
+  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.4);
+}
+
+.accent {
+  color: #1fa89f;
+}
+
+.subtitle {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.52);
+  max-width: 34rem;
+  margin: 0 auto;
+}
+
+/* === Carousel === */
+.carouselWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 78rem;
+  animation: fadeUp 0.6s 0.1s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.navButton {
+  position: absolute;
+  z-index: 10;
+  flex-shrink: 0;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(4, 20, 20, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.navButton:hover {
+  background: rgba(15, 118, 110, 0.55);
+  border-color: rgba(31, 168, 159, 0.45);
+}
+
+.navButtonLeft {
+  left: 0;
+}
+
+.navButtonRight {
+  right: 0;
+}
+
+.cardContainer {
+  flex: 1;
+  margin: 0 5rem;
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* === Dots & Counter === */
+.dotsSection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.75rem;
+  animation: fadeUp 0.6s 0.18s cubic-bezier(0.25, 1, 0.5, 1) both;
+}
+
+.dotsContainer {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.dot {
+  height: 0.5rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.dotActive {
+  width: 1.75rem;
+  background: #1fa89f;
+}
+
+.dotInactive {
+  width: 0.5rem;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.counter {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.3);
+  font-family: var(--font-display, sans-serif);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+/* === Empty State === */
+.emptyState {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.4);
+  font-family: var(--font-body, sans-serif);
+}
