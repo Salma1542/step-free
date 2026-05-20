@@ -1,0 +1,13 @@
+.floatBtn {
+  position: fixed;
+  right: 25px;
+  bottom: 25px;
+  width: 65px;
+  height: 65px;
+  border: none;
+  border-radius: 50%;
+  background: var(--main-green);
+  color: white;
+  font-size: 24px;
+  z-index: 999;
+}

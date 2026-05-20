@@ -1,0 +1,82 @@
+.testimonials {
+  padding: 70px 0;
+}
+ 
+.sectionTitle {
+  margin-bottom: 50px;
+}
+ 
+.sectionTitle h2 {
+  font-size: 48px;
+  font-weight: 800;
+  color: #0f1c1e;
+}
+ 
+/* ── Card ── */
+.testimonialCard {
+  background: white;
+  padding: 35px;
+  border-radius: 22px;
+  height: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+ 
+/* ── Quote badge (top-right "99") ── */
+.quoteBadge {
+  position: absolute;
+  top: -18px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: #006d67;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 800;
+  font-family: Georgia, serif;
+  letter-spacing: -1px;
+}
+ 
+/* ── Quote text ── */
+.testimonialCard p {
+  color: #607274;
+  line-height: 1.8;
+  font-style: italic;
+  font-size: 16px;
+  flex: 1;
+  margin-bottom: 28px;
+}
+ 
+/* ── Reviewer row ── */
+.reviewer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+ 
+.avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+ 
+.reviewer h6 {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f1c1e;
+  margin: 0 0 3px;
+}
+ 
+.reviewer span {
+  font-size: 14px;
+  color: #607274;
+}
