@@ -1,0 +1,31 @@
+.fpOtpRow {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.fpOtpBox {
+  width: 64px;
+  height: 64px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 14px;
+  font-family: 'Sora', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #111;
+  text-align: center;
+  outline: none;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.fpOtpBox:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0,181,165,0.1);
+}
+
+.fpOtpBoxFilled {
+  border-color: var(--primary);
+  background: var(--soft);
+}

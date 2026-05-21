@@ -1,0 +1,186 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.root {
+  font-family: 'DM Sans', sans-serif;
+  display: flex; height: 100vh; width: 100%;
+  overflow: hidden; background: #fff;
+}
+
+.panel {
+  width: 34%;
+  background: linear-gradient(145deg, #00b5a5 0%, #008f82 100%);
+  padding: 48px 36px;
+  display: flex; flex-direction: column; justify-content: center;
+  position: relative; overflow: hidden;
+}
+
+.dots {
+  position: absolute; inset: 0; opacity: 0.1; z-index: 0;
+  background-image: radial-gradient(#fff 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.circle1, .circle2 {
+  position: absolute; background: rgba(255,255,255,0.06);
+  border-radius: 50%; z-index: 1;
+}
+.circle1 { top: -80px;    right: -60px; width: 260px; height: 260px; }
+.circle2 { bottom: -60px; left: -40px;  width: 180px; height: 180px; }
+
+.panelContent { position: relative; z-index: 2; }
+
+.badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,0.15);
+  border: 0.5px solid rgba(255,255,255,0.25);
+  color: #fff; font-size: 11px; font-weight: 600;
+  padding: 5px 13px; border-radius: 20px; margin-bottom: 20px;
+  font-family: 'Sora', sans-serif;
+}
+
+.panelTitle {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 700; color: #fff;
+  line-height: 1.15; margin: 0 0 14px 0;
+}
+
+.panelSub {
+  font-size: 13.5px; color: rgba(255,255,255,0.82);
+  line-height: 1.65; margin: 0 0 32px 0;
+  padding-bottom: 24px;
+  border-bottom: 0.5px solid rgba(255,255,255,0.2);
+}
+
+.steps { display: flex; flex-direction: column; gap: 0; }
+.step  { display: flex; align-items: center; gap: 12px; }
+
+.stepDot {
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.3);
+  color: rgba(255,255,255,0.7);
+  font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.stepDotActive { background: #fff; border-color: #fff; color: #00b5a5; }
+.stepDotDone   { background: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.9); color: #00b5a5; }
+
+.stepLine     { width: 2px; height: 28px; background: rgba(255,255,255,0.2); margin: 4px 0 4px 15px; border-radius: 2px; }
+.stepLineDone { background: rgba(255,255,255,0.7); }
+
+.stepText  { display: flex; flex-direction: column; gap: 2px; }
+.stepTitle { font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700; color: #fff; }
+.stepSub   { font-size: 11.5px; color: rgba(255,255,255,0.65); }
+
+.right {
+  flex: 1; background: #f8fafc;
+  display: flex; flex-direction: column;
+  padding: 28px; overflow-y: auto;
+}
+
+.card {
+  background: #fff; border-radius: 14px;
+  border: 0.5px solid #e2e8f0; padding: 26px;
+  width: 100%; max-width: 700px; margin: 0 auto;
+}
+
+.head { margin-bottom: 22px; }
+.headTitle { font-family: 'Sora', sans-serif; font-size: 20px; font-weight: 700; color: #111; margin: 0 0 5px 0; }
+.headSub   { font-size: 13.5px; color: #64748b; margin: 0; }
+
+.section { margin-bottom: 4px; }
+.secHead { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+
+.secNum {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #e6f8f6; color: #00b5a5;
+  font-size: 12px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+.secTitle { font-family: 'Sora', sans-serif; font-size: 14px; font-weight: 700; color: #111; margin: 0; }
+
+/* Profile Photo */
+.photoWrap {
+  display: flex; align-items: center; gap: 20px;
+}
+
+.photoCircle {
+  width: 90px; height: 90px; border-radius: 50%;
+  background: #e6f8f6; color: #00b5a5;
+  font-size: 42px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; position: relative; overflow: hidden;
+  flex-shrink: 0;
+  border: 2px dashed #00b5a5;
+  transition: border-color 0.2s;
+}
+
+.photoImg { width: 100%; height: 100%; object-fit: cover; }
+
+.photoOverlay {
+  position: absolute; inset: 0;
+  background: rgba(0,181,165,0.5);
+  display: flex; align-items: center; justify-content: center;
+  color: #fff; font-size: 20px;
+  opacity: 0; transition: opacity 0.2s;
+}
+.photoCircle:hover .photoOverlay { opacity: 1; }
+
+.photoInfo p    { font-size: 13.5px; font-weight: 500; color: #111; margin: 0 0 3px 0; }
+.photoInfo span { font-size: 12px; color: #94a3b8; }
+
+.photoBtn {
+  margin-top: 8px; padding: 6px 14px;
+  background: #e6f8f6; color: #00b5a5;
+  border: 1px solid #00b5a5; border-radius: 8px;
+  font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: background 0.2s;
+}
+.photoBtn:hover { background: #00b5a5; color: #fff; }
+
+.divider { height: 0.5px; background: #e2e8f0; margin: 18px 0; }
+
+.label { font-size: 13px; font-weight: 500; color: #64748b; display: block; margin-bottom: 5px; }
+
+.inputWrap { position: relative; }
+
+.input {
+  font-family: 'DM Sans', sans-serif;
+  width: 100%; padding: 9px 12px 9px 35px;
+  font-size: 14px; border: 1px solid #e2e8f0;
+  border-radius: 9px; background: #fff; color: #111;
+  outline: none; box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input:focus { border-color: #00b5a5; box-shadow: 0 0 0 3px rgba(0,181,165,0.1); }
+
+.upload {
+  border: 1.5px dashed #cbd5e1; border-radius: 10px;
+  padding: 20px 16px; text-align: center; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  transition: all 0.2s;
+}
+.upload:hover { border-color: #00b5a5; background: #f7fffe; }
+.upload i    { font-size: 26px; color: #94a3b8; }
+.upload p    { font-size: 13px; color: #111; font-weight: 500; margin: 0; }
+.upload span { font-size: 11px; color: #94a3b8; }
+
+.btn {
+  width: 100%; padding: 12px;
+  font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700;
+  border: none; border-radius: 10px;
+  background: #00b5a5; color: #fff; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 14px;
+  transition: background 0.25s, transform 0.25s;
+}
+.btn:hover { background: #008f82; transform: translateY(-2px); }
+
+@media (max-width: 992px) {
+  .root  { flex-direction: column; height: auto; }
+  .panel { width: 100%; padding: 40px 28px; }
+  .right { padding: 24px 20px; }
+  .photoWrap { flex-direction: column; align-items: flex-start; }
+}

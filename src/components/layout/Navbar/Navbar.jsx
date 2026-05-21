@@ -56,7 +56,7 @@ export default function Navbar() {
             <NavLink to="/login" className="sf-btn-login">
               Log in
             </NavLink>
-            <NavLink to="/register" className="sf-btn-signup">
+            <NavLink to="/roleselection" className="sf-btn-signup">
               Sign up
             </NavLink>
           </div>

@@ -1,0 +1,175 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+.otpRoot {
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* ===== LEFT PANEL ===== */
+.otpPanel {
+  width: 40%;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #00b5a5 0%, #008f82 100%);
+  padding: 56px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.otpPanelDots {
+  position: absolute; inset: 0; z-index: 0;
+  opacity: 0.1;
+  background-image: radial-gradient(#fff 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+.otpPanelC1 {
+  position: absolute; top: -80px; right: -60px; z-index: 1;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+
+.otpPanelC2 {
+  position: absolute; bottom: -40px; left: -50px; z-index: 1;
+  width: 180px; height: 180px; border-radius: 50%;
+  background: rgba(255,255,255,0.04);
+}
+
+.otpPanelContent { position: relative; z-index: 2; }
+
+.otpPanelBadge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.15);
+  border: 0.5px solid rgba(255,255,255,0.25);
+  color: #fff; font-size: 11px; font-weight: 600;
+  padding: 6px 14px; border-radius: 20px; margin-bottom: 22px;
+  font-family: 'Sora', sans-serif; letter-spacing: 0.5px;
+}
+
+.otpPanelTitle {
+  font-family: 'Sora', sans-serif;
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 700; color: #fff;
+  line-height: 1.15; margin: 0 0 14px 0;
+}
+
+.otpPanelSub {
+  font-size: 14px; color: rgba(255,255,255,0.8);
+  line-height: 1.65; margin: 0 0 28px 0;
+}
+
+.otpPanelHint {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(255,255,255,0.15);
+  border: 0.5px solid rgba(255,255,255,0.2);
+  padding: 10px 16px; border-radius: 10px;
+  color: #fff; font-size: 13px;
+}
+
+/* ===== RIGHT MAIN ===== */
+.otpMain {
+  flex: 1; display: flex;
+  align-items: center; justify-content: center;
+  background: #f8fafc; padding: 40px;
+}
+
+.otpCard {
+  background: #fff;
+  border: 0.5px solid rgba(0,0,0,0.08);
+  border-radius: 20px;
+  width: 100%; max-width: 440px;
+  padding: 36px 32px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  display: flex; flex-direction: column;
+}
+
+.otpStepIcon {
+  width: 52px; height: 52px; border-radius: 14px;
+  background: #e6f8f6; color: #00b5a5;
+  font-size: 24px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.otpFormTitle {
+  font-family: 'Sora', sans-serif;
+  font-size: 20px; font-weight: 700; color: #111;
+  margin: 0 0 6px 0;
+}
+
+.otpFormSub {
+  font-size: 13.5px; color: #64748b;
+  line-height: 1.6; margin: 0 0 28px 0;
+}
+
+/* OTP inputs */
+.otpRow {
+  display: flex; gap: 10px;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.otpBox {
+  width: 54px; height: 60px;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  font-family: 'Sora', sans-serif;
+  font-size: 22px; font-weight: 700; color: #111;
+  text-align: center; outline: none;
+  background: #fff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.otpBox:focus {
+  border-color: #00b5a5;
+  box-shadow: 0 0 0 3px rgba(0,181,165,0.1);
+}
+
+.otpBoxFilled {
+  border-color: #00b5a5;
+  background: #e6f8f6;
+}
+
+/* Button */
+.otpBtn {
+  width: 100%; padding: 14px;
+  background: #00b5a5; color: #fff;
+  border: none; border-radius: 11px;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px; font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+}
+.otpBtn:hover:not(:disabled) {
+  background: #008f82; transform: translateY(-1px);
+}
+.otpBtn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.otpBack {
+  text-align: center; margin-top: 14px;
+  font-size: 13px; color: #888; cursor: pointer;
+  transition: color 0.2s;
+}
+.otpBack:hover { color: #00b5a5; }
+
+.otpResend {
+  text-align: center; margin-top: 10px;
+  font-size: 13px; color: #94a3b8;
+}
+
+.otpResendLink {
+  color: #008f82; font-weight: 600; cursor: pointer;
+}
+.otpResendLink:hover { text-decoration: underline; }
+
+@media (max-width: 768px) {
+  .otpRoot { flex-direction: column; height: auto; }
+  .otpPanel { width: 100%; padding: 40px 28px; }
+  .otpMain { padding: 28px 16px; }
+  .otpBox { width: 44px; height: 52px; font-size: 18px; }
+}

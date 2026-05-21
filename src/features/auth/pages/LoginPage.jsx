@@ -1,0 +1,78 @@
+import React, { useState } from 'react';
+import { FaArrowRight } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import loginImage from "../../../assets/Images/mobile.png";
+import styles from '../styles/Login.module.css';
+import SocialButtons from '../../../components/common/SocialButtons/SocialButtons';
+import PasswordInput from "../../../components/common/PasswordInput/PasswordInput";
+
+export default function LoginPage() {
+  const [showPassword, setShowPassword] = useState(false);
+
+  return (
+    <div className="container-fluid p-0 vh-100 overflow-hidden">
+      <div className="row g-0 h-100">
+
+        <div className={`col-md-6 col-lg-7 d-none d-md-block position-relative p-0 ${styles.leftSection}`}>
+          <img src={loginImage} alt="Step Free" className={`w-100 h-100 ${styles.loginImage}`} />
+          <div className={`${styles.imageOverlay} d-flex flex-column justify-content-end p-5`}>
+            <h1 className={`text-white fw-bold display-5 mb-3 ${styles.overlayTitle}`}>
+              Welcome Back. Let's get moving.
+            </h1>
+            <p className={`text-white fs-5 ${styles.overlayDescription}`}>
+              Step Free is here to ensure your journey is seamless, accessible, and filled with joy.
+            </p>
+          </div>
+        </div>
+
+        <div className="col-12 col-md-6 col-lg-5 d-flex align-items-center justify-content-center bg-white">
+          <div className={`${styles.loginFormContainer} p-4`}>
+            <h2 className="fw-bold mb-1 text-dark">Login</h2>
+            <p className="text-muted mb-4">Access your saved routes and preferences.</p>
+
+            <form>
+              <div className="mb-3">
+                <label className="form-label fw-semibold" htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  className={`form-control py-2 shadow-none ${styles.customInput}`}
+                  placeholder="name@example.com"
+                />
+              </div>
+
+              <PasswordInput
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
+              />
+
+              <button
+                type="submit"
+                className={`btn w-100 py-2 mb-4 d-flex align-items-center justify-content-center gap-2 ${styles.loginButton}`}
+              >
+                Login <FaArrowRight />
+              </button>
+
+              <div className="position-relative mb-4 text-center">
+                <hr className="text-muted" />
+                <span className={`${styles.dividerLabel} text-muted px-3 bg-white`}>
+                  Or continue with
+                </span>
+              </div>
+
+              <SocialButtons />
+            </form>
+
+            <p className="text-center mt-4 mb-0 text-muted">
+              Don't have an account?{' '}
+              <Link to='/roleselection' className={`fw-bold text-decoration-none ${styles.signupLink}`}>
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+}
