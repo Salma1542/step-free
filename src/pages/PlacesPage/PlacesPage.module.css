@@ -1,0 +1,105 @@
+/* ===== متغيرات Bootstrap العامة ===== */
+:root {
+  --bs-teal: #0f766e;
+  --bs-teal-dark: #115e59;
+  --bs-teal-light: #f0fdfa;
+}
+
+/* ===== Bootstrap custom utilities (عامة) ===== */
+:global(.text-teal) { color: var(--bs-teal) !important; }
+:global(.bg-teal) { background-color: var(--bs-teal) !important; }
+:global(.border-teal) { border-color: var(--bs-teal) !important; }
+
+:global(.btn-teal) {
+  --bs-btn-bg: var(--bs-teal);
+  --bs-btn-border-color: var(--bs-teal);
+  --bs-btn-hover-bg: var(--bs-teal-dark);
+  --bs-btn-hover-border-color: var(--bs-teal-dark);
+  --bs-btn-color: #fff;
+}
+
+:global(.btn-outline-teal) {
+  --bs-btn-color: var(--bs-teal);
+  --bs-btn-border-color: var(--bs-teal);
+  --bs-btn-hover-bg: var(--bs-teal);
+  --bs-btn-hover-border-color: var(--bs-teal);
+  --bs-btn-hover-color: #fff;
+}
+
+/* ===== بطاقة السائق (عامة) ===== */
+:global(.driver-card) {
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+}
+:global(.driver-card:hover) {
+  border-color: rgba(15, 118, 110, 0.25) !important;
+}
+
+:global(.driver-badge) {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+:global(.driver-badge.avail) {
+  background: rgba(15, 118, 110, 0.12);
+  color: var(--bs-teal);
+}
+:global(.driver-badge.busy) {
+  background: rgba(180, 83, 9, 0.1);
+  color: #b45309;
+}
+
+/* ===== الظلال (عامة) ===== */
+:global(.shadow-card) {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+:global(.shadow-soft) {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -6px rgba(0, 0, 0, 0.04);
+}
+:global(.shadow-card-hover:hover) {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -6px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* ===== حركات الظهور (عامة) ===== */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+:global(.animate-on-scroll) {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+:global(.animate-on-scroll.is-visible) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ===== تأثير النبض (عام) ===== */
+@keyframes pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.4); }
+  70%  { box-shadow: 0 0 0 12px rgba(15, 118, 110, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0); }
+}
+
+:global(.btn-pulse) { animation: pulse 2s infinite; }
+
+/* ===== نجمة التفاعل ===== */
+:global(.star-btn) { transition: transform 0.15s ease; }
+:global(.star-btn:hover) { transform: scale(1.2); }
+
+/* ===== رفع البطاقات (عام) ===== */
+:global(.hover-lift) {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+}
+:global(.hover-lift:hover) {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0,0,0,0.12);
+}
