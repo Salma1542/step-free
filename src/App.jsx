@@ -15,8 +15,38 @@ import { DriverRegisterAuth } from './features/auth';
 import { DriverForm } from './features/driver';
 import "./App.css";
 import RegisterPlace from "./pages/RegisterPlacePage";
+import LoginPage from "./features/auth/pages/LoginPage";
+import UserRegisterPage from "./pages/UserRegisterPage";
+import RoleSelectionPage from "./features/auth/pages/RoleSelection";
+
+// import {
+//   ForgotPassword,
+//   OTPVerification,
+//   ResetPassword,
+//   RoleSelection,
+// } from "./features/auth";
+
+
+import RegisterPlace from "./pages/RegisterPlacePage";
+import ExplorePage from "./pages/ExplorePage/ExplorePage";
+
+import "./App.css";
+
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+import { useEffect } from "react";
 
 export default function App() {
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: true,
+      easing: "ease-in-out",
+    });
+  }, []);
+
   return (
     <Routes>
       {/* صفحات مع Navbar و Footer */}
@@ -39,6 +69,8 @@ export default function App() {
         <Route path="reset-password" element={<ResetPassword />} />
          <Route path="register-place" element={<RegisterPlace />} />
         <Route path="driver" element={<DriverRegisterAuth />} />
+        <Route path="register-place" element={<RegisterPlace />} />
+        <Route path="explore" element={<ExplorePage />} />
       </Route>
     </Routes>
   );

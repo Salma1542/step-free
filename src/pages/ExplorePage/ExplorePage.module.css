@@ -1,0 +1,24 @@
+.searchBox {
+  margin-bottom: 20px;
+}
+
+.input {
+  width: 100%;
+  height: 58px;
+  border-radius: 16px;
+  border: 1px solid #cfd8d5;
+  padding: 0 20px;
+  font-size: 15px;
+  outline: none;
+}
+
+.input:focus {
+  border-color: #00b4a8;
+}
+.exploreH1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #006d67;
+  margin-top: 40px;
+  margin-bottom: 0;
+}

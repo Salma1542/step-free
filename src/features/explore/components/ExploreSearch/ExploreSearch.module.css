@@ -1,0 +1,38 @@
+.searchBox {
+  margin-bottom: 20px;
+  margin-top: 30px;
+  width: 100%;
+  max-width: 58.33%; /* نفس col-lg-7 = 7/12 = 58.33% */
+  position: relative;
+}
+
+@media (max-width: 992px) {
+  .searchBox {
+    max-width: 100%;
+  }
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #008f86;
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  height: 58px;
+  border-radius: 16px;
+  border: 1px solid #cfd8d5;
+  padding: 0 20px 0 44px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  border-color: #00b4a8;
+}
