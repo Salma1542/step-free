@@ -10,27 +10,21 @@ import PlacesPage from "./pages/PlacesPage/PlacesPage";
 import LoginPage from './features/auth/pages/LoginPage';
 import UserRegisterPage from './pages/UserRegisterPage';
 import RoleSelectionPage from './features/auth/pages/RoleSelection';
-import { ForgotPassword, OTPVerification, ResetPassword } from './features/auth';
+// import { ForgotPassword, OTPVerification, ResetPassword } from './features/auth';
 import { DriverRegisterAuth } from './features/auth';
 import { DriverForm } from './features/driver';
 import "./App.css";
 import RegisterPlace from "./pages/RegisterPlacePage";
-import LoginPage from "./features/auth/pages/LoginPage";
-import UserRegisterPage from "./pages/UserRegisterPage";
-import RoleSelectionPage from "./features/auth/pages/RoleSelection";
 
-// import {
-//   ForgotPassword,
-//   OTPVerification,
-//   ResetPassword,
-//   RoleSelection,
-// } from "./features/auth";
+import {
+  ForgotPassword,
+  OTPVerification,
+  ResetPassword,
+  RoleSelection,
+} from "./features/auth";
 
 
-import RegisterPlace from "./pages/RegisterPlacePage";
 import ExplorePage from "./pages/ExplorePage/ExplorePage";
-
-import "./App.css";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -55,8 +49,8 @@ export default function App() {
         <Route path="about" element={<AboutPage />} />
         <Route path="blogs" element={<BlogsPage />} />
         <Route path="places" element={<PlacesPage />} />   {/* ملاحظة: كان موجوداً في Route السابق */}
-       
-        <Route path="driver-form" element={<DriverForm />} />
+               <Route path="explore" element={<ExplorePage />} />
+
       </Route>
 
       {/* صفحات بدون Navbar و Footer (صفحات Auth) */}
@@ -69,8 +63,8 @@ export default function App() {
         <Route path="reset-password" element={<ResetPassword />} />
          <Route path="register-place" element={<RegisterPlace />} />
         <Route path="driver" element={<DriverRegisterAuth />} />
-        <Route path="register-place" element={<RegisterPlace />} />
-        <Route path="explore" element={<ExplorePage />} />
+                <Route path="driver-form" element={<DriverForm />} />
+
       </Route>
     </Routes>
   );
