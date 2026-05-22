@@ -1,0 +1,19 @@
+.statCard {
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.7);
+  border-radius: 0.875rem;
+  padding: 0.85rem 1rem;
+}
+.statLabel {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  font-weight: 600;
+}
+.statLabel i { color: var(--primary); margin-right: 0.25rem; }
+.statValue {
+  margin-top: 0.25rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
