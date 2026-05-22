@@ -1,0 +1,137 @@
+.wrapper {
+  margin-top: 30px;
+}
+
+.desktopList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mobileFilter {
+  display: none;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .desktopList {
+    display: none;
+  }
+
+  .mobileFilter {
+    display: block;
+  }
+}
+
+/* ===================== BUTTON ===================== */
+
+.catBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 30px;
+  border: 1px solid #d8dfdc;
+  background: #fff;
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+
+  /* ✨ animation start state */
+  opacity: 0;
+  transform: translateX(60px);
+
+  animation: slideRightToLeft 0.6s ease forwards;
+}
+
+.catBtn i {
+  font-size: 20px;
+  color: #008f86;
+  transition: color 0.2s, font-size 0.2s;
+}
+
+.catBtn:hover {
+  background: #00b4a8;
+  color: white;
+  border-color: #00b4a8;
+  transform: translateY(-3px) scale(1.05);
+}
+
+.catBtn:hover i {
+  color: white;
+  font-size: 22px;
+}
+
+/* active */
+.active {
+  background: #008f86;
+  color: white;
+  border-color: #008f86;
+}
+
+.active i {
+  color: white;
+  font-size: 22px;
+}
+
+/* ===================== ANIMATION ===================== */
+
+@keyframes slideRightToLeft {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ===================== MOBILE ===================== */
+
+.hamburger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 30px;
+  border: 1px solid #d8dfdc;
+  background: #fff;
+  color: #222;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  width: fit-content;
+  transition: background 0.2s, color 0.2s;
+}
+
+.hamburger i {
+  font-size: 20px;
+  color: #008f86;
+}
+
+.hamburger:hover {
+  background: #f5f5f5;
+}
+
+.dropdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  background: #fff;
+  border: 1px solid #d8dfdc;
+  border-radius: 16px;
+  padding: 12px;
+  width: fit-content;
+  min-width: 280px;
+}
+
+.dropdown .catBtn {
+  width: 100%;
+  justify-content: flex-start;
+}
