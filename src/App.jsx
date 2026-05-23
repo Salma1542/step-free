@@ -1,10 +1,18 @@
+
+
+import UsersPage from './pages/Admin/UsersPage'
+import PlacesPage from './pages/Admin/PlacesPage'
+import ReviewsPage from './pages/Admin/ReviewsPage'
+
+
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Layout from "./components/layout/Layout";
 import HomePage from "./pages/HomePage/HomePage";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogsPage from "./pages/BlogsPage/BlogsPage";
-import PlacesPage from "./pages/PlacesPage/PlacesPage";
+
 
 import LoginPage from './features/auth/pages/LoginPage';
 import UserRegisterPage from './pages/UserRegisterPage';
@@ -30,6 +38,15 @@ export default function App() {
         <Route path="driver-form" element={<DriverForm />} />
         <Route path="driver" element={<DriverRegisterAuth />} />
         <Route path="register-place" element={<RegisterPlace />} />
+      <Route path="/admin" element={<AdminDashboardPage />} />
+       
+        <Route path="role" element={<RoleSelection />} />
+
+
+<Route path="/users" element={<UsersPage />} />
+<Route path="/places" element={<PlacesPage />} />
+<Route path="/reviews" element={<ReviewsPage />} />
+        
 
       </Route>
     </Routes>
