@@ -73,7 +73,7 @@ function AdminDashboardPage() {
   </li>
 
   <li>
-    <Link to="/places">Places</Link>
+    <Link to="/Adminplaces">Places</Link>
   </li>
 
   <li>

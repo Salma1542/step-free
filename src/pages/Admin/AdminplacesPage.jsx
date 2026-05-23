@@ -1,6 +1,6 @@
-import styles from './PlacesPage.module.css'
+import styles from './AdminPlacesPage.module.css'
 
-function PlacesPage() {
+function AdminPlacesPage() {
   const places = [
     {
       id: 1,
@@ -62,4 +62,4 @@ function PlacesPage() {
   )
 }
 
-export default PlacesPage
+export default AdminPlacesPage
