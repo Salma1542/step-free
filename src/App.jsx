@@ -1,11 +1,11 @@
 
 
 import UsersPage from './pages/Admin/UsersPage'
-import AdminplacesPage from './pages/Admin/AdminPlacesPage'
+import AdminplacesPage from './pages/Admin/AdminplacesPage'
 import ReviewsPage from './pages/Admin/ReviewsPage'
 
 
-import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import AdminDashboardPage from "./pages/Admin/AdminDashboardPage";
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import MainLayout from "./components/layout/MainLayout";

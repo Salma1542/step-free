@@ -1,4 +1,4 @@
-import styles from './AdminPlacesPage.module.css'
+import styles from './AdminplacesPage.module.css'
 
 function AdminPlacesPage() {
   const places = [

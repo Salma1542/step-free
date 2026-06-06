@@ -9,7 +9,7 @@
 .sectionTitle h2 {
   font-size: 48px;
   font-weight: 800;
-  color: #0f1c1e;
+  color: var(--dark-color);
 }
  
 /* ── Card ── */
@@ -32,7 +32,7 @@
   right: 24px;
   width: 44px;
   height: 44px;
-  background: #006d67;
+  background: var(--primary-color);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -46,7 +46,7 @@
  
 /* ── Quote text ── */
 .testimonialCard p {
-  color: #607274;
+  color: var(--text-muted);
   line-height: 1.8;
   font-style: italic;
   font-size: 16px;
@@ -72,11 +72,11 @@
 .reviewer h6 {
   font-size: 16px;
   font-weight: 700;
-  color: #0f1c1e;
+  color: var(--dark-color);
   margin: 0 0 3px;
 }
  
 .reviewer span {
   font-size: 14px;
-  color: #607274;
+  color: var(--text-muted);
 }

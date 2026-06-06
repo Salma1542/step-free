@@ -1,14 +1,14 @@
  :root {
-    --teal:        #0d9488;
-    --teal-dark:   #0f766e;
-    --teal-light:  #f0fdfa;
-    --teal-mid:    #14b8a6;
-    --teal-pale:   #ccfbf1;
+    --teal:        var(--primary-color);
+    --teal-dark:   var(--primary-hover);
+    --teal-light:  var(--primary-soft);
+    --teal-mid:    var(--primary-color);
+    --teal-pale:   var(--primary-border);
     --gray-soft:   #6b7280;
     --gray-muted:  #9ca3af;
     --dark:        #111827;
     --border:      #e5e7eb;
-    --border-soft: rgba(13,148,136,0.12);
+    --border-soft: rgba(0, 109, 103, 0.12);
   }
 
   /* ─── FOOTER SHELL ─── */
@@ -21,7 +21,7 @@
   /* ─── TOP ACCENT BAR ─── */
   .sf-footer-accent {
     height: 3px;
-    background: linear-gradient(90deg, #0d9488 0%, #14b8a6 50%, #5eead4 100%);
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-color) 50%, #5eead4 100%);
   }
 
   /* ─── MAIN CONTENT AREA ─── */
@@ -184,7 +184,7 @@
   .sf-newsletter-input::placeholder { color: var(--gray-muted); }
   .sf-newsletter-input:focus {
     border-color: var(--teal);
-    box-shadow: 0 0 0 3px rgba(13,148,136,0.1);
+    box-shadow: 0 0 0 3px rgba(0, 109, 103, 0.1);
   }
 
   .sf-newsletter-btn {

@@ -8,7 +8,7 @@
 
 .sidebar {
   width: 260px;
-  background: linear-gradient(to bottom, #0d9488, #14b8a6);
+  background: linear-gradient(to bottom, var(--primary-color), var(--primary-color));
   color: white;
   padding: 30px 20px;
   display: flex;

@@ -1,8 +1,8 @@
 /* ===== متغيرات Bootstrap العامة ===== */
 :root {
-  --bs-teal: #0f766e;
+  --bs-teal: var(--primary-hover);
   --bs-teal-dark: #115e59;
-  --bs-teal-light: #f0fdfa;
+  --bs-teal-light: var(--primary-soft);
 }
 
 /* ===== Bootstrap custom utilities (عامة) ===== */
