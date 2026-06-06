@@ -96,7 +96,7 @@
 }
 
 .accent {
-  color: #1fa89f;
+  color: var(--primary-color);
 }
 
 .subtitle {
@@ -184,7 +184,7 @@
 
 .dotActive {
   width: 1.75rem;
-  background: #1fa89f;
+  background: var(--primary-color);
 }
 
 .dotInactive {

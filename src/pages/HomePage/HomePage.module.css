@@ -1,6 +1,6 @@
 .homePage {
   overflow-x: hidden;
-  background: #eef4f1;
+  background: var(--page-bg);
   font-family: "Poppins", sans-serif;
 }
  
@@ -14,23 +14,23 @@
   font-size: 60px;
   font-weight: 800;
   line-height: 1.2;
-  color: #0f1c1e;
+  color: var(--dark-color);
 }
  
 .heroLeft h1 span {
-  color: #006d67;
+  color: var(--primary-color);
 }
  
 .heroLeft p {
   font-size: 23px;
-  color: #607274;
+  color: var(--text-muted);
   line-height: 1.8;
   margin: 30px 0;
   max-width: 580px;
 }
  
 .mainBtn {
-  background: #ff7a59;
+  background: var(--accent-color);
   color: white;
   border: none;
   padding: 18px 35px;
@@ -45,7 +45,9 @@
 }
  
 .mainBtn:hover {
+  background: var(--accent-hover);
   transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(255, 122, 89, 0.25);
 }
  
 /* Hero Image */
@@ -80,7 +82,7 @@
   width: 60px;
   height: 60px;
   border-radius: 18px;
-  background: #15b8aa;
+  background: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -98,13 +100,13 @@
 .sectionTitle h2 {
   font-size: 48px;
   font-weight: 800;
-  color: #0f1c1e;
+  color: var(--dark-color);
   margin-bottom: 15px;
 }
  
 .sectionTitle p {
   font-size: 20px;
-  color: #607274;
+  color: var(--text-muted);
   max-width: 750px;
   margin: 0 auto;
   line-height: 1.7;
@@ -164,11 +166,11 @@
   font-size: 28px;
   font-weight: 800;
   margin: 18px 0 10px;
-  color: #0f1c1e;
+  color: var(--dark-color);
 }
  
 .featureCard p {
-  color: #607274;
+  color: var(--text-muted);
   font-size: 17px;
   line-height: 1.7;
 }
@@ -177,8 +179,8 @@
   width: 60px;
   height: 60px;
   border-radius: 16px;
-  background: #e7f1ef;
-  color: #006d67;
+  background: var(--primary-light);
+  color: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -189,7 +191,7 @@
 /* DARK CARD */
  
 .darkCard {
-  background: #006d67;
+  background: var(--primary-color);
   color: white;
 }
  
@@ -225,13 +227,17 @@
   flex-shrink: 0;
 }
  
+.darkCard:hover {
+  background: var(--primary-hover);
+}
+
 /* LIGHT CARD — muted grey background */
 .lightCard {
   background: #e8eeec;
 }
  
 .lightCard h4 {
-  color: #0f1c1e;
+  color: var(--dark-color);
 }
  
 /* ================= PARTNERS ================= */
@@ -243,7 +249,7 @@
 .partnersSection p {
   font-size: 14px;
   letter-spacing: 3px;
-  color: #607274;
+  color: var(--text-muted);
 }
  
 .partners {
@@ -263,7 +269,7 @@
 /* ================= CTA ================= */
  
 .ctaSection {
-  background: #004a45;
+  background: var(--primary-hover);
   padding: 70px;
   border-radius: 35px;
   color: white;

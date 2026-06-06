@@ -18,7 +18,7 @@
   left: 16px;
   transform: translateY(-50%);
   font-size: 18px;
-  color: #008f86;
+  color: var(--primary-color);
   pointer-events: none;
 }
 
@@ -34,5 +34,5 @@
 }
 
 .input:focus {
-  border-color: #00b4a8;
+  border-color: var(--primary-color);
 }

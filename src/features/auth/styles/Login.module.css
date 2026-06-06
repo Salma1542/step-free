@@ -33,17 +33,17 @@
 }
 
 .customInput:focus {
-    border-color: #00b5a5 !important;
+    border-color: var(--primary-color) !important;
 }
 
 .loginButton {
-    background-color: #00b5a5 !important;
+    background-color: var(--primary-color) !important;
     border: none !important;
     color: white;
 }
 
 .loginButton:hover {
-    background-color: #008f82 !important;
+    background-color: var(--primary-color) !important;
 }
 
 .dividerLabel {
@@ -56,6 +56,6 @@
 
 .forgotLink,
 .signupLink {
-    color: #00b5a5;
+    color: var(--primary-color);
     font-size: 0.9rem;
 }

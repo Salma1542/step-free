@@ -41,5 +41,5 @@
   border-radius: 999px;
   letter-spacing: 0.02em;
 }
-.badgeCompleted { background: rgba(13,148,136,0.12); color: var(--primary); }
+.badgeCompleted { background: rgba(0, 109, 103, 0.12); color: var(--primary); }
 .badgeCancelled { background: rgba(239,68,68,0.12); color: var(--danger); }

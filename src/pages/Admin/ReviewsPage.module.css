@@ -29,7 +29,7 @@
 
 .card h4 {
   margin-bottom: 14px;
-  color: #0d9488;
+  color: var(--primary-color);
 }
 
 .card p {
