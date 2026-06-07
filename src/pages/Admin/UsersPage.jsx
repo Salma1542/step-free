@@ -253,7 +253,7 @@ export default function UsersPage() {
             </tbody>
           </table>
         </div>
-
+        // footer of code
         <footer className={styles.tableFoot}>
           <span>Showing <strong>{filtered.length}</strong> of <strong>{users.length}</strong> users</span>
         </footer>
