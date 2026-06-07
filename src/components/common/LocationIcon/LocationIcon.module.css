@@ -1,13 +1,23 @@
 .floatBtn {
   position: fixed;
-  right: 25px;
-  bottom: 25px;
-  width: 65px;
-  height: 65px;
+  right: 26px;
+  bottom: 26px;
+  width: 62px;
+  height: 62px;
   border: none;
   border-radius: 50%;
-  background: var(--main-green);
+  background: #006d67;
   color: white;
   font-size: 24px;
   z-index: 999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 20px rgba(0, 109, 103, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.floatBtn:hover {
+  transform: scale(1.12);
+  box-shadow: 0 12px 28px rgba(0, 109, 103, 0.5);
 }
