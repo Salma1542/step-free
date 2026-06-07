@@ -22,6 +22,7 @@ import { DriverRegisterAuth } from './features/auth';
 import { DriverForm } from './features/driver';
 import "./App.css";
 import RegisterPlace from "./pages/RegisterPlacePage";
+import PlaceForm from './features/placeForm/placeForm';
 
 import {
   ForgotPassword,
@@ -84,5 +85,19 @@ export default function App() {
 
       </Routes>
     </>
+        <Route path="role" element={<RoleSelection />} />
+<Route path='placeForm' element={<PlaceForm/>}/>
+
+<Route path="/admin" element={<AdminLayout />}>
+  <Route index element={<AdminDashboardPage />} />
+  <Route path="users" element={<UsersPage />} />
+  <Route path="Adminplaces" element={<AdminplacesPage />} />
+  <Route path="reviews" element={<ReviewsPage />} />
+</Route>
+
+                <Route path="driver-form" element={<DriverForm />} />
+
+      </Route>
+    </Routes>
   );
 }
