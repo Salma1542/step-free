@@ -1,5 +1,5 @@
-
-
+import "bootstrap-icons/font/bootstrap-icons.css";
+import AdminLayout from "./components/layout/AdminLayout";
 import UsersPage from './pages/Admin/UsersPage'
 import AdminplacesPage from './pages/Admin/AdminplacesPage'
 import ReviewsPage from './pages/Admin/ReviewsPage'
@@ -71,16 +71,17 @@ export default function App() {
         <Route path="reset-password" element={<ResetPassword />} />
          <Route path="register-place" element={<RegisterPlace />} />
         <Route path="driver" element={<DriverRegisterAuth />} />
-        <Route path="register-place" element={<RegisterPlace />} />
-      <Route path="/admin" element={<AdminDashboardPage />} />
-       
+        {/* <Route path="register-place" element={<RegisterPlace />} /> */}
+      
         <Route path="role" element={<RoleSelection />} />
 
+<Route path="/admin" element={<AdminLayout />}>
+  <Route index element={<AdminDashboardPage />} />
+  <Route path="users" element={<UsersPage />} />
+  <Route path="Adminplaces" element={<AdminplacesPage />} />
+  <Route path="reviews" element={<ReviewsPage />} />
+</Route>
 
-<Route path="/users" element={<UsersPage />} />
-<Route path="/Adminplaces" element={<AdminplacesPage/>} />
-<Route path="/reviews" element={<ReviewsPage />} />
-        
                 <Route path="driver-form" element={<DriverForm />} />
 
       </Route>
