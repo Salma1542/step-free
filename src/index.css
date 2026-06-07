@@ -10,3 +10,7 @@
   --text-muted: #607274;
   --page-bg: #eef4f1;
 }
+
+*{
+    scroll-behavior: auto !important;
+}
