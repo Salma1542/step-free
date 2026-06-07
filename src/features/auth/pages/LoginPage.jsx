@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaArrowRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import loginImage from "../../../assets/Images/mobile.png";
+import loginImage from "../../../Assets/Images/mobile.png";
 import styles from '../styles/Login.module.css';
 import SocialButtons from '../../../components/common/SocialButtons/SocialButtons';
 import PasswordInput from "../../../components/common/PasswordInput/PasswordInput";

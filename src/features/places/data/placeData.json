@@ -51,5 +51,28 @@
       "avatarSrc": "https://lh3.googleusercontent.com/aida-public/AB6AXuArfBxVKasfrrnQHecijlySocEACwRhYbcBLRkawmWRUkS9XBfmdq-jhLPGjBJ76wST-bMtaj4erey_gYNPWido-BIUS3OAvYBkz8KiUjKyYhGydeITWdDWERdtU-NqtwggU3kyx4q34TAjjk7n5mhTdgmzJVUJC7TnCfCsfZ1WOTbzT8Bar20G6MhHIUN-xSmTMHbF8TYZPdgCVaSD8iff-5Q1Ab2_X7kjfF89MqMjxGzA3ftyjnRiksA3fCyDdv060O5PiGVM6QQ",
       "avatarAlt": "Warm female driver in modern car."
     }
-  ]
+  ],
+  "images": [
+  {
+    "src": "https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=800",
+    "alt": "Museum gallery with wide walkways"
+  },
+
+  {
+    "src": "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=800",
+    "alt": "Modern elevator interior"
+  },
+  {
+    "src": "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?w=800",
+    "alt": "Spacious museum corridor"
+  },
+  {
+    "src": "https://images.unsplash.com/photo-1526779259212-939e64788e3c?w=800",
+    "alt": "Exhibition hall with ramp access"
+  },
+  {
+    "src": "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800",
+    "alt": "Museum outdoor accessible pathway"
+  }
+]
 }

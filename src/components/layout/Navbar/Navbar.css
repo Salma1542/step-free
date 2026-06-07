@@ -1,249 +1,205 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-:root {
-  --teal: #0d9488;
-  --teal-dark: #0f766e;
-  --teal-mid: #14b8a6;
-  --teal-light: #f0fdfa;
-  --teal-pale: #ccfbf1;
-  --gray-900: #0f172a;
-  --gray-700: #334155;
-  --gray-600: #475569;
-  --border: #e2e8f0;
-  --nav-h: 72px;
-  --radius: 10px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-/* ===== BASE NAVBAR ===== */
 .sf-nav {
-  background: white !important;
-  border-bottom: 1px solid var(--border);
-  padding: 0 !important;
-  min-height: var(--nav-h);
+  background: white;
+  border-bottom: 1px solid #e2e8f0;
   font-family: 'Inter', sans-serif;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  display: flex !important;
-  align-items: center !important;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  height: 72px;
+  display: flex;
+  align-items: center;
 }
 
 .sf-container {
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 40px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;  /* الأعمدة: يسار | وسط | يمين */
+  align-items: center;
+  gap: 24px;
 }
 
-/* ===== LOGO ===== */
+/* ===== اللوجو (العمود الأول) ===== */
+.sf-logo-area {
+  justify-self: start;
+}
 .sf-brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  text-decoration: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  flex-shrink: 0;
+  text-decoration: none;
 }
-
-.sf-logo {
+.sf-logo-img {
   width: 38px;
   height: 38px;
   object-fit: contain;
   border-radius: 10px;
-  display: block;
 }
-
 .sf-brand span {
   font-size: 20px;
   font-weight: 800;
-  color: var(--gray-900);
-  letter-spacing: -0.5px;
-  line-height: 1;
+  color: #0f172a;
 }
 
-.sf-brand:hover span {
-  color: var(--teal);
-}
-
-/* ===== NAV LINKS - CENTERED PERFECTLY ===== */
-.sf-links {
+/* ===== روابط المنتصف (العمود الثاني) ===== */
+.sf-links-area {
+  justify-self: center;  /* هذا يوسّط الروابط داخل العمود الثاني */
+  width: 100%;
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin: 0 auto !important;
-  padding: 0 !important;
-  list-style: none;
-  height: var(--nav-h);
-}
-
-.sf-link {
-  position: relative;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 8px 20px !important;
-  font-size: 15px;
+}
+.sf-nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sf-nav-links li a {
+  padding: 8px 20px;
+  color: #475569;
+  text-decoration: none;
   font-weight: 500;
-  color: var(--gray-600) !important;
-  text-decoration: none !important;
-  border-radius: var(--radius);
-  transition: all 0.2s ease;
-  margin: 0 !important;
-  height: auto !important;
+  border-radius: 30px;
+  transition: 0.2s;
+  white-space: nowrap;
 }
-
-/* Hover effect */
-.sf-link:hover {
-  color: var(--gray-900) !important;
-  background: var(--teal-light);
+.sf-nav-links li a:hover {
+  background: var(--primary-soft);
+  color: var(--primary-color);
 }
-
-/* Active link */
-.sf-link.sf-active {
-  color: var(--teal) !important;
+.sf-nav-links li a.active {
+  background: var(--primary-soft);
+  color: var(--primary-color);
   font-weight: 600;
-  background: var(--teal-light);
 }
 
-/* Active underline (optional, clean look without it) */
-.sf-link.sf-active::after {
+/* ===== أزرار اليمين (العمود الثالث) ===== */
+.sf-buttons-area {
+  justify-self: end;   /* يلتصق باليمين */
+  display: flex;
+  gap: 12px;
+}
+.btn-login, .btn-signup {
+  padding: 8px 24px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: 0.2s;
+  white-space: nowrap;
+}
+.btn-login {
+  color: var(--primary-color);
+  border: 1.5px solid var(--primary-border);
+  background: transparent;
+}
+.btn-login:hover {
+  background: var(--primary-soft);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+}
+.btn-signup {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+}
+.btn-signup:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+/* ===== عناصر الموبايل (مخفية على سطح المكتب) ===== */
+.sf-toggler {
+  display: none;
+  background: none;
+  border: 1px solid #e2e8f0;
+  font-size: 24px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.sf-mobile-buttons {
   display: none;
 }
 
-/* ===== AUTH BUTTONS ===== */
-.sf-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-shrink: 0;
-  margin-left: auto;
-}
-
-.sf-btn-login,
-.sf-btn-signup {
-  font-family: 'Inter', sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  border-radius: var(--radius);
-  padding: 8px 24px;
-  text-decoration: none !important;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
-}
-
-.sf-btn-login {
-  color: var(--teal) !important;
-  background: transparent;
-  border: 1.5px solid var(--teal-pale);
-}
-
-.sf-btn-login:hover {
-  background: var(--teal-light);
-  border-color: var(--teal);
-  transform: translateY(-1px);
-}
-
-.sf-btn-signup {
-  color: white !important;
-  background: var(--teal);
-  border: none;
-  box-shadow: 0 2px 6px rgba(13, 148, 136, 0.15);
-}
-
-.sf-btn-signup:hover {
-  background: var(--teal-dark);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
-}
-
-/* ===== MOBILE TOGGLER ===== */
-.sf-toggler {
-  border: 1px solid var(--border) !important;
-  border-radius: 10px !important;
-  padding: 8px 12px !important;
-  background: white !important;
-  transition: all 0.2s ease;
-  display: none !important;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 991px) {
-  .sf-toggler {
-    display: flex !important;
-  }
-
-  .sf-nav {
-    min-height: var(--nav-h);
-  }
-
+/* ===== استايلات الموبايل (شاشة أقل من 768px) ===== */
+@media (max-width: 768px) {
   .sf-container {
-    padding: 0 24px !important;
-    flex-wrap: wrap;
-  }
-
-  .sf-brand {
-    margin-right: auto;
-  }
-
-  .sf-links {
+    padding: 0 20px;
     display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  
+  /* إخفاء أزرار سطح المكتب */
+  .sf-buttons-area {
+    display: none;
+  }
+  
+  /* إظهار زر التوجل */
+  .sf-toggler {
+    display: block;
+    margin-left: auto;
+  }
+  
+  /* القائمة المنسدلة */
+  .sf-links-area {
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    background: white;
+    flex-direction: column;
+    padding: 20px;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    z-index: 999;
+    justify-self: unset;
+  }
+  
+  .sf-links-area.collapsed {
+    transform: translateY(-200%);
+    display: flex;
+  }
+  
+  .sf-links-area:not(.collapsed) {
+    transform: translateY(0);
+  }
+  
+  .sf-nav-links {
     flex-direction: column;
     width: 100%;
-    gap: 8px;
-    margin: 16px 0 !important;
-    height: auto;
+    gap: 16px;
+    margin-bottom: 20px;
   }
-
-  .sf-link {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 12px 16px !important;
-  }
-
-  .sf-right {
-    width: 100%;
-    justify-content: stretch;
-    margin: 16px 0 8px;
-  }
-
-  .sf-btn-login,
-  .sf-btn-signup {
-    flex: 1;
+  
+  .sf-nav-links li a {
     text-align: center;
+    display: block;
   }
-
-  .sf-nav .navbar-collapse {
+  
+  /* أزرار الموبايل داخل القائمة */
+  .sf-mobile-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     width: 100%;
-    padding: 0;
   }
-}
-
-@media (max-width: 480px) {
-  .sf-container {
-    padding: 0 16px !important;
-  }
-
-  .sf-logo {
-    width: 32px;
-    height: 32px;
-  }
-
-  .sf-brand span {
-    font-size: 18px;
-  }
-
-  .sf-link {
-    font-size: 14px;
-  }
-
-  .sf-btn-login,
-  .sf-btn-signup {
-    padding: 8px 16px;
-    font-size: 13px;
+  
+  .sf-mobile-buttons .btn-login,
+  .sf-mobile-buttons .btn-signup {
+    text-align: center;
   }
 }

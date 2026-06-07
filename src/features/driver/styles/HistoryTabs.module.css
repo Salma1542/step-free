@@ -1,0 +1,45 @@
+.wrapper {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 1.125rem;
+  box-shadow: var(--shadow-card);
+  padding: 0;
+  overflow: hidden;
+}
+
+.tabBar {
+  border-bottom: 1px solid var(--border);
+}
+.tabBar :global(.nav-link) {
+  border: none;
+  border-radius: 0;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.9rem 1rem;
+  background: transparent;
+  width: 100%;
+}
+.tabBar :global(.nav-link.active) {
+  color: var(--primary);
+  border-bottom: 2px solid var(--primary);
+  background: rgba(13,148,136,0.05);
+}
+
+.tabBody { max-height: 640px; overflow-y: auto; }
+
+.listItem {
+  padding: 1rem 1.1rem;
+  border-bottom: 1px solid var(--border);
+}
+.listItem:last-child { border-bottom: none; }
+
+.badgeStatus {
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+.badgeCompleted { background: rgba(0, 109, 103, 0.12); color: var(--primary); }
+.badgeCancelled { background: rgba(239,68,68,0.12); color: var(--danger); }

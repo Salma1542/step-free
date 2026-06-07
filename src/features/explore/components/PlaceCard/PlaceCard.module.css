@@ -38,7 +38,7 @@
 }
 
 .selected {
-  border: 2px solid #008f86;
+  border: 2px solid var(--primary-color);
 }
 
 .img {
@@ -67,7 +67,7 @@
 .name {
   font-size: 18px;
   font-weight: 700;
-  color: #006d67;
+  color: var(--primary-color);
   margin: 0;
 }
 
@@ -96,7 +96,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  background: #e6f7f6;
+  background: var(--primary-light);
   color: #006b63;
   font-size: 12px;
   font-weight: 500;

@@ -1,10 +1,10 @@
   :root {
-    --teal:        #0d9488;
-    --teal-dark:   #0f766e;
-    --teal-mid:    #14b8a6;
-    --teal-light:  #f0fdfa;
-    --teal-pale:   #ccfbf1;
-    --teal-50:     #f0fdfa;
+    --teal:        var(--primary-color);
+    --teal-dark:   var(--primary-hover);
+    --teal-mid:    var(--primary-color);
+    --teal-light:  var(--primary-soft);
+    --teal-pale:   var(--primary-border);
+    --teal-50:     var(--primary-soft);
     --gray-900:    #111827;
     --gray-700:    #374151;
     --gray-500:    #6b7280;
@@ -12,7 +12,7 @@
     --gray-100:    #f3f4f6;
     --white:       #ffffff;
     --border:      #e5e7eb;
-    --orange:      #f97316;
+    --orange:      var(--accent-color);
     --red:         #ef4444;
   }
 
@@ -436,7 +436,7 @@
      CTA BANNER
   ══════════════════════════════════════════ */
   .sf-cta-banner {
-    background: linear-gradient(135deg, #0d9488 0%, #14b8a6 60%, #5eead4 100%);
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color) 60%, #5eead4 100%);
     border-radius: 20px;
     padding: 56px 48px;
     text-align: center;
@@ -580,7 +580,7 @@
     transition: box-shadow 0.2s;
   }
   .sf-a11y-card:hover {
-    box-shadow: 0 6px 24px rgba(13,148,136,0.1);
+    box-shadow: 0 6px 24px rgba(0, 109, 103, 0.1);
   }
 
   .sf-a11y-card-icon {

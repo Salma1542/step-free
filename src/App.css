@@ -1,13 +1,13 @@
 
 
 :root{
-  --main-green:#006d67;
-  --dark-green:#004a45;
-  --light-bg:#eef4f1;
+  --main-green: var(--primary-color);
+  --dark-green: var(--primary-hover);
+  --light-bg: var(--page-bg);
   --white:#ffffff;
-  --orange:#ff7a59;
-  --text:#0f1c1e;
-  --gray:#607274;
+  --orange: var(--accent-color);
+  --text: var(--dark-color);
+  --gray: var(--text-muted);
 }
 
 body{
@@ -55,6 +55,7 @@ body{
 }
 
 .main-btn:hover{
+  background: var(--accent-hover);
   transform: translateY(-4px);
 }
 
@@ -88,7 +89,7 @@ body{
   width: 60px;
   height: 60px;
   border-radius: 18px;
-  background: #15b8aa;
+  background: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -170,7 +171,7 @@ body{
   width: 70px;
   height: 70px;
   border-radius: 18px;
-  background: #e7f1ef;
+  background: var(--primary-light);
   color: var(--main-green);
   display: flex;
   justify-content: center;

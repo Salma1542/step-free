@@ -2,9 +2,9 @@
 @import url('https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css');
 
 :root {
-  --primary-green: #00b5a5;
-  --dark-green:    #008f82;
-  --soft-green:    #e6f8f6;
+  --primary-green: var(--primary-color);
+  --dark-green:    var(--primary-color);
+  --soft-green:    var(--primary-light);
 }
 
 .sfRoot {

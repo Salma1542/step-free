@@ -57,7 +57,7 @@ const teamMembers = [
 ];
 
 const values = [
-  { icon: "♿", color: "#f0fdfa", border: "#ccfbf1", title: "Accessibility First", desc: "Every decision starts with 'how does this serve people with disabilities?' — not as an afterthought, but as our core." },
+  { icon: "♿", color: "var(--primary-soft)", border: "var(--primary-border)", title: "Accessibility First", desc: "Every decision starts with 'how does this serve people with disabilities?' — not as an afterthought, but as our core." },
   { icon: "🤝", color: "#fef3c7", border: "#fde68a", title: "Community Driven", desc: "Real users shape our platform. Reviews, ratings, and feedback from the community drive every improvement." },
   { icon: "🗺️", color: "#eff6ff", border: "#bfdbfe", title: "Radical Transparency", desc: "We publish accurate, detailed accessibility info — even when it's imperfect — because honesty builds trust." },
   { icon: "🚀", color: "#fdf4ff", border: "#e9d5ff", title: "Continuous Impact", desc: "We measure success in lives made easier — trips completed, barriers removed, confidence restored." },

@@ -8,7 +8,7 @@
 
 .panel {
   width: 34%;
-  background: linear-gradient(145deg, #00b5a5 0%, #008f82 100%);
+  background: linear-gradient(145deg, var(--primary-color) 0%, var(--primary-color) 100%);
   padding: 48px 36px;
   display: flex; flex-direction: column; justify-content: center;
   position: relative; overflow: hidden;
@@ -66,8 +66,8 @@
   flex-shrink: 0;
 }
 
-.stepDotActive { background: #fff; border-color: #fff; color: #00b5a5; }
-.stepDotDone   { background: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.9); color: #00b5a5; }
+.stepDotActive { background: #fff; border-color: #fff; color: var(--primary-color); }
+.stepDotDone   { background: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.9); color: var(--primary-color); }
 
 .stepLine {
   width: 2px; height: 28px;
@@ -110,7 +110,7 @@
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .noIcon { padding-left: 12px !important; }
-.input:focus { border-color: #00b5a5; box-shadow: 0 0 0 3px rgba(0,181,165,0.1); }
+.input:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,181,165,0.1); }
 
 .passWrap .input { padding-right: 38px; }
 
@@ -120,7 +120,7 @@
   background: none; border: none; cursor: pointer;
   padding: 0; font-size: 15px; color: #94a3b8;
 }
-.eye:hover { color: #00b5a5; }
+.eye:hover { color: var(--primary-color); }
 
 .error { font-size: 12px; color: #e53e3e; margin-top: 3px; display: block; }
 
@@ -131,26 +131,26 @@
   font-size: 12.5px; color: #64748b; cursor: pointer;
 }
 .terms input[type="checkbox"] {
-  accent-color: #00b5a5; width: 14px; height: 14px;
+  accent-color: var(--primary-color); width: 14px; height: 14px;
   margin-top: 2px; flex-shrink: 0;
 }
-.terms a { color: #00b5a5; font-weight: 600; text-decoration: none; }
+.terms a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
 .terms a:hover { text-decoration: underline; }
 
 .btn {
   width: 100%; padding: 12px;
   font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700;
   border: none; border-radius: 10px;
-  background: #00b5a5; color: #fff; cursor: pointer;
+  background: var(--primary-color); color: #fff; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   margin-top: 14px;
   transition: background 0.25s, transform 0.25s;
 }
-.btn:hover:not(:disabled) { background: #008f82; transform: translateY(-2px); }
+.btn:hover:not(:disabled) { background: var(--primary-color); transform: translateY(-2px); }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 
 .footer { margin-top: 14px; font-size: 13px; color: #94a3b8; text-align: center; }
-.footer a { color: #008f82; font-weight: 600; text-decoration: none; }
+.footer a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
 
 @media (max-width: 992px) {
   .root  { flex-direction: column; height: auto; }

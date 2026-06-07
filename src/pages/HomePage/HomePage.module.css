@@ -1,6 +1,6 @@
 .homePage {
   overflow-x: hidden;
-  background: #eef4f1;
+  background: var(--page-bg);
   font-family: "Poppins", sans-serif;
 }
 
@@ -77,7 +77,7 @@
 }
 
 .heroLeft h1 span {
-  color: #006d67;
+  color: var(--primary-color);
 }
 
 .heroLeft p {
@@ -103,6 +103,7 @@
   cursor: pointer;
 }
 .mainBtn:hover {
+  background: var(--accent-hover);
   transform: translateY(-4px);
   background: #005752;
   box-shadow: 0 12px 28px rgba(0, 109, 103, 0.3);
@@ -373,8 +374,8 @@
   width: 64px;
   height: 64px;
   border-radius: 16px;
-  background: #e7f1ef;
-  color: #006d67;
+  background: var(--primary-light);
+  color: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;

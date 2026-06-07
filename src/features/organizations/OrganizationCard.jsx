@@ -18,7 +18,7 @@ export default function OrganizationCard({ org }) {
         aria-hidden="true"
         style={{
           height: '2px',
-          background: 'linear-gradient(90deg, #0f8a82 0%, #1fa89f 40%, transparent 100%)',
+          background: 'linear-gradient(90deg, var(--primary-color) 0%, var(--primary-color) 40%, transparent 100%)',
           flexShrink: 0,
         }}
       />
@@ -69,7 +69,7 @@ export default function OrganizationCard({ org }) {
                   textTransform: 'uppercase',
                   background: 'rgba(31,168,159,0.15)',
                   border: '1px solid rgba(31,168,159,0.35)',
-                  color: '#1fa89f',
+                  color: 'var(--primary-color)',
                   borderRadius: '999px',
                   padding: '0.18rem 0.6rem',
                 }}
@@ -121,7 +121,7 @@ export default function OrganizationCard({ org }) {
                 }}
                 onMouseEnter={e => {
                   e.currentTarget.style.background = 'rgba(31,168,159,0.16)';
-                  e.currentTarget.style.color = '#1fa89f';
+                  e.currentTarget.style.color = 'var(--primary-color)';
                   e.currentTarget.style.borderColor = 'rgba(31,168,159,0.32)';
                 }}
                 onMouseLeave={e => {
@@ -145,7 +145,7 @@ export default function OrganizationCard({ org }) {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
-              background: '#0f766e',
+              background: 'var(--primary-hover)',
               color: '#ffffff',
               fontFamily: 'var(--font-display, sans-serif)',
               fontWeight: 600,
@@ -159,12 +159,12 @@ export default function OrganizationCard({ org }) {
               transition: 'background 0.2s, box-shadow 0.2s, transform 0.15s',
             }}
             onMouseEnter={e => {
-              e.currentTarget.style.background = '#0a5c56';
+              e.currentTarget.style.background = 'var(--primary-hover)';
               e.currentTarget.style.transform = 'translateY(-2px)';
               e.currentTarget.style.boxShadow = '0 8px 28px rgba(15,118,110,0.5)';
             }}
             onMouseLeave={e => {
-              e.currentTarget.style.background = '#0f766e';
+              e.currentTarget.style.background = 'var(--primary-hover)';
               e.currentTarget.style.transform = 'translateY(0)';
               e.currentTarget.style.boxShadow = '0 4px 18px rgba(15,118,110,0.4)';
             }}
