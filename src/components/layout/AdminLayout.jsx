@@ -7,6 +7,8 @@ const NAV_ITEMS = [
   { to: '/admin/users', label: 'Users', icon: 'bi-people-fill' },
   { to: '/admin/Adminplaces', label: 'Places', icon: 'bi-geo-alt-fill' },
   { to: '/admin/reviews', label: 'Reviews', icon: 'bi-star-fill' },
+  { to: '/admin/analytics', label: 'Analytics', icon: 'bi-graph-up-arrow' },
+  { to: '/admin/settings', label: 'Settings', icon: 'bi-sliders' },
 ];
 
 export default function AdminLayout() {
