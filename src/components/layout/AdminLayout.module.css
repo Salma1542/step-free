@@ -1,0 +1,192 @@
+/* === Design tokens (scoped to admin) === */
+.shell {
+  --admin-bg: #f5f7fb;
+  --admin-surface: #ffffff;
+  --admin-surface-2: #f8fafc;
+  --admin-text: #0f172a;
+  --admin-muted: #64748b;
+  --admin-border: #e5e7eb;
+  --admin-primary: #006d67;
+  --admin-primary-soft: #e6f0ee;
+  --admin-danger: #dc2626;
+  --admin-success: #16a34a;
+  --admin-warning: #d97706;
+  --admin-sidebar-bg: #004a45;
+  --admin-sidebar-text: #cbd5e1;
+  --admin-sidebar-active: #006d67;
+  --admin-radius: 12px;
+  --admin-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.05);
+  --sidebar-w: 248px;
+  --topbar-h: 64px;
+
+  display: flex;
+  min-height: 100vh;
+  background: var(--admin-bg);
+  color: var(--admin-text);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* === Sidebar === */
+.sidebar {
+  width: var(--sidebar-w);
+  background: var(--admin-sidebar-bg);
+  color: var(--admin-sidebar-text);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 50;
+  transition: transform 0.25s ease;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.brandMark {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--admin-primary);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+}
+.brandText {
+  color: #fff;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.nav { flex: 1; padding: 18px 12px; overflow-y: auto; }
+.navLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #64748b;
+  margin: 4px 12px 10px;
+}
+.menu { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.menuLink {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  color: var(--admin-sidebar-text);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.menuLink i { font-size: 17px; width: 20px; text-align: center; }
+.menuLink:hover { background: rgba(255, 255, 255, 0.06); color: #fff; }
+.menuLinkActive {
+  background: var(--admin-sidebar-active);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 109, 103, 0.35);
+}
+.menuLinkActive:hover { background: var(--admin-sidebar-active); color: #fff; }
+
+.sidebarFooter { padding: 14px 16px; border-top: 1px solid rgba(255, 255, 255, 0.08); }
+.logoutBtn {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 10px 14px;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border-radius: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.logoutBtn:hover { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.5); }
+
+/* === Body / Topbar / Content === */
+.body {
+  flex: 1;
+  margin-left: var(--sidebar-w);
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  height: var(--topbar-h);
+  background: var(--admin-surface);
+  border-bottom: 1px solid var(--admin-border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 24px;
+}
+.hamburger {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--admin-border);
+  border-radius: 10px;
+  width: 40px; height: 40px;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--admin-text);
+}
+.topbarTitle { font-weight: 600; font-size: 16px; }
+.topbarActions { margin-left: auto; display: flex; align-items: center; gap: 16px; }
+.iconBtn {
+  position: relative;
+  width: 40px; height: 40px;
+  border-radius: 10px;
+  border: 1px solid var(--admin-border);
+  background: var(--admin-surface);
+  cursor: pointer;
+  font-size: 17px;
+  color: var(--admin-text);
+}
+.iconBtn:hover { background: var(--admin-surface-2); }
+.notifyDot {
+  position: absolute; top: 8px; right: 9px;
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--admin-danger);
+  border: 2px solid #fff;
+}
+.profile { display: flex; align-items: center; gap: 10px; }
+.avatar { width: 38px; height: 38px; border-radius: 50%; object-fit: cover; }
+.profileMeta { display: flex; flex-direction: column; line-height: 1.15; font-size: 13px; }
+.profileMeta strong { color: var(--admin-text); font-weight: 600; }
+.profileMeta span { color: var(--admin-muted); font-size: 12px; }
+
+.content { padding: 28px; flex: 1; }
+
+/* === Backdrop === */
+.backdrop {
+  position: fixed; inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 40;
+}
+.backdropOpen { opacity: 1; pointer-events: auto; }
+
+/* === Responsive === */
+@media (max-width: 992px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebarOpen { transform: translateX(0); }
+  .body { margin-left: 0; }
+  .hamburger { display: inline-flex; align-items: center; justify-content: center; }
+  .profileMeta { display: none; }
+}
+@media (max-width: 576px) {
+  .content { padding: 18px; }
+  .topbar { padding: 0 14px; }
+  .topbarTitle { font-size: 15px; }
+}
