@@ -3,11 +3,11 @@ import AdminSettingsPage from './pages/Admin/AdminSettingsPage'
 
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AdminLayout from "./components/layout/AdminLayout";
-import UsersPage from './pages/Admin/UsersPage'
-import AdminplacesPage from './pages/Admin/AdminplacesPage'
-import ReviewsPage from './pages/Admin/ReviewsPage'
+import UsersPage from "./pages/Admin/UsersPage";
+import AdminplacesPage from "./pages/Admin/AdminplacesPage";
+import ReviewsPage from "./pages/Admin/ReviewsPage";
 
-
+import ScrollToTop from "./components/ScrollToTop";
 import AdminDashboardPage from "./pages/Admin/AdminDashboardPage";
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -18,15 +18,14 @@ import AboutPage from "./pages/AboutPage/AboutPage";
 import BlogsPage from "./pages/BlogsPage/BlogsPage";
 
 import PlacesPage from "./pages/PlacesPage/PlacesPage";
-import LoginPage from './features/auth/pages/LoginPage';
-import UserRegisterPage from './pages/UserRegisterPage';
-import RoleSelectionPage from './features/auth/pages/RoleSelection';
-// import { ForgotPassword, OTPVerification, ResetPassword } from './features/auth';
-import { DriverRegisterAuth } from './features/auth';
-import { DriverForm } from './features/driver';
+import LoginPage from "./features/auth/pages/LoginPage";
+import UserRegisterPage from "./pages/UserRegisterPage";
+import RoleSelectionPage from "./features/auth/pages/RoleSelection";
+import { DriverRegisterAuth } from "./features/auth";
+import { DriverForm } from "./features/driver";
 import "./App.css";
 import RegisterPlace from "./pages/RegisterPlacePage";
-import PlaceForm from './features/placeForm/placeForm';
+import PlaceForm from "./features/placeForm/placeForm";
 
 import {
   ForgotPassword,
@@ -34,7 +33,6 @@ import {
   ResetPassword,
   RoleSelection,
 } from "./features/auth";
-
 
 import ExplorePage from "./pages/ExplorePage/ExplorePage";
 
@@ -44,7 +42,6 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 
 export default function App() {
-
   useEffect(() => {
     AOS.init({
       duration: 1000,
@@ -53,19 +50,21 @@ export default function App() {
     });
   }, []);
 
-  return (
+ return (
+  <>
+    <ScrollToTop />
+
     <Routes>
-      {/* صفحات مع Navbar و Footer */}
+      {/* Main Layout */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="blogs" element={<BlogsPage />} />
-        <Route path="places" element={<PlacesPage />} />   {/* ملاحظة: كان موجوداً في Route السابق */}
-       <Route path="explore" element={<ExplorePage />} />
-
+        <Route path="places" element={<PlacesPage />} />
+        <Route path="explore" element={<ExplorePage />} />
       </Route>
 
-      {/* صفحات بدون Navbar و Footer (صفحات Auth) */}
+      {/* Auth Layout */}
       <Route element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
         <Route path="user" element={<UserRegisterPage />} />
@@ -73,25 +72,23 @@ export default function App() {
         <Route path="forgetPassword" element={<ForgotPassword />} />
         <Route path="otp" element={<OTPVerification />} />
         <Route path="reset-password" element={<ResetPassword />} />
-         <Route path="register-place" element={<RegisterPlace />} />
+        <Route path="register-place" element={<RegisterPlace />} />
         <Route path="driver" element={<DriverRegisterAuth />} />
-        {/* <Route path="register-place" element={<RegisterPlace />} /> */}
-      
         <Route path="role" element={<RoleSelection />} />
-<Route path='placeForm' element={<PlaceForm/>}/>
+        <Route path="driver-form" element={<DriverForm />} />
+        <Route path="placeForm" element={<PlaceForm />} />
+      </Route>
 
-<Route path="/admin" element={<AdminLayout />}>
-  <Route index element={<AdminDashboardPage />} />
-  <Route path="users" element={<UsersPage />} />
-  <Route path="Adminplaces" element={<AdminplacesPage />} />
-  <Route path="reviews" element={<ReviewsPage />} />
-  <Route path="analytics" element={<AdminAnalyticsPage />} />
-  <Route path="settings" element={<AdminSettingsPage />} />
-</Route>
-
-                <Route path="driver-form" element={<DriverForm />} />
-
+      {/* Admin Layout */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminDashboardPage />} />
+        <Route path="users" element={<UsersPage />} />
+        <Route path="Adminplaces" element={<AdminplacesPage />} />
+        <Route path="reviews" element={<ReviewsPage />} />
+        <Route path="analytics" element={<AdminAnalyticsPage />} />
+        <Route path="settings" element={<AdminSettingsPage />} />
       </Route>
     </Routes>
-  );
+  </>
+);
 }
