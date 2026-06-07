@@ -50,58 +50,21 @@ export default function App() {
     });
   }, []);
 
-  return (
-
-    <>
-      <ScrollToTop />
-
-      <Routes>
-        {/* Main Layout */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<HomePage />} />
-          <Route path="about" element={<AboutPage />} />
-          <Route path="blogs" element={<BlogsPage />} />
-          <Route path="places" element={<PlacesPage />} />
-          <Route path="explore" element={<ExplorePage />} />
-        </Route>
-
-        {/* Auth Layout */}
-        <Route element={<AuthLayout />}>
-          <Route path="login" element={<LoginPage />} />
-          <Route path="user" element={<UserRegisterPage />} />
-          <Route path="roleselection" element={<RoleSelectionPage />} />
-          <Route path="forgetPassword" element={<ForgotPassword />} />
-          <Route path="otp" element={<OTPVerification />} />
-          <Route path="reset-password" element={<ResetPassword />} />
-          <Route path="register-place" element={<RegisterPlace />} />
-          <Route path="driver" element={<DriverRegisterAuth />} />
-          <Route path="role" element={<RoleSelection />} />
-          <Route path="driver-form" element={<DriverForm />} />
-          <Route path="placeForm" element={<PlaceForm />} />
-        </Route>
-
-        {/* Admin Layout */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboardPage />} />
-          <Route path="users" element={<UsersPage />} />
-          <Route path="Adminplaces" element={<AdminplacesPage />} />
-          <Route path="reviews" element={<ReviewsPage />} />
-        </Route>
-      </Routes>
-    </>
+ return (
+  <>
+    <ScrollToTop />
 
     <Routes>
-      {/* صفحات مع Navbar و Footer */}
+      {/* Main Layout */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
         <Route path="about" element={<AboutPage />} />
         <Route path="blogs" element={<BlogsPage />} />
-        <Route path="places" element={<PlacesPage />} />   {/* ملاحظة: كان موجوداً في Route السابق */}
-       <Route path="explore" element={<ExplorePage />} />
-
+        <Route path="places" element={<PlacesPage />} />
+        <Route path="explore" element={<ExplorePage />} />
       </Route>
 
-      {/* صفحات بدون Navbar و Footer (صفحات Auth) */}
+      {/* Auth Layout */}
       <Route element={<AuthLayout />}>
         <Route path="login" element={<LoginPage />} />
         <Route path="user" element={<UserRegisterPage />} />
@@ -109,26 +72,23 @@ export default function App() {
         <Route path="forgetPassword" element={<ForgotPassword />} />
         <Route path="otp" element={<OTPVerification />} />
         <Route path="reset-password" element={<ResetPassword />} />
-         <Route path="register-place" element={<RegisterPlace />} />
+        <Route path="register-place" element={<RegisterPlace />} />
         <Route path="driver" element={<DriverRegisterAuth />} />
-        {/* <Route path="register-place" element={<RegisterPlace />} /> */}
-      
         <Route path="role" element={<RoleSelection />} />
-<Route path='placeForm' element={<PlaceForm/>}/>
+        <Route path="driver-form" element={<DriverForm />} />
+        <Route path="placeForm" element={<PlaceForm />} />
+      </Route>
 
-<Route path="/admin" element={<AdminLayout />}>
-  <Route index element={<AdminDashboardPage />} />
-  <Route path="users" element={<UsersPage />} />
-  <Route path="Adminplaces" element={<AdminplacesPage />} />
-  <Route path="reviews" element={<ReviewsPage />} />
-  <Route path="analytics" element={<AdminAnalyticsPage />} />
-  <Route path="settings" element={<AdminSettingsPage />} />
-</Route>
-
-                <Route path="driver-form" element={<DriverForm />} />
-
+      {/* Admin Layout */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminDashboardPage />} />
+        <Route path="users" element={<UsersPage />} />
+        <Route path="Adminplaces" element={<AdminplacesPage />} />
+        <Route path="reviews" element={<ReviewsPage />} />
+        <Route path="analytics" element={<AdminAnalyticsPage />} />
+        <Route path="settings" element={<AdminSettingsPage />} />
       </Route>
     </Routes>
-
-  );
+  </>
+);
 }
