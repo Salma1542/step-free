@@ -4,7 +4,7 @@ import UsersPage from './pages/Admin/UsersPage'
 import AdminplacesPage from './pages/Admin/AdminplacesPage'
 import ReviewsPage from './pages/Admin/ReviewsPage'
 
-
+import ScrollToTop from "./components/ScrollToTop";
 import AdminDashboardPage from "./pages/Admin/AdminDashboardPage";
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -18,7 +18,6 @@ import PlacesPage from "./pages/PlacesPage/PlacesPage";
 import LoginPage from './features/auth/pages/LoginPage';
 import UserRegisterPage from './pages/UserRegisterPage';
 import RoleSelectionPage from './features/auth/pages/RoleSelection';
-// import { ForgotPassword, OTPVerification, ResetPassword } from './features/auth';
 import { DriverRegisterAuth } from './features/auth';
 import { DriverForm } from './features/driver';
 import "./App.css";
@@ -30,7 +29,6 @@ import {
   ResetPassword,
   RoleSelection,
 } from "./features/auth";
-
 
 import ExplorePage from "./pages/ExplorePage/ExplorePage";
 
@@ -50,41 +48,41 @@ export default function App() {
   }, []);
 
   return (
-    <Routes>
-      {/* صفحات مع Navbar و Footer */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="about" element={<AboutPage />} />
-        <Route path="blogs" element={<BlogsPage />} />
-        <Route path="places" element={<PlacesPage />} />   {/* ملاحظة: كان موجوداً في Route السابق */}
-       <Route path="explore" element={<ExplorePage />} />
-
-      </Route>
-
-      {/* صفحات بدون Navbar و Footer (صفحات Auth) */}
-      <Route element={<AuthLayout />}>
-        <Route path="login" element={<LoginPage />} />
-        <Route path="user" element={<UserRegisterPage />} />
-        <Route path="roleselection" element={<RoleSelectionPage />} />
-        <Route path="forgetPassword" element={<ForgotPassword />} />
-        <Route path="otp" element={<OTPVerification />} />
-        <Route path="reset-password" element={<ResetPassword />} />
-         <Route path="register-place" element={<RegisterPlace />} />
-        <Route path="driver" element={<DriverRegisterAuth />} />
-        {/* <Route path="register-place" element={<RegisterPlace />} /> */}
+    <>
+      <ScrollToTop /> 
       
-        <Route path="role" element={<RoleSelection />} />
+      <Routes>
 
-<Route path="/admin" element={<AdminLayout />}>
-  <Route index element={<AdminDashboardPage />} />
-  <Route path="users" element={<UsersPage />} />
-  <Route path="Adminplaces" element={<AdminplacesPage />} />
-  <Route path="reviews" element={<ReviewsPage />} />
-</Route>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="blogs" element={<BlogsPage />} />
+          <Route path="places" element={<PlacesPage />} />
+          <Route path="explore" element={<ExplorePage />} />
+        </Route>
 
-                <Route path="driver-form" element={<DriverForm />} />
+     
+        <Route element={<AuthLayout />}>
+          <Route path="login" element={<LoginPage />} />
+          <Route path="user" element={<UserRegisterPage />} />
+          <Route path="roleselection" element={<RoleSelectionPage />} />
+          <Route path="forgetPassword" element={<ForgotPassword />} />
+          <Route path="otp" element={<OTPVerification />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="register-place" element={<RegisterPlace />} />
+          <Route path="driver" element={<DriverRegisterAuth />} />
+          <Route path="role" element={<RoleSelection />} />
+          <Route path="driver-form" element={<DriverForm />} />
+        </Route>
 
-      </Route>
-    </Routes>
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="Adminplaces" element={<AdminplacesPage />} />
+          <Route path="reviews" element={<ReviewsPage />} />
+        </Route>
+
+      </Routes>
+    </>
   );
 }
