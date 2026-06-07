@@ -1,3 +1,6 @@
+import AdminAnalyticsPage from './pages/Admin/AdminAnalyticsPage'
+import AdminSettingsPage from './pages/Admin/AdminSettingsPage'
+
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AdminLayout from "./components/layout/AdminLayout";
 import UsersPage from "./pages/Admin/UsersPage";
@@ -48,6 +51,7 @@ export default function App() {
   }, []);
 
   return (
+
     <>
       <ScrollToTop />
 
@@ -85,5 +89,46 @@ export default function App() {
         </Route>
       </Routes>
     </>
+
+    <Routes>
+      {/* صفحات مع Navbar و Footer */}
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<HomePage />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="blogs" element={<BlogsPage />} />
+        <Route path="places" element={<PlacesPage />} />   {/* ملاحظة: كان موجوداً في Route السابق */}
+       <Route path="explore" element={<ExplorePage />} />
+
+      </Route>
+
+      {/* صفحات بدون Navbar و Footer (صفحات Auth) */}
+      <Route element={<AuthLayout />}>
+        <Route path="login" element={<LoginPage />} />
+        <Route path="user" element={<UserRegisterPage />} />
+        <Route path="roleselection" element={<RoleSelectionPage />} />
+        <Route path="forgetPassword" element={<ForgotPassword />} />
+        <Route path="otp" element={<OTPVerification />} />
+        <Route path="reset-password" element={<ResetPassword />} />
+         <Route path="register-place" element={<RegisterPlace />} />
+        <Route path="driver" element={<DriverRegisterAuth />} />
+        {/* <Route path="register-place" element={<RegisterPlace />} /> */}
+      
+        <Route path="role" element={<RoleSelection />} />
+<Route path='placeForm' element={<PlaceForm/>}/>
+
+<Route path="/admin" element={<AdminLayout />}>
+  <Route index element={<AdminDashboardPage />} />
+  <Route path="users" element={<UsersPage />} />
+  <Route path="Adminplaces" element={<AdminplacesPage />} />
+  <Route path="reviews" element={<ReviewsPage />} />
+  <Route path="analytics" element={<AdminAnalyticsPage />} />
+  <Route path="settings" element={<AdminSettingsPage />} />
+</Route>
+
+                <Route path="driver-form" element={<DriverForm />} />
+
+      </Route>
+    </Routes>
+
   );
 }
