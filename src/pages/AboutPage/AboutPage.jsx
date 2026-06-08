@@ -234,19 +234,6 @@ const IconPhone = ({ size = 20 }) => (
 
 /* ══ DATA ══ */
 const values = [
-
-  { icon: "♿", color: "#f0fdfa", border: "#ccfbf1", title: "Accessibility First", desc: "Every decision starts with 'how does this serve people with disabilities?' — not as an afterthought, but as our core." },
-  { icon: "🤝", color: "#fef3c7", border: "#fde68a", title: "Community Driven", desc: "Real users shape our platform. Reviews, ratings, and feedback from the community drive every improvement." },
-  { icon: "🗺️", color: "#eff6ff", border: "#bfdbfe", title: "Radical Transparency", desc: "We publish accurate, detailed accessibility info — even when it's imperfect — because honesty builds trust." },
-  { icon: "🚀", color: "#fdf4ff", border: "#e9d5ff", title: "Continuous Impact", desc: "We measure success in lives made easier — trips completed, barriers removed, confidence restored." },
-  { icon: "🛡️", color: "#fff1f2", border: "#fecdd3", title: "Safety & Dignity", desc: "Every person deserves to travel safely and with full dignity. We hold our driver network to that standard." },
-  { icon: "🌍", color: "#f0fdf4", border: "#bbf7d0", title: "Inclusive by Design", desc: "From our codebase to our content, we build for every disability type — visual, mobility, cognitive, and more." },
-];
-
-const partners = [
-  "AccessAbility Egypt", "Cairo Metro Authority", "WHO Disability Unit",
-  "UNDP Egypt", "Wheels of Hope NGO", "CAPMAS",
-
   {
     icon: <IconWheelchair size={20} />,
     color: "var(--primary-soft)", border: "var(--primary-border)",
@@ -283,7 +270,6 @@ const partners = [
     title: "Inclusive by Design",
     desc: "From our codebase to our content, we build for every disability type — visual, mobility, cognitive, and more.",
   },
-
 ];
 
 const timeline = [
