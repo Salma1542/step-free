@@ -13,12 +13,12 @@
 }
 
 .input:focus {
-  border-color: #00b4a8;
+  border-color: var(--primary-color);
 }
 .exploreH1 {
   font-size: 32px;
   font-weight: 700;
-  color: #006d67;
+  color: var(--primary-color);
   margin-top: 40px;
   margin-bottom: 0;
 }

@@ -8,7 +8,7 @@
 
 .panel {
   width: 34%;
-  background: linear-gradient(145deg, #00b5a5 0%, #008f82 100%);
+  background: linear-gradient(145deg, var(--primary-color) 0%, var(--primary-color) 100%);
   padding: 48px 36px;
   display: flex; flex-direction: column; justify-content: center;
   position: relative; overflow: hidden;
@@ -63,8 +63,8 @@
   font-family: 'Sora', sans-serif; font-size: 13px; font-weight: 700;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
-.stepDotActive { background: #fff; border-color: #fff; color: #00b5a5; }
-.stepDotDone   { background: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.9); color: #00b5a5; }
+.stepDotActive { background: #fff; border-color: #fff; color: var(--primary-color); }
+.stepDotDone   { background: rgba(255,255,255,0.9); border-color: rgba(255,255,255,0.9); color: var(--primary-color); }
 
 .stepLine     { width: 2px; height: 28px; background: rgba(255,255,255,0.2); margin: 4px 0 4px 15px; border-radius: 2px; }
 .stepLineDone { background: rgba(255,255,255,0.7); }
@@ -94,7 +94,7 @@
 
 .secNum {
   width: 28px; height: 28px; border-radius: 50%;
-  background: #e6f8f6; color: #00b5a5;
+  background: var(--primary-light); color: var(--primary-color);
   font-size: 12px; font-weight: 700;
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
 }
@@ -108,12 +108,12 @@
 
 .photoCircle {
   width: 90px; height: 90px; border-radius: 50%;
-  background: #e6f8f6; color: #00b5a5;
+  background: var(--primary-light); color: var(--primary-color);
   font-size: 42px;
   display: flex; align-items: center; justify-content: center;
   cursor: pointer; position: relative; overflow: hidden;
   flex-shrink: 0;
-  border: 2px dashed #00b5a5;
+  border: 2px dashed var(--primary-color);
   transition: border-color 0.2s;
 }
 
@@ -133,12 +133,12 @@
 
 .photoBtn {
   margin-top: 8px; padding: 6px 14px;
-  background: #e6f8f6; color: #00b5a5;
-  border: 1px solid #00b5a5; border-radius: 8px;
+  background: var(--primary-light); color: var(--primary-color);
+  border: 1px solid var(--primary-color); border-radius: 8px;
   font-size: 13px; font-weight: 600; cursor: pointer;
   transition: background 0.2s;
 }
-.photoBtn:hover { background: #00b5a5; color: #fff; }
+.photoBtn:hover { background: var(--primary-color); color: #fff; }
 
 .divider { height: 0.5px; background: #e2e8f0; margin: 18px 0; }
 
@@ -154,7 +154,7 @@
   outline: none; box-sizing: border-box;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
-.input:focus { border-color: #00b5a5; box-shadow: 0 0 0 3px rgba(0,181,165,0.1); }
+.input:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,181,165,0.1); }
 
 .upload {
   border: 1.5px dashed #cbd5e1; border-radius: 10px;
@@ -162,7 +162,7 @@
   display: flex; flex-direction: column; align-items: center; gap: 6px;
   transition: all 0.2s;
 }
-.upload:hover { border-color: #00b5a5; background: #f7fffe; }
+.upload:hover { border-color: var(--primary-color); background: #f7fffe; }
 .upload i    { font-size: 26px; color: #94a3b8; }
 .upload p    { font-size: 13px; color: #111; font-weight: 500; margin: 0; }
 .upload span { font-size: 11px; color: #94a3b8; }
@@ -171,12 +171,12 @@
   width: 100%; padding: 12px;
   font-family: 'Sora', sans-serif; font-size: 15px; font-weight: 700;
   border: none; border-radius: 10px;
-  background: #00b5a5; color: #fff; cursor: pointer;
+  background: var(--primary-color); color: #fff; cursor: pointer;
   display: flex; align-items: center; justify-content: center; gap: 8px;
   margin-top: 14px;
   transition: background 0.25s, transform 0.25s;
 }
-.btn:hover { background: #008f82; transform: translateY(-2px); }
+.btn:hover { background: var(--primary-color); transform: translateY(-2px); }
 
 @media (max-width: 992px) {
   .root  { flex-direction: column; height: auto; }

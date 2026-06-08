@@ -1,12 +1,6 @@
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 /* === Page Layout === */
@@ -16,6 +10,7 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  font-family: "Poppins", sans-serif;
 }
 
 .bgImage {
@@ -31,6 +26,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
+  background-color: rgba(0, 0, 0, 0.45);
 }
 
 .decorBlobs {
@@ -48,7 +44,7 @@
   width: 50%;
   height: 60%;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(15, 118, 110, 0.22) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(0, 109, 103, 0.22) 0%, transparent 70%);
   filter: blur(40px);
 }
 
@@ -59,7 +55,7 @@
   width: 45%;
   height: 55%;
   border-radius: 50%;
-  background: radial-gradient(ellipse, rgba(31, 168, 159, 0.16) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(0, 180, 168, 0.16) 0%, transparent 70%);
   filter: blur(48px);
 }
 
@@ -73,7 +69,7 @@
   justify-content: center;
   align-items: center;
   padding: 3rem 1.5rem 2.5rem;
-  font-family: var(--font-body, sans-serif);
+  font-family: "Poppins", sans-serif;
 }
 
 /* === Header === */
@@ -85,7 +81,7 @@
 }
 
 .title {
-  font-family: var(--font-display, sans-serif);
+  font-family: "Poppins", sans-serif;
   font-weight: 800;
   font-size: clamp(1.75rem, 4.5vw, 3rem);
   line-height: 1.12;
@@ -96,7 +92,8 @@
 }
 
 .accent {
-  color: #1fa89f;
+
+  color: #00b4a8; /* --bs-teal-accent */
 }
 
 .subtitle {
@@ -105,6 +102,7 @@
   color: rgba(255, 255, 255, 0.52);
   max-width: 34rem;
   margin: 0 auto;
+  font-family: "Poppins", sans-serif;
 }
 
 /* === Carousel === */
@@ -126,7 +124,9 @@
   height: 3.5rem;
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(4, 20, 20, 0.7);
+
+  background: rgba(0, 20, 18, 0.7);
+  -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   color: #fff;
@@ -139,17 +139,12 @@
 }
 
 .navButton:hover {
-  background: rgba(15, 118, 110, 0.55);
-  border-color: rgba(31, 168, 159, 0.45);
+  background: rgba(0, 109, 103, 0.55); /* --bs-teal */
+  border-color: rgba(0, 180, 168, 0.45); /* --bs-teal-accent */
 }
 
-.navButtonLeft {
-  left: 0;
-}
-
-.navButtonRight {
-  right: 0;
-}
+.navButtonLeft  { left: 0; }
+.navButtonRight { right: 0; }
 
 .cardContainer {
   flex: 1;
@@ -184,7 +179,8 @@
 
 .dotActive {
   width: 1.75rem;
-  background: #1fa89f;
+
+  background: #006d67; /* --bs-teal */
 }
 
 .dotInactive {
@@ -195,7 +191,7 @@
 .counter {
   font-size: 0.72rem;
   color: rgba(255, 255, 255, 0.3);
-  font-family: var(--font-display, sans-serif);
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
   letter-spacing: 0.06em;
 }
@@ -207,5 +203,5 @@
   align-items: center;
   justify-content: center;
   color: rgba(255, 255, 255, 0.4);
-  font-family: var(--font-body, sans-serif);
+  font-family: "Poppins", sans-serif;
 }

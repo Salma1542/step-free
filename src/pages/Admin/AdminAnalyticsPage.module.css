@@ -1,0 +1,568 @@
+.container {
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+}
+
+.timeRangeSelector {
+  display: flex;
+  gap: 0.5rem;
+  background: #fff;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.timeBtn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  color: #64748b;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.timeBtn:hover {
+  color: #0f172a;
+  background: #e6f0ee;
+}
+
+.timeBtn.active {
+  background: #006d67;
+  color: white;
+}
+
+/* Metrics Grid */
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.card {
+  padding: 1.5rem;
+  border-radius: 1rem;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.cardIcon {
+  font-size: 1.5rem;
+  opacity: 0.8;
+}
+
+.bgBlue {
+  border-top: 4px solid #006d67;
+}
+
+.bgBlue .cardIcon {
+  color: #006d67;
+}
+
+.bgGreen {
+  border-top: 4px solid #059669;
+}
+
+.bgGreen .cardIcon {
+  color: #059669;
+}
+
+.bgOrange {
+  border-top: 4px solid #d97706;
+}
+
+.bgOrange .cardIcon {
+  color: #d97706;
+}
+
+.bgPurple {
+  border-top: 4px solid #004a45;
+}
+
+.bgPurple .cardIcon {
+  color: #004a45;
+}
+
+.cardValue {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.75rem;
+}
+
+.cardChange {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.positive {
+  color: #15803d;
+}
+
+.negative {
+  color: #dc2626;
+}
+
+.cardChange i {
+  font-size: 0.75rem;
+}
+
+/* Charts Section */
+.chartsSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chartLarge {
+  grid-column: span 2;
+}
+
+@media (max-width: 1024px) {
+  .chartLarge {
+    grid-column: span 1;
+  }
+}
+
+.chartMedium {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.chartContainer,
+.barChartContainer,
+.donutChartContainer,
+.topPlacesCard {
+  width: 100%;
+}
+
+.chartTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0 0 1.5rem 0;
+}
+
+/* =========================
+   Line Chart
+========================= */
+
+.chart {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  margin-bottom: 1rem;
+}
+
+.chartGrid {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.gridLine {
+  height: 1px;
+  background: #e5e7eb;
+  width: 100%;
+}
+
+.chartSvg {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.chartLine {
+  fill: none;
+  stroke: #006d67;
+  stroke-width: 3;
+}
+
+.chartDot {
+  fill: #006d67;
+  filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.08));
+}
+
+.chartLabels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* =========================
+   Bar Chart
+========================= */
+
+.barChart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  height: 280px;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.barWrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.barLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+  height: 1.5rem;
+}
+
+.bar {
+  width: 100%;
+  height: 240px;
+  background: #f1f5f9;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.barFill {
+  width: 100%;
+  background: linear-gradient(
+    180deg,
+    #006d67 0%,
+    #004a45 100%
+  );
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.bar:hover .barFill {
+  filter: brightness(1.05);
+}
+
+.barName {
+  font-size: 0.875rem;
+  color: #64748b;
+  text-align: center;
+  word-break: break-word;
+}
+
+/* =========================
+   Donut Chart
+========================= */
+
+.donutWrapper {
+  position: relative;
+  width: 100%;
+  height: 280px;
+  margin-bottom: 1.5rem;
+}
+
+.donutSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.donutCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 2;
+}
+
+.donutValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.donutLabel {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.donutLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.legendColor {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.legendLabel {
+  flex: 1;
+  color: #64748b;
+}
+
+.legendValue {
+  font-weight: 600;
+  color: #0f172a;
+  min-width: 50px;
+  text-align: right;
+}
+
+/* =========================
+   Top Places
+========================= */
+
+.topPlacesList {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.placeItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.placeItem:hover {
+  background: #e6f0ee;
+}
+
+.placeInfo {
+  flex: 1;
+}
+
+.placeName {
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
+}
+
+.placeReviews {
+  font-size: 0.875rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.placeReviews i {
+  font-size: 0.75rem;
+}
+
+.placeRating {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: 1rem;
+}
+
+.rating {
+  font-weight: 700;
+  color: #0f172a;
+  font-size: 1rem;
+}
+
+.placeRating i {
+  color: #d97706;
+  font-size: 0.875rem;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .timeRangeSelector {
+    align-self: flex-start;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .chartsSection {
+    grid-template-columns: 1fr;
+  }
+
+  .chart {
+    height: 200px;
+  }
+
+  .barChart {
+    height: 200px;
+  }
+
+  .barWrapper {
+    gap: 0.25rem;
+  }
+
+  .bar {
+    height: 160px;
+  }
+
+  .barLabel,
+  .barName {
+    font-size: 0.75rem;
+  }
+
+  .donutWrapper {
+    height: 220px;
+  }
+
+  .donutValue {
+    font-size: 1.25rem;
+  }
+
+  .donutLabel {
+    font-size: 0.75rem;
+  }
+
+  .legendItem {
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .legendValue {
+    font-size: 0.75rem;
+    min-width: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1rem;
+  }
+
+  .cardValue {
+    font-size: 1.75rem;
+  }
+
+  .cardTitle {
+    font-size: 0.75rem;
+  }
+
+  .cardIcon {
+    font-size: 1.25rem;
+  }
+
+  .chartTitle {
+    font-size: 1rem;
+  }
+
+  .chart {
+    height: 150px;
+  }
+
+  .barChart {
+    height: 150px;
+  }
+
+  .bar {
+    height: 120px;
+  }
+
+  .donutWrapper {
+    height: 180px;
+  }
+
+  .placeItem {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .placeRating {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    align-self: flex-start;
+  }
+}

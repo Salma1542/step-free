@@ -12,7 +12,7 @@
 
 .urPanel {
   width: 35%;
-  background: linear-gradient(145deg, #00b5a5 0%, #008f82 100%);
+  background: linear-gradient(145deg, var(--primary-color) 0%, var(--primary-color) 100%);
   padding: 48px 36px;
   display: flex;
   flex-direction: column;
@@ -158,7 +158,7 @@
 
 .urInputWrap input:focus,
 .urInputWrap select:focus {
-  border-color: #00b5a5;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(0,181,165,0.1);
 }
 
@@ -172,7 +172,7 @@
   cursor: pointer; padding: 0;
   font-size: 15px; color: #94a3b8;
 }
-.urEye:hover { color: #00b5a5; }
+.urEye:hover { color: var(--primary-color); }
 
 .urDivider { height: 0.5px; background: #e2e8f0; margin: 16px 0; }
 
@@ -185,11 +185,11 @@
   cursor: pointer;
 }
 .urTerms input[type="checkbox"] {
-  accent-color: #00b5a5;
+  accent-color: var(--primary-color);
   width: 14px; height: 14px;
   margin-top: 2px; flex-shrink: 0;
 }
-.urTerms a { color: #00b5a5; font-weight: 600; text-decoration: none; }
+.urTerms a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
 .urTerms a:hover { text-decoration: underline; }
 
 .urSubmit {
@@ -197,21 +197,21 @@
   font-family: 'Sora', sans-serif;
   font-size: 15px; font-weight: 700;
   border: none; border-radius: 10px;
-  background: #00b5a5; color: #fff;
+  background: var(--primary-color); color: #fff;
   cursor: pointer;
   transition: background 0.25s ease, transform 0.25s ease;
   display: flex; align-items: center;
   justify-content: center; gap: 8px;
   margin-top: 14px;
 }
-.urSubmit:hover { background: #008f82; transform: translateY(-2px); }
+.urSubmit:hover { background: var(--primary-color); transform: translateY(-2px); }
 
 .urFooter {
   margin-top: 14px;
   font-size: 13px; color: #94a3b8;
   text-align: center;
 }
-.urFooter a { color: #008f82; font-weight: 600; text-decoration: none; }
+.urFooter a { color: var(--primary-color); font-weight: 600; text-decoration: none; }
 .urFooter a:hover { text-decoration: underline; }
 
 @media (max-width: 992px) {

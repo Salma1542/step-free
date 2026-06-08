@@ -13,7 +13,7 @@
 .otpPanel {
   width: 40%;
   flex-shrink: 0;
-  background: linear-gradient(135deg, #00b5a5 0%, #008f82 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-color) 100%);
   padding: 56px 48px;
   display: flex;
   flex-direction: column;
@@ -91,7 +91,7 @@
 
 .otpStepIcon {
   width: 52px; height: 52px; border-radius: 14px;
-  background: #e6f8f6; color: #00b5a5;
+  background: var(--primary-light); color: var(--primary-color);
   font-size: 24px;
   display: flex; align-items: center; justify-content: center;
 }
@@ -126,19 +126,19 @@
 }
 
 .otpBox:focus {
-  border-color: #00b5a5;
+  border-color: var(--primary-color);
   box-shadow: 0 0 0 3px rgba(0,181,165,0.1);
 }
 
 .otpBoxFilled {
-  border-color: #00b5a5;
-  background: #e6f8f6;
+  border-color: var(--primary-color);
+  background: var(--primary-light);
 }
 
 /* Button */
 .otpBtn {
   width: 100%; padding: 14px;
-  background: #00b5a5; color: #fff;
+  background: var(--primary-color); color: #fff;
   border: none; border-radius: 11px;
   font-family: 'Sora', sans-serif;
   font-size: 15px; font-weight: 700;
@@ -146,7 +146,7 @@
   transition: background 0.2s, transform 0.2s;
 }
 .otpBtn:hover:not(:disabled) {
-  background: #008f82; transform: translateY(-1px);
+  background: var(--primary-color); transform: translateY(-1px);
 }
 .otpBtn:disabled { opacity: 0.45; cursor: not-allowed; }
 
@@ -155,7 +155,7 @@
   font-size: 13px; color: #888; cursor: pointer;
   transition: color 0.2s;
 }
-.otpBack:hover { color: #00b5a5; }
+.otpBack:hover { color: var(--primary-color); }
 
 .otpResend {
   text-align: center; margin-top: 10px;
@@ -163,7 +163,7 @@
 }
 
 .otpResendLink {
-  color: #008f82; font-weight: 600; cursor: pointer;
+  color: var(--primary-color); font-weight: 600; cursor: pointer;
 }
 .otpResendLink:hover { text-decoration: underline; }
 

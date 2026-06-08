@@ -49,14 +49,14 @@
 
 .catBtn i {
   font-size: 20px;
-  color: #008f86;
+  color: var(--primary-color);
   transition: color 0.2s, font-size 0.2s;
 }
 
 .catBtn:hover {
-  background: #00b4a8;
+  background: var(--primary-color);
   color: white;
-  border-color: #00b4a8;
+  border-color: var(--primary-color);
   transform: translateY(-3px) scale(1.05);
 }
 
@@ -67,9 +67,9 @@
 
 /* active */
 .active {
-  background: #008f86;
+  background: var(--primary-color);
   color: white;
-  border-color: #008f86;
+  border-color: var(--primary-color);
 }
 
 .active i {
@@ -111,7 +111,7 @@
 
 .hamburger i {
   font-size: 20px;
-  color: #008f86;
+  color: var(--primary-color);
 }
 
 .hamburger:hover {

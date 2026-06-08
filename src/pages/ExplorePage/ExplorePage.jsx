@@ -5,12 +5,12 @@ import CategoryFilter from "../../features/explore/components/CategoryFilter/Cat
 import PlacesList from "../../features/explore/components/PlacesList/PlacesList";
 import ExploreMap from "../../features/explore/components/ExploreMap/ExploreMap";
 
-import terraceBistro from "../../assets/images/TheTerraceBistro.png";
-import eliteCare from "../../assets/images/EliteCareCenter.jpg";
-import urbanMall from "../../assets/images/UrbanHeightsMall.jpg";
-import cairoHotel from "../../assets/images/CairoGrandHotel.jpg";
-import brewCafe from "../../assets/images/BrewCoCafe.jpg";
-import nileBank from "../../assets/images/NileBankBranch.jpg";
+import terraceBistro from "../../Assets/Images/TheTerraceBistro.png";
+import eliteCare from "../../Assets/Images/EliteCareCenter.jpg";
+import urbanMall from "../../Assets/Images/UrbanHeightsMall.jpg";
+import cairoHotel from "../../Assets/Images/CairoGrandHotel.jpg";
+import brewCafe from "../../Assets/Images/BrewCoCafe.jpg";
+import nileBank from "../../Assets/Images/NileBankBranch.jpg";
 
 function ExplorePage() {
   const [search, setSearch] = useState("");

@@ -10,7 +10,7 @@ const placeTypes = {
   Mall:       { icon: "ti-building-store", color: "#7F77DD" },
   Hotel:      { icon: "ti-bed", color: "#BA7517" },
   Cafe:       { icon: "ti-coffee", color: "#639922" },
-  Bank:       { icon: "ti-building-bank", color: "#1D9E75" },
+  Bank:       { icon: "ti-building-bank", color: "var(--primary-color)" },
 };
 
 function createCustomIcon(type, isSelected = false) {

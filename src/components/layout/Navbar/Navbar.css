@@ -75,12 +75,12 @@
   white-space: nowrap;
 }
 .sf-nav-links li a:hover {
-  background: #f0fdfa;
-  color: #0d9488;
+  background: var(--primary-soft);
+  color: var(--primary-color);
 }
 .sf-nav-links li a.active {
-  background: #f0fdfa;
-  color: #0d9488;
+  background: var(--primary-soft);
+  color: var(--primary-color);
   font-weight: 600;
 }
 
@@ -100,22 +100,22 @@
   white-space: nowrap;
 }
 .btn-login {
-  color: #0d9488;
-  border: 1.5px solid #ccfbf1;
+  color: var(--primary-color);
+  border: 1.5px solid var(--primary-border);
   background: transparent;
 }
 .btn-login:hover {
-  background: #f0fdfa;
-  border-color: #0d9488;
+  background: var(--primary-soft);
+  border-color: var(--primary-color);
   transform: translateY(-2px);
 }
 .btn-signup {
-  background: #0d9488;
+  background: var(--primary-color);
   color: white;
   border: none;
 }
 .btn-signup:hover {
-  background: #0f766e;
+  background: var(--primary-hover);
   transform: translateY(-2px);
 }
 

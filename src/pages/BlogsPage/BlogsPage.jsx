@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import organizations from "../../features/organizations/data/organizations.json";
 import OrganizationCard from "../../features/organizations/OrganizationCard";
-import backgroundImage from "../../assets/images/background.png";
+import backgroundImage from "../../Assets/Images/background.png";
 import styles from "./BlogsPage.module.css";
 
 export default function BlogsPage() {
