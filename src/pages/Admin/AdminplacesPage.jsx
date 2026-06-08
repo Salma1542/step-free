@@ -19,7 +19,6 @@ function accessTone(level) {
   return styles.badgeDanger;
 }
 
-// Modal for adding a new place
 function AddPlaceModal({ isOpen, onClose, onAdd }) {
   const [formData, setFormData] = useState({
     name: '',
@@ -140,11 +139,132 @@ function AddPlaceModal({ isOpen, onClose, onAdd }) {
   );
 }
 
+function EditPlaceModal({ isOpen, onClose, onSave, place }) {
+  const [formData, setFormData] = useState(place || {
+    name: '',
+    city: '',
+    category: 'Mall',
+    accessibility: 'Accessible',
+    rating: 4.0
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: name === 'rating' ? parseFloat(value) : value
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.name.trim() && formData.city.trim()) {
+      onSave(formData);
+    }
+  };
+
+  if (!isOpen || !place) return null;
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHead}>
+          <h2>Edit Place</h2>
+          <button type="button" className={styles.closeBtn} onClick={onClose}>
+            <i className="bi bi-x-lg" />
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="edit-place-name">Place Name</label>
+            <input
+              id="edit-place-name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="e.g. Downtown Mall"
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="edit-city">City</label>
+            <input
+              id="edit-city"
+              type="text"
+              name="city"
+              value={formData.city}
+              onChange={handleChange}
+              placeholder="e.g. Cairo"
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="edit-category">Category</label>
+            <select
+              id="edit-category"
+              name="category"
+              value={formData.category}
+              onChange={handleChange}
+            >
+              {CATEGORIES.map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="edit-accessibility">Accessibility Level</label>
+            <select
+              id="edit-accessibility"
+              name="accessibility"
+              value={formData.accessibility}
+              onChange={handleChange}
+            >
+              <option>Accessible</option>
+              <option>Partial</option>
+              <option>Not Accessible</option>
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="edit-rating">Rating (0-5)</label>
+            <input
+              id="edit-rating"
+              type="number"
+              name="rating"
+              value={formData.rating}
+              onChange={handleChange}
+              min="0"
+              max="5"
+              step="0.1"
+            />
+          </div>
+
+          <div className={styles.modalActions}>
+            <button type="button" className={styles.secondaryBtn} onClick={onClose}>
+              Cancel
+            </button>
+            <button type="submit" className={styles.primaryBtn}>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function AdminPlacesPage() {
   const [places, setPlaces] = useState(INITIAL_PLACES);
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('All');
   const [showAddModal, setShowAddModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingPlace, setEditingPlace] = useState(null);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -159,6 +279,23 @@ export default function AdminPlacesPage() {
     if (window.confirm('Delete this place?')) {
       setPlaces((prev) => prev.filter((p) => p.id !== id));
     }
+  };
+
+  const handleEdit = (place) => {
+    setEditingPlace(place);
+    setShowEditModal(true);
+  };
+
+  const handleSaveEdit = (updatedData) => {
+    setPlaces((prev) =>
+      prev.map((p) =>
+        p.id === editingPlace.id
+          ? { ...p, ...updatedData }
+          : p
+      )
+    );
+    setShowEditModal(false);
+    setEditingPlace(null);
   };
 
   const handleAddPlace = (newPlaceData) => {
@@ -237,7 +374,11 @@ export default function AdminPlacesPage() {
               </ul>
 
               <div className={styles.cardActions}>
-                <button type="button" className={styles.btnGhost}>
+                <button 
+                  type="button" 
+                  className={styles.btnGhost}
+                  onClick={() => handleEdit(p)}
+                >
                   <i className="bi bi-pencil" /> Edit
                 </button>
                 <button
@@ -257,6 +398,16 @@ export default function AdminPlacesPage() {
         isOpen={showAddModal}
         onClose={() => setShowAddModal(false)}
         onAdd={handleAddPlace}
+      />
+
+      <EditPlaceModal
+        isOpen={showEditModal}
+        onClose={() => {
+          setShowEditModal(false);
+          setEditingPlace(null);
+        }}
+        onSave={handleSaveEdit}
+        place={editingPlace}
       />
     </div>
   );

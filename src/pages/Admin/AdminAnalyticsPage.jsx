@@ -88,20 +88,19 @@ const DonutChart = ({ data, title }) => {
   const total = data.reduce((sum, d) => sum + d.value, 0);
   const colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8'];
   
-  let currentAngle = 0;
-  const segments = data.map((d, i) => {
-    const sliceAngle = (d.value / total) * 360;
-    const startAngle = currentAngle;
-    const endAngle = currentAngle + sliceAngle;
-    currentAngle = endAngle;
-    
-    return {
-      ...d,
-      startAngle,
-      endAngle,
-      color: colors[i % colors.length]
-    };
+  const segments = data.reduce((acc, d, i) => {
+  const prevEnd = acc.length ? acc[acc.length - 1].endAngle : 0;
+  const sliceAngle = (d.value / total) * 360;
+
+  acc.push({
+    ...d,
+    startAngle: prevEnd,
+    endAngle: prevEnd + sliceAngle,
+    color: colors[i % colors.length]
   });
+
+  return acc;
+}, []);
   
   const radius = 45;
   const centerX = 50;
