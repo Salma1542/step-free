@@ -1,5 +1,6 @@
+
 import { useEffect, useState } from 'react';
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import styles from './AdminLayout.module.css';
 
 const NAV_ITEMS = [
@@ -13,17 +14,15 @@ const NAV_ITEMS = [
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
+
   const navigate = useNavigate();
 
-  // Close sidebar on route change (mobile)
-  useEffect(() => {
-    setSidebarOpen(false);
-  }, [location.pathname]);
+  
 
   // Lock body scroll when mobile sidebar open
   useEffect(() => {
     document.body.style.overflow = sidebarOpen ? 'hidden' : '';
+
     return () => {
       document.body.style.overflow = '';
     };
@@ -33,6 +32,9 @@ export default function AdminLayout() {
     // Replace with real logout logic
     navigate('/login');
   };
+
+
+  
 
   return (
     <div className={styles.shell}>
@@ -59,15 +61,16 @@ export default function AdminLayout() {
             {NAV_ITEMS.map((item) => (
               <li key={item.to}>
                 <NavLink
-                  to={item.to}
-                  end={item.end}
-                  className={({ isActive }) =>
-                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-                  }
-                >
-                  <i className={`bi ${item.icon}`} aria-hidden="true" />
-                  <span>{item.label}</span>
-                </NavLink>
+  to={item.to}
+  end={item.end}
+  onClick={() => setSidebarOpen(false)}
+  className={({ isActive }) =>
+    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
+  }
+>
+  <i className={`bi ${item.icon}`} />
+  <span>{item.label}</span>
+</NavLink>
               </li>
             ))}
           </ul>

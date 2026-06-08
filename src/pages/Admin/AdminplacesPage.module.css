@@ -121,9 +121,6 @@
   .grid { grid-template-columns: 1fr; }
 }
 
-
-
-
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -205,7 +202,6 @@
   color: #111827;
 }
 
-/* Form Styles */
 .form {
   padding: 24px;
 }
@@ -290,7 +286,6 @@
   transform: scale(0.98);
 }
 
-/* ReviewsPage Modal Body */
 .modalBody {
   padding: 0;
 }
@@ -350,7 +345,6 @@
   font-size: 0.95rem;
 }
 
-/* Responsive */
 @media (max-width: 640px) {
   .modal {
     width: 95%;

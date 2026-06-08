@@ -1,10 +1,12 @@
+
+
 import AdminAnalyticsPage from './pages/Admin/AdminAnalyticsPage'
 import AdminSettingsPage from './pages/Admin/AdminSettingsPage'
 
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AdminLayout from "./components/layout/AdminLayout";
 import UsersPage from "./pages/Admin/UsersPage";
-import AdminplacesPage from "./pages/Admin/AdminplacesPage";
+import AdminPlacesPage from "./pages/Admin/AdminPlacesPage";
 import ReviewsPage from "./pages/Admin/ReviewsPage";
 
 import ScrollToTop from "./components/ScrollToTop";
@@ -81,12 +83,14 @@ export default function App() {
 
       {/* Admin Layout */}
       <Route path="/admin" element={<AdminLayout />}>
+      
         <Route index element={<AdminDashboardPage />} />
         <Route path="users" element={<UsersPage />} />
-        <Route path="Adminplaces" element={<AdminplacesPage />} />
+        <Route path="Adminplaces" element={<AdminPlacesPage />} />
         <Route path="reviews" element={<ReviewsPage />} />
         <Route path="analytics" element={<AdminAnalyticsPage />} />
         <Route path="settings" element={<AdminSettingsPage />} />
+        
       </Route>
     </Routes>
   </>
