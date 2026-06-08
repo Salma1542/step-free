@@ -18,10 +18,117 @@ function statusClass(status) {
   return styles.badgeDanger;
 }
 
+// Modal for adding a new user
+function AddUserModal({ isOpen, onClose, onAdd }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    role: 'User',
+    status: 'Pending'
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (formData.name.trim() && formData.email.trim()) {
+      onAdd({
+        ...formData,
+        joined: new Date().toISOString().split('T')[0]
+      });
+      setFormData({ name: '', email: '', role: 'User', status: 'Pending' });
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHead}>
+          <h2>Add New User</h2>
+          <button type="button" className={styles.closeBtn} onClick={onClose}>
+            <i className="bi bi-x-lg" />
+          </button>
+        </div>
+        
+        <form onSubmit={handleSubmit} className={styles.form}>
+          <div className={styles.formGroup}>
+            <label htmlFor="name">Full Name</label>
+            <input
+              id="name"
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              placeholder="Enter user full name"
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="example@gmail.com"
+              required
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="role">Role</label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              <option>User</option>
+              <option>Admin</option>
+              <option>Owner</option>
+            </select>
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="status">Status</label>
+            <select
+              id="status"
+              name="status"
+              value={formData.status}
+              onChange={handleChange}
+            >
+              <option>Pending</option>
+              <option>Active</option>
+              <option>Blocked</option>
+            </select>
+          </div>
+
+          <div className={styles.modalActions}>
+            <button type="button" className={styles.secondaryBtn} onClick={onClose}>
+              Cancel
+            </button>
+            <button type="submit" className={styles.primaryBtn}>
+              Add User
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function UsersPage() {
   const [users, setUsers] = useState(INITIAL_USERS);
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('All');
+  const [showAddModal, setShowAddModal] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -39,6 +146,15 @@ export default function UsersPage() {
     }
   };
 
+  const handleAddUser = (newUserData) => {
+    const newUser = {
+      id: Math.max(...users.map(u => u.id), 0) + 1,
+      ...newUserData
+    };
+    setUsers(prev => [newUser, ...prev]);
+    setShowAddModal(false);
+  };
+
   return (
     <div className={styles.page}>
       <header className={styles.pageHead}>
@@ -46,7 +162,11 @@ export default function UsersPage() {
           <h1 className={styles.title}>Users Management</h1>
           <p className={styles.subtitle}>Manage all platform users and permissions.</p>
         </div>
-        <button type="button" className={styles.primaryBtn}>
+        <button 
+          type="button" 
+          className={styles.primaryBtn}
+          onClick={() => setShowAddModal(true)}
+        >
           <i className="bi bi-plus-lg" /> Add User
         </button>
       </header>
@@ -133,11 +253,17 @@ export default function UsersPage() {
             </tbody>
           </table>
         </div>
-
+        // footer of code
         <footer className={styles.tableFoot}>
           <span>Showing <strong>{filtered.length}</strong> of <strong>{users.length}</strong> users</span>
         </footer>
       </div>
+
+      <AddUserModal
+        isOpen={showAddModal}
+        onClose={() => setShowAddModal(false)}
+        onAdd={handleAddUser}
+      />
     </div>
   );
 }
