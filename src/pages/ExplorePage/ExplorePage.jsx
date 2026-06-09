@@ -1,58 +1,96 @@
-import { useState } from "react";
+import { useState, useCallback, useMemo } from "react";
 import styles from "./ExplorePage.module.css";
+import { useFetchPlaces } from "../../hooks/useFetchPlaces";
 import ExploreSearch from "../../features/explore/components/ExploreSearch/ExploreSearch";
 import CategoryFilter from "../../features/explore/components/CategoryFilter/CategoryFilter";
 import PlacesList from "../../features/explore/components/PlacesList/PlacesList";
 import ExploreMap from "../../features/explore/components/ExploreMap/ExploreMap";
 
-import terraceBistro from "../../Assets/Images/TheTerraceBistro.png";
-import eliteCare from "../../Assets/Images/EliteCareCenter.jpg";
-import urbanMall from "../../Assets/Images/UrbanHeightsMall.jpg";
-import cairoHotel from "../../Assets/Images/CairoGrandHotel.jpg";
-import brewCafe from "../../Assets/Images/BrewCoCafe.jpg";
-import nileBank from "../../Assets/Images/NileBankBranch.jpg";
+function getDistance(lat1, lng1, lat2, lng2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLng = (lng2 - lng1) * Math.PI / 180;
+  const a =
+    Math.sin(dLat / 2) ** 2 +
+    Math.cos(lat1 * Math.PI / 180) *
+    Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLng / 2) ** 2;
+  return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
 
 function ExplorePage() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [selectedPlace, setSelectedPlace] = useState(null);
+  const [sortByDistance, setSortByDistance] = useState(false);
 
-  const places = [
-    { id: 1, name: "The Terrace Bistro", image: terraceBistro, type: "Restaurant", area: "New Cairo", distance: "0.8 km", tags: ["Ramp", "Elevator"], lat: 30.0500, lng: 31.2400 },
-    { id: 2, name: "Elite Care Center", image: eliteCare, type: "Hospital", area: "Heliopolis", distance: "1.2 km", tags: ["Ramp"], lat: 30.0600, lng: 31.2500 },
-    { id: 3, name: "Urban Heights Mall", image: urbanMall, type: "Mall", area: "Maadi", distance: "2.5 km", tags: ["Elevator", "Wide Entrance"], lat: 30.0350, lng: 31.2200 },
-    { id: 4, name: "Cairo Grand Hotel", image: cairoHotel, type: "Hotel", area: "Maadi", distance: "1.8 km", tags: ["Ramp", "Elevator", "Wide Entrance"], lat: 30.0450, lng: 31.2300 },
-    { id: 5, name: "Brew & Co Cafe", image: brewCafe, type: "Cafe", area: "New Cairo", distance: "0.5 km", tags: ["Wide Entrance"], lat: 30.0550, lng: 31.2450 },
-    { id: 6, name: "Nile Bank Branch", image: nileBank, type: "Bank", area: "Heliopolis", distance: "1.1 km", tags: ["Ramp", "Elevator"], lat: 30.0480, lng: 31.2380 },
-  ];
+  const { places, loading, error, userLocation } = useFetchPlaces(category, search);
 
-  const filteredPlaces = places.filter((place) => {
-    const q = search.toLowerCase();
-    const matchesSearch = q === "" || place.name.toLowerCase().includes(q) || place.area.toLowerCase().includes(q);
-    const matchesCategory = category === "All" || place.type === category;
-    return matchesSearch && matchesCategory;
-  });
+  const memoizedPlaces = useMemo(() => places, [places]);
+
+  const displayedPlaces = useMemo(() => {
+    if (!sortByDistance || !userLocation) {
+      return memoizedPlaces;
+    }
+    
+    return [...memoizedPlaces].map((place) => ({
+      ...place,
+      calculatedDistance: getDistance(
+        userLocation.lat,
+        userLocation.lng,
+        place.lat,
+        place.lng
+      ),
+    })).sort((a, b) => a.calculatedDistance - b.calculatedDistance);
+  }, [memoizedPlaces, userLocation, sortByDistance]);
+
+  const handleSetSelectedPlace = useCallback((place) => {
+    setSelectedPlace(place);
+  }, []);
+
+  if (error) {
+    return (
+      <div className="explore-page container">
+        <h1 className={styles.exploreH1}>Error: {error}</h1>
+      </div>
+    );
+  }
 
   return (
     <div className="explore-page container">
-      <h1 className={styles.exploreH1}>Explore accessible destinations</h1>
+      <h1 className={styles.exploreH1}>
+        Explore accessible destinations
+      </h1>
 
-      <ExploreSearch search={search} setSearch={setSearch} />
-      <CategoryFilter category={category} setCategory={setCategory} />
+      <ExploreSearch
+        search={search}
+        setSearch={setSearch}
+      />
+
+      <CategoryFilter
+        category={category}
+        setCategory={setCategory}
+      />
 
       <div className="row mt-4">
         <div className="col-lg-7 mb-4">
           <ExploreMap
-            places={filteredPlaces}
-            setSelectedPlace={setSelectedPlace}
+            places={displayedPlaces}
             selectedPlace={selectedPlace}
+            setSelectedPlace={handleSetSelectedPlace}
+            loading={loading}
+            userLocation={userLocation}
+            sortByDistance={sortByDistance}
+            setSortByDistance={setSortByDistance}
           />
         </div>
+
         <div className="col-lg-5">
           <PlacesList
-            places={filteredPlaces}
+            places={displayedPlaces}
             selectedPlace={selectedPlace}
-            setSelectedPlace={setSelectedPlace}
+            setSelectedPlace={handleSetSelectedPlace}
+            loading={loading}
           />
         </div>
       </div>
