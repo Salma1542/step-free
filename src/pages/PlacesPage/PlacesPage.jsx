@@ -1,96 +1,263 @@
-import { useEffect } from "react";
+// import { useEffect } from "react";
+// import HeroSection from "../../features/places/HeroSection";
+// import AboutSection from "../../features/places/AboutSection";
+// import CommunityReviews from "../../features/reviews/CommunityReviews";
+// import DriversSidebar from "../../features/places/DriversSidebar";
+// import placeData from "../../features/places/data/placeData.json";
+// import "./PlacesPage.module.css"; // استيراد الأنماط العامة فقط
+
+// // ─── حساب وهمي لتجربة واجهة كتابة المراجعة ───
+// const dummyUser = {
+//     id: "usr_dummy_001",
+//     name: "Ahmed Hassan",
+//     email: "ahmed.hassan@example.com",
+//     avatar: "https://i.pravatar.cc/150?img=12", // صورة رمزية
+//     bio: "Accessibility advocate & frequent traveler",
+//     joinedAt: "2024-02-15",
+// };
+
+// // ─── مراجعة وهمية مضافة للاختبار ───
+// const extraReview = {
+//     id: "rev_dummy_001",
+//     user: dummyUser,
+//     rating: 5,
+//     comment:
+//         "This place is incredibly accessible! The staff is very helpful and the ramps are well-maintained.",
+//     date: "2026-05-15",
+// };
+
+// export default function PlacesPage() {
+//     // دمج المراجعة الوهمية مع المراجعات الموجودة
+//     const reviews = [extraReview, ...placeData.reviews];
+//     const { description, rating, reviewCount, features, drivers } = placeData;
+
+//     // تفعيل حركة الظهور عند التمرير
+//     useEffect(() => {
+//         const observer = new IntersectionObserver(
+//             (entries) => {
+//                 entries.forEach((entry) => {
+//                     if (entry.isIntersecting) {
+//                         entry.target.classList.add("is-visible");
+//                         observer.unobserve(entry.target);
+//                     }
+//                 });
+//             },
+//             { threshold: 0.15 }
+//         );
+
+//         document
+//             .querySelectorAll(".animate-on-scroll")
+//             .forEach((el) => observer.observe(el));
+
+//         return () => observer.disconnect();
+//     }, []);
+
+//     return (
+//         <div className="min-vh-100 bg-light">
+//             <div className="container-xl px-3 px-sm-4 py-4 py-lg-5">
+//                 {/* Hero Section */}
+//                 <div className="animate-on-scroll">
+//                     <HeroSection place={placeData} />
+//                 </div>
+
+//                 <h2 className="display-6 fw-extrabold mb-4 mb-lg-5 animate-on-scroll">
+//                     Accessibility Highlights
+//                 </h2>
+
+//                 <div className="row g-4 g-lg-5">
+//                     {/* المحتوى الرئيسي */}
+//                     <div className="col-12 col-lg-8 d-flex flex-column gap-4 gap-lg-5">
+//                         {/* About Section */}
+//                         <div className="animate-on-scroll hover-lift rounded-4">
+//                             <AboutSection description={description} features={features} />
+//                         </div>
+
+//                         {/* Community Reviews */}
+//                         <div className="animate-on-scroll hover-lift rounded-4">
+//                             <CommunityReviews
+//                                 reviews={reviews}
+//                                 rating={rating}
+//                                 reviewCount={reviewCount + 1} // لاحتساب المراجعة المضافة
+//                                 currentUser={dummyUser} // ← تمرير الحساب الوهمي
+//                             />
+//                         </div>
+//                     </div>
+
+//                     {/* Sidebar */}
+//                     <div className="col-12 col-lg-4">
+//                         <div className="animate-on-scroll hover-lift rounded-4">
+//                             <DriversSidebar drivers={drivers} />
+//                         </div>
+//                     </div>
+//                 </div>
+//             </div>
+//         </div>
+//     );
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import HeroSection from "../../features/places/HeroSection";
 import AboutSection from "../../features/places/AboutSection";
 import CommunityReviews from "../../features/reviews/CommunityReviews";
 import DriversSidebar from "../../features/places/DriversSidebar";
-import placeData from "../../features/places/data/placeData.json";
-import "./PlacesPage.module.css"; // استيراد الأنماط العامة فقط
+import "./PlacesPage.module.css";
 
-// ─── حساب وهمي لتجربة واجهة كتابة المراجعة ───
+// مستخدم وهمي لتجربة كتابة المراجعة (استبدله بنظام المصادقة الحقيقي)
 const dummyUser = {
- id: "usr_dummy_001",
- name: "Ahmed Hassan",
- email: "ahmed.hassan@example.com",
- avatar: "https://i.pravatar.cc/150?img=12", // صورة رمزية
- bio: "Accessibility advocate & frequent traveler",
- joinedAt: "2024-02-15",
-};
-
-// ─── مراجعة وهمية مضافة للاختبار ───
-const extraReview = {
- id: "rev_dummy_001",
- user: dummyUser,
- rating: 5,
- comment:
- "This place is incredibly accessible! The staff is very helpful and the ramps are well-maintained.",
- date: "2026-05-15",
+  id: "usr_dummy_001",
+  name: "Ahmed Hassan",
+  email: "ahmed.hassan@example.com",
+  avatar: "https://i.pravatar.cc/150?img=12",
+  bio: "Accessibility advocate & frequent traveler",
+  joinedAt: "2024-02-15",
 };
 
 export default function PlacesPage() {
- // دمج المراجعة الوهمية مع المراجعات الموجودة
- const reviews = [extraReview, ...placeData.reviews];
- const { description, rating, reviewCount, features, drivers } = placeData;
+  const { id } = useParams();
+  const [place, setPlace] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
- // تفعيل حركة الظهور عند التمرير
- useEffect(() => {
- const observer = new IntersectionObserver(
- (entries) => {
- entries.forEach((entry) => {
- if (entry.isIntersecting) {
- entry.target.classList.add("is-visible");
- observer.unobserve(entry.target);
- }
- });
- },
- { threshold: 0.15 }
- );
+  // ✅ جلب بيانات المكان من الـ API
+  useEffect(() => {
+    const fetchPlace = async () => {
+      try {
+        const res = await fetch(`/api/places/${id}`);
+        const data = await res.json();
+        if (!data.success) throw new Error(data.message || "Failed to fetch place");
+        setPlace(data.data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPlace();
+  }, [id]);
 
- document
- .querySelectorAll(".animate-on-scroll")
- .forEach((el) => observer.observe(el));
+  // ✅ Animation on scroll (يعاد تشغيله بعد تحميل البيانات)
+  useEffect(() => {
+    if (!place) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
 
- return () => observer.disconnect();
- }, []);
+    const elements = document.querySelectorAll(".animate-on-scroll");
+    elements.forEach((el) => observer.observe(el));
 
- return (
- <div className="min-vh-100 bg-light">
- <div className="container-xl px-3 px-sm-4 py-4 py-lg-5">
- {/* Hero Section */}
- <div className="animate-on-scroll">
- <HeroSection place={placeData} />
- </div>
+    return () => observer.disconnect();
+  }, [place]);
 
- <h2 className="display-6 fw-extrabold mb-4 mb-lg-5 animate-on-scroll">
- Accessibility Highlights
- </h2>
+  // حالات التحميل / الخطأ
+  if (loading) {
+    return (
+      <div className="d-flex justify-content-center align-items-center min-vh-100">
+        <div className="spinner-border text-teal" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    );
+  }
 
- <div className="row g-4 g-lg-5">
- {/* المحتوى الرئيسي */}
- <div className="col-12 col-lg-8 d-flex flex-column gap-4 gap-lg-5">
- {/* About Section */}
- <div className="animate-on-scroll hover-lift rounded-4">
- <AboutSection description={description} features={features} />
- </div>
+  if (error) {
+    return (
+      <div className="container mt-5">
+        <div className="alert alert-danger">{error}</div>
+      </div>
+    );
+  }
 
- {/* Community Reviews */}
- <div className="animate-on-scroll hover-lift rounded-4">
- <CommunityReviews
- reviews={reviews}
- rating={rating}
- reviewCount={reviewCount + 1} // لاحتساب المراجعة المضافة
- currentUser={dummyUser} // ← تمرير الحساب الوهمي
- />
- </div>
- </div>
+  if (!place) {
+    return (
+      <div className="container mt-5">
+        <div className="alert alert-warning">Place not found</div>
+      </div>
+    );
+  }
 
- {/* Sidebar */}
- <div className="col-12 col-lg-4">
- <div className="animate-on-scroll hover-lift rounded-4">
- <DriversSidebar drivers={drivers} />
- </div>
- </div>
- </div>
- </div>
- </div>
- );
+  // استخراج البيانات المطلوبة
+  const {
+    name,
+    district,
+    description,
+    features = [],
+    reviews = [],
+    rating = 0,
+    reviewCount = 0,
+    images = [],
+  } = place;
+
+  return (
+    <div className="min-vh-100 bg-light">
+      <div className="container-xl px-3 px-sm-4 py-4 py-lg-5">
+        {/* Hero Section */}
+        <div className="animate-on-scroll">
+          <HeroSection
+            place={{
+              ...place,
+              heroSrc: images[0]?.src || place.image, // الصورة الرئيسية
+              heroAlt: images[0]?.alt || place.name,
+              images,
+            }}
+          />
+        </div>
+
+        <h2 className="display-6 fw-extrabold mb-4 mb-lg-5 animate-on-scroll">
+          Accessibility Highlights
+        </h2>
+
+        <div className="row g-4 g-lg-5">
+          {/* المحتوى الأساسي */}
+          <div className="col-12 col-lg-8 d-flex flex-column gap-4 gap-lg-5">
+            {/* About */}
+            <div className="animate-on-scroll hover-lift rounded-4">
+              <AboutSection description={description} features={features} />
+            </div>
+
+            {/* Reviews */}
+            <div className="animate-on-scroll hover-lift rounded-4">
+              <CommunityReviews
+                reviews={reviews}
+                rating={rating}
+                reviewCount={reviewCount}
+                currentUser={dummyUser} // مررنا المستخدم الوهمي
+              />
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="col-12 col-lg-4">
+            <div className="animate-on-scroll hover-lift rounded-4">
+              <DriversSidebar
+                placeId={id}           // لتمريره إلى داخل المكون لجلب السائقين
+                venueLat={place.lat}
+                venueLng={place.lng}
+                venueName={name}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

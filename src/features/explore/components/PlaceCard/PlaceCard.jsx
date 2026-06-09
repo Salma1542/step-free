@@ -4,10 +4,15 @@ import { useNavigate } from "react-router-dom";
 function PlaceCard({ place, isSelected, onClick }) {
   const navigate = useNavigate();
 
+  // const handlePlaceDetails = (e) => {
+  //   e.stopPropagation(); // منع تفعيل onClick الأب
+  //   navigate(`/places`);
+  // };
   const handlePlaceDetails = (e) => {
-    e.stopPropagation();
-    navigate(`/places`);
-  };
+
+  e.stopPropagation();
+  navigate(`/places/${place._id}`); // افترض أن الـ id في الحقل _id
+};
 
   return (
     <div
