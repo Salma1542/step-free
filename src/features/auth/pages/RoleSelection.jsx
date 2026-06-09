@@ -8,29 +8,29 @@ const roles = [
     title: 'Find places',
     description: 'Explore accessible routes and locations tailored for you.',
     icon: 'ti-map-search',
+    route: '/user',
   },
   {
-    id: 'contributor',
+    id: 'placeOwner',
     title: 'Add / Register a place',
     description: 'Own or visited a place? Help the community by adding it.',
     icon: 'ti-map-pin-plus',
+    route: '/register-place',
   },
   {
     id: 'driver',
     title: 'I am a driver',
     description: 'Provide assistance and earn by helping others move around.',
     icon: 'ti-steering-wheel',
+    route: '/driver',
   },
 ];
 
 export default function RoleSelection() {
   const navigate = useNavigate();
 
-  const handleNavigate = (id) => {
-    if (id === 'user')             navigate('/user');
-    else if (id === 'contributor') navigate('/register-place');
-    else if (id === 'driver')      navigate('/driver');
-    else                           navigate('/login');
+  const handleNavigate = (roleId, route) => {
+    navigate(route, { state: { role: roleId } });
   };
 
   return (
@@ -83,7 +83,7 @@ export default function RoleSelection() {
             <button
               key={role.id}
               className={styles.sfCard}
-              onClick={() => handleNavigate(role.id)}
+              onClick={() => handleNavigate(role.id, role.route)}
               aria-label={role.title}
             >
               <div className={styles.sfIconWrap}>
