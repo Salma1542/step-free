@@ -660,7 +660,7 @@ color: #555;
 
 @media (max-width: 576px) {
   .heroLeft h1  { font-size: 32px; }
-  .mainBtn      { width: 100%; font-size: 16px; justify-content: center; }
+  .mainBtn      { width: 50%; font-size: 16px; justify-content: center; }
   .ctaSection   { padding: 40px 20px; border-radius: 22px; }
   .ctaSection h2 { font-size: 28px; margin-bottom: 8px; }
   .ctaSection p { font-size: 16px; margin: 0 0 24px; }
