@@ -27,10 +27,64 @@ function Stars({ value }) {
   );
 }
 
+// Modal for viewing review details
+function ViewReviewModal({ isOpen, review, onClose }) {
+  if (!isOpen || !review) return null;
+
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHead}>
+          <h2>Review Details</h2>
+          <button type="button" className={styles.closeBtn} onClick={onClose}>
+            <i className="bi bi-x-lg" />
+          </button>
+        </div>
+
+        <div className={styles.modalBody}>
+          <div className={styles.reviewHeader}>
+            <div className={styles.userBlock}>
+              <span className={styles.avatar}>{review.user.charAt(0)}</span>
+              <div>
+                <h3 className={styles.userName}>{review.user}</h3>
+                <p className={styles.placeName}>
+                  <i className="bi bi-geo-alt-fill" /> {review.place}
+                </p>
+              </div>
+            </div>
+            <div className={styles.ratingBlock}>
+              <Stars value={review.rating} />
+              <span className={styles.ratingValue}>{review.rating}/5</span>
+            </div>
+          </div>
+
+          <div className={styles.dateBlock}>
+            <i className="bi bi-calendar" />
+            <span>{review.date}</span>
+          </div>
+
+          <div className={styles.commentBlock}>
+            <h4>Comment</h4>
+            <p>{review.comment}</p>
+          </div>
+
+          <div className={styles.modalActions}>
+            <button type="button" className={styles.primaryBtn} onClick={onClose}>
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ReviewsPage() {
   const [reviews, setReviews] = useState(INITIAL_REVIEWS);
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState(0);
+  const [selectedReview, setSelectedReview] = useState(null);
+  const [showViewModal, setShowViewModal] = useState(false);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -51,6 +105,11 @@ export default function ReviewsPage() {
     if (window.confirm('Delete this review?')) {
       setReviews((prev) => prev.filter((r) => r.id !== id));
     }
+  };
+
+  const handleView = (review) => {
+    setSelectedReview(review);
+    setShowViewModal(true);
   };
 
   return (
@@ -114,7 +173,11 @@ export default function ReviewsPage() {
               <footer className={styles.cardFoot}>
                 <span className={styles.date}>{r.date}</span>
                 <div className={styles.actions}>
-                  <button type="button" className={styles.btnGhost}>
+                  <button 
+                    type="button" 
+                    className={styles.btnGhost}
+                    onClick={() => handleView(r)}
+                  >
                     <i className="bi bi-eye" /> View
                   </button>
                   <button
@@ -130,6 +193,12 @@ export default function ReviewsPage() {
           ))}
         </div>
       )}
+
+      <ViewReviewModal
+        isOpen={showViewModal}
+        review={selectedReview}
+        onClose={() => setShowViewModal(false)}
+      />
     </div>
   );
 }
