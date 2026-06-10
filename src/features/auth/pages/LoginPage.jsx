@@ -151,7 +151,7 @@ import PasswordInput from "../../../components/common/PasswordInput/PasswordInpu
 import { useAuth } from  "../../../context/AuthContext"
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login } = useAuth(); // دالة login من السياق
+  // const { login } = useAuth(); // دالة login من السياق
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

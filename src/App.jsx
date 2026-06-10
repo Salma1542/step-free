@@ -6,7 +6,7 @@ import AdminSettingsPage from './pages/Admin/AdminSettingsPage'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AdminLayout from "./components/layout/AdminLayout";
 import UsersPage from "./pages/Admin/UsersPage";
-import AdminPlacesPage from "./pages/Admin/AdminPlacesPage";
+import AdminPlacesPage from "./pages/Admin/AdminPlacesPage"
 import ReviewsPage from "./pages/Admin/ReviewsPage";
 
 import ScrollToTop from "./components/ScrollToTop";
@@ -54,68 +54,54 @@ export default function App() {
     });
   }, []);
 
- return (
-  <>
-    <ScrollToTop />
+  return(
+    <>
+      <ScrollToTop />
 
-    <Routes>
-      {/* Main Layout */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<HomePage />} />
-        <Route path="about" element={<AboutPage />} />
-        <Route path="blogs" element={<BlogsPage />} />
-        {/* <Route path="places" element={<PlacesPage />} /> */}
-        <Route path="places/:id" element={<PlacesPage />} />
+      <Routes>
 
-        <Route path="explore" element={<ExplorePage />} />
-      </Route>
+        {/* Main Layout */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="about" element={<AboutPage />} />
+          <Route path="blogs" element={<BlogsPage />} />
+          <Route path="places/:id" element={<PlacesPage />} />
+          <Route path="explore" element={<ExplorePage />} />
+        </Route>
 
-      {/* Auth Layout */}
-      <Route element={<AuthLayout />}>
-        <Route path="login" element={<LoginPage />} />
-        <Route path="user" element={<UserRegisterPage />} />
-        <Route path="roleselection" element={<RoleSelectionPage />} />
-        <Route path="forgetPassword" element={<ForgotPassword />} />
-        <Route path="otp" element={<OTPVerification />} />
-        <Route path="reset-password" element={<ResetPassword />} />
-         <Route path="register-place" element={<RegisterPlace />} />
-         <Route path="/placeForm" element={<PlaceForm />} />
-        <Route path="driver" element={<DriverRegisterAuth />} />
-        <Route path="/organization-profile" element={<OrganizationProfile/>}
-        
-/>
-        {/* <Route path="register-place" element={<RegisterPlace />} /> */}
-      
-    <Route
-  path="/admin"
-  element={
-    <AdminRoute>
-      <AdminLayout />
-    </AdminRoute>
-  }
->
-  <Route index element={<AdminDashboardPage />} />
-  <Route path="users" element={<UsersPage />} />
-  <Route path="Adminplaces" element={<AdminPlacesPage />} />
-  <Route path="reviews" element={<ReviewsPage />} />
-</Route>
-                <Route path="driver-form" element={<DriverForm />} />
+        {/* Auth Layout */}
+        <Route element={<AuthLayout />}>
+          <Route path="login" element={<LoginPage />} />
+          <Route path="user" element={<UserRegisterPage />} />
+          <Route path="roleselection" element={<RoleSelectionPage />} />
+          <Route path="forgetPassword" element={<ForgotPassword />} />
+          <Route path="otp" element={<OTPVerification />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="register-place" element={<RegisterPlace />} />
+          <Route path="placeForm" element={<PlaceForm />} />
+          <Route path="driver" element={<DriverRegisterAuth />} />
+          <Route path="organization-profile" element={<OrganizationProfile />} />
+          <Route path="driver-form" element={<DriverForm />} />
+        </Route>
 
-      {/* Admin Layout */}
-      <Route path="/admin" element={<AdminLayout />}>
-      
-        <Route index element={<AdminDashboardPage />} />
-        <Route path="users" element={<UsersPage />} />
-        <Route path="Adminplaces" element={<AdminPlacesPage />} />
-        <Route path="reviews" element={<ReviewsPage />} />
-        <Route path="analytics" element={<AdminAnalyticsPage />} />
-        <Route path="settings" element={<AdminSettingsPage />} />
-        
-      </Route>
-      
-          </Route>
-    </Routes>
-    
-  </>
-);
+        {/* Admin Routes */}
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminLayout />
+            </AdminRoute>
+          }
+        >
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="users" element={<UsersPage />} />
+          <Route path="Adminplaces" element={<AdminPlacesPage />} />
+          <Route path="reviews" element={<ReviewsPage />} />
+          <Route path="analytics" element={<AdminAnalyticsPage />} />
+          <Route path="settings" element={<AdminSettingsPage />} />
+        </Route>
+
+      </Routes>
+    </>
+  );
 }
