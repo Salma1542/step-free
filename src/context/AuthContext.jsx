@@ -1,53 +1,145 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import {
+ createContext,
+ useContext,
+ useState,
+ useEffect,
+} from "react";
 
-const AuthContext = createContext();
+const AuthContext =
+createContext();
 
-export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+export function AuthProvider({
+ children,
+}) {
 
-  // عند تحميل التطبيق، تحقق من وجود توكن صحيح
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setLoading(false);
-      return;
-    }
+const [user, setUser] =
+useState(null);
 
-    fetch("/api/auth/me", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          setUser(data.data);
-        } else {
-          localStorage.removeItem("token");
-        }
-      })
-      .catch(() => {
-        localStorage.removeItem("token");
-      })
-      .finally(() => setLoading(false));
-  }, []);
+const [loading, setLoading] =
+useState(true);
 
-  const login = (token, userData) => {
-    localStorage.setItem("token", token);
-    setUser(userData);
-  };
+useEffect(() => {
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    setUser(null);
-  };
+const token =
+localStorage.getItem(
+"token"
+);
 
-  return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
-      {children}
-    </AuthContext.Provider>
-  );
+if (!token) {
+setLoading(false);
+return;
 }
 
-export function useAuth() {
-  return useContext(AuthContext);
+fetch(
+"http://localhost:3000/api/auth/me",
+{
+headers: {
+Authorization:
+`Bearer ${token}`,
+},
 }
+)
+.then((res) =>
+res.json()
+)
+.then((data) => {
+
+if (
+data.success
+) {
+setUser(
+data.data
+);
+} else {
+
+localStorage.removeItem(
+"token"
+);
+
+localStorage.removeItem(
+"user"
+);
+
+}
+
+})
+.catch(() => {
+
+localStorage.removeItem(
+"token"
+);
+
+localStorage.removeItem(
+"user"
+);
+
+})
+.finally(() =>
+setLoading(
+false
+)
+);
+
+}, []);
+
+const login = (
+token,
+userData
+) => {
+
+localStorage.setItem(
+"token",
+token
+);
+
+localStorage.setItem(
+"user",
+JSON.stringify(
+userData
+)
+);
+
+setUser(
+userData
+);
+
+};
+
+const logout = () => {
+
+localStorage.removeItem(
+"token"
+);
+
+localStorage.removeItem(
+"user"
+);
+
+setUser(
+null
+);
+
+};
+
+return (
+<AuthContext.Provider
+value={{
+user,
+loading,
+login,
+logout,
+}}
+>
+
+{children}
+
+</AuthContext.Provider>
+);
+
+}
+
+export const useAuth =
+() =>
+useContext(
+AuthContext
+);

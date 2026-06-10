@@ -2,13 +2,14 @@ import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import styles from './placeForm.module.css';
-
+import axios from "axios";
 const FEATURES = [
-  { icon: 'ti-trending-up', label: 'Ramp' },
-  { icon: 'ti-wheelchair',  label: 'Wheelchair Entrance' },
-  { icon: 'ti-door-enter',  label: 'Wide Doors' },
-  { icon: 'ti-elevator',    label: 'Elevator' },
-  { icon: 'ti-parking',     label: 'Accessible Parking' },
+  { icon: "ti-trending-up", label: "Ramp" },
+  { icon: "ti-elevator", label: "Elevator" },
+  { icon: "ti-door-enter", label: "Wide Entrance" },
+  { icon: "ti-home", label: "Accessible Bathroom" },
+  { icon: "ti-parking", label: "Parking" },
+  { icon: "ti-wind", label: "AC" },
 ];
 
 export default function PlaceForm() {
@@ -25,22 +26,83 @@ export default function PlaceForm() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const handlePhotos = (e) => {
-    const files = Array.from(e.target.files).slice(0, 5);
-    setPhotos(files);
-  };
+const handlePhotos = (e) => {
+  const files = Array.from(e.target.files);
+
+  if (files.length < 3) {
+    setServerError("Please select at least 3 photos");
+    setPhotos([]);
+    return;
+  }
+
+  if (files.length > 5) {
+    setServerError("Maximum 5 photos allowed");
+    setPhotos(files.slice(0, 5));
+    return;
+  }
+
+  setServerError("");
+  setPhotos(files);
+};
 
   const onSubmit = async (data) => {
-    setServerError('');
-    try {
-      // await registerPlace({ ...data, photos });
-      setSubmittedData(data);
-      setSubmitted(true);
-    } catch (err) {
-      setServerError(err.response?.data?.message || 'Something went wrong');
-    }
-  };
+  setServerError("");
 
+  if (photos.length < 3) {
+    setServerError("Please upload at least 3 photos");
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("token");
+
+   const payload = {
+  name: data.facilityName,
+  description: data.description,
+  type: data.category,
+  image:
+    data.image ||
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
+
+  area: data.address,
+
+  distance: Number(data.distance),
+
+  lat: Number(data.lat),
+
+  lng: Number(data.lng),
+
+  coordinates: {
+    type: "Point",
+    coordinates: [
+      Number(data.lng),
+      Number(data.lat),
+    ],
+  },
+
+  tags: data.features || [],
+
+  rating: 0,
+};
+
+    const response = await axios.post(
+      "http://localhost:3000/api/places",
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    setSubmittedData(payload);
+    setSubmitted(true);
+  } catch (err) {
+    setServerError(
+      err.response?.data?.message || "Failed to create place"
+    );
+  }
+};
   /* ── Success Screen ── */
   if (submitted) {
     return (
@@ -100,7 +162,7 @@ export default function PlaceForm() {
 
             <h2 className={styles.successTitle}>Submitted for review!</h2>
             <p className={styles.successSub}>
-              Thank you for registering <strong>{submittedData?.facilityName}</strong>.
+              Thank you for registering <strong>{submittedData?.name}</strong>
               We'll notify you once your listing is verified and live on StepFree.
             </p>
 
@@ -110,26 +172,21 @@ export default function PlaceForm() {
                 <span className={styles.summaryLabel}>
                   <i className="ti ti-building" aria-hidden="true" /> Facility
                 </span>
-                <span className={styles.summaryVal}>{submittedData?.facilityName}</span>
+                <span className={styles.summaryVal}>{submittedData?.name}</span>
               </div>
               <div className={styles.summaryRow}>
                 <span className={styles.summaryLabel}>
                   <i className="ti ti-category" aria-hidden="true" /> Category
                 </span>
-                <span className={styles.summaryVal}>{submittedData?.category}</span>
+                <span className={styles.summaryVal}>{submittedData?.type}</span>
               </div>
               <div className={styles.summaryRow}>
                 <span className={styles.summaryLabel}>
                   <i className="ti ti-map-pin" aria-hidden="true" /> Address
                 </span>
-                <span className={styles.summaryVal}>{submittedData?.address}</span>
+                <span className={styles.summaryVal}>{submittedData?.area}</span>
               </div>
-              <div className={styles.summaryRow}>
-                <span className={styles.summaryLabel}>
-                  <i className="ti ti-building-community" aria-hidden="true" /> City
-                </span>
-                <span className={styles.summaryVal}>{submittedData?.city}</span>
-              </div>
+              
               {submittedData?.features?.length > 0 && (
                 <div className={styles.summaryRow}>
                   <span className={styles.summaryLabel}>
@@ -297,13 +354,13 @@ export default function PlaceForm() {
                     className={errors.category ? styles.inputErr : ''}
                     {...register('category', { required: 'Please select a category' })}
                   >
-                    <option value="">Select category</option>
-                    <option>Restaurants &amp; Cafes</option>
-                    <option>Hotels</option>
-                    <option>Public Places</option>
-                    <option>Hospitals</option>
-                    <option>Malls &amp; Shopping</option>
-                    <option>Other</option>
+                  <option value="">Select category</option>
+<option value="Restaurant">Restaurant</option>
+<option value="Hospital">Hospital</option>
+<option value="Mall">Mall</option>
+<option value="Hotel">Hotel</option>
+<option value="Cafe">Cafe</option>
+<option value="Bank">Bank</option>
                   </select>
                   {errors.category && (
                     <span className={styles.fieldErr}>{errors.category.message}</span>
@@ -325,7 +382,48 @@ export default function PlaceForm() {
                     <span className={styles.fieldErr}>{errors.address.message}</span>
                   )}
                 </div>
+                <div className={styles.field}>
+  <label>Distance (KM)</label>
 
+  <input
+    type="number"
+    step="0.1"
+    {...register("distance", {
+      required: true,
+    })}
+  />
+</div>
+<div className={styles.field}>
+  <label>Latitude</label>
+
+  <input
+    type="number"
+    step="0.000001"
+    {...register("lat", {
+      required: true,
+    })}
+  />
+</div>
+
+<div className={styles.field}>
+  <label>Longitude</label>
+
+  <input
+    type="number"
+    step="0.000001"
+    {...register("lng", {
+      required: true,
+    })}
+  />
+</div>
+<div className={styles.field}>
+<label>Cover Image URL</label>
+  <input
+    type="text"
+    placeholder="https://..."
+    {...register("image")}
+  />
+</div>
                 <div className={styles.field}>
                   <label htmlFor="city">City</label>
                   <select
@@ -398,7 +496,23 @@ export default function PlaceForm() {
                 ))}
               </div>
             </div>
+<div className={styles.field}>
+  <label>Description</label>
 
+ <textarea
+  className={errors.description ? styles.inputErr : ""}
+  placeholder="Write a detailed description about your facility..."
+  {...register("description", {
+    required: "Description is required",
+  })}
+/>
+
+{errors.description && (
+  <span className={styles.fieldErr}>
+    {errors.description.message}
+  </span>
+)}
+</div>
             <div className={styles.divider} />
 
             {/* ── Section 3 ── */}
