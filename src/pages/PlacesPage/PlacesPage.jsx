@@ -53,7 +53,7 @@ export default function PlacesPage() {
  }, []);
 
  return (
- <div className="min-vh-100 bg-light">
+ <div className="min-vh-100" style={{ background: "var(--light-bg)" }}>
  <div className="container-xl px-3 px-sm-4 py-4 py-lg-5">
  {/* Hero Section */}
  <div className="animate-on-scroll">

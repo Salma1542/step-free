@@ -41,15 +41,20 @@ export default function RegisterPlace() {
       }
     );
 
-    if (response.data.success) {
-      navigate('/placeForm', {
-        state: {
-          email: data.email,
-          orgName: data.orgName,
-          category: data.category,
-        },
-      });
+  if (response.data.success) {
+  navigate('/otp', {
+    state: {
+      email: data.email,
+
+      role: 'placeOwner',
+
+      formData: {
+        orgName: data.orgName,
+        category: data.category,
+      }
     }
+  });
+}
   } catch (err) {
     setServerError(
       err.response?.data?.message || 'Something went wrong'

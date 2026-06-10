@@ -6,12 +6,13 @@ import loginImage from "../../../Assets/Images/mobile.png";
 import styles from '../styles/Login.module.css';
 import SocialButtons from '../../../components/common/SocialButtons/SocialButtons';
 import PasswordInput from "../../../components/common/PasswordInput/PasswordInput";
-
+import { useAuth } from  "../../../context/AuthContext"
 export default function LoginPage() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -23,38 +24,63 @@ export default function LoginPage() {
     if (error) setError('');
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!formData.email.trim() || !formData.password.trim()) {
-      setError('Email and password are required');
-      return;
-    }
+  if (!formData.email || !formData.password) {
+    setError("Email and password are required");
+    return;
+  }
 
+  try {
     setLoading(true);
-    setError('');
+    setError("");
 
-    try {
-      const response = await axios.post(
-        'http://localhost:3000/api/auth/login',
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
+    const response = await axios.post(
+      "http://localhost:3000/api/auth/login",
+      formData
+    );
 
-      if (response.data.success) {
-        localStorage.setItem('token', response.data.token);
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        navigate('/');
+    if (response.data.success) {
+
+      const user = response.data.data;
+
+      // تحديث الـ Context + LocalStorage
+      login(response.data.token, user);
+
+      // Redirect حسب الرول
+      if (user.role === "placeOwner") {
+
+        navigate("/organization-profile");
+
+      } else if (user.role === "driver") {
+
+        navigate("/driver-form");
+
+      } else if (user.role === "admin") {
+
+        navigate("/admin");
+
+      } else {
+
+        navigate("/");
+
       }
-    } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
-    } finally {
-      setLoading(false);
     }
-  };
 
+  } catch (err) {
+
+    setError(
+      err.response?.data?.message ||
+      "Login failed"
+    );
+
+  } finally {
+
+    setLoading(false);
+
+  }
+};
   return (
     <div className="container-fluid p-0 vh-100 overflow-hidden">
       <div className="row g-0 h-100">

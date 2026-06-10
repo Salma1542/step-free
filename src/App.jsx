@@ -24,7 +24,7 @@ import { DriverForm } from './features/driver';
 import "./App.css";
 import RegisterPlace from "./pages/RegisterPlacePage";
 import PlaceForm from './features/placeForm/placeForm';
-
+import OrganizationProfile from './pages/organization/OrganizationProfile';
 import {
   ForgotPassword,
   OTPVerification,
@@ -32,6 +32,7 @@ import {
   RoleSelection,
 } from "./features/auth";
 
+import AdminRoute from "./routes/AdminRoute";
 
 import ExplorePage from "./pages/ExplorePage/ExplorePage";
 
@@ -71,19 +72,26 @@ export default function App() {
         <Route path="otp" element={<OTPVerification />} />
         <Route path="reset-password" element={<ResetPassword />} />
          <Route path="register-place" element={<RegisterPlace />} />
+         <Route path="/placeForm" element={<PlaceForm />} />
         <Route path="driver" element={<DriverRegisterAuth />} />
+        <Route path="/organization-profile" element={<OrganizationProfile/>}
+        
+/>
         {/* <Route path="register-place" element={<RegisterPlace />} /> */}
       
-        <Route path="role" element={<RoleSelection />} />
-<Route path='placeForm' element={<PlaceForm/>}/>
-
-<Route path="/admin" element={<AdminLayout />}>
+    <Route
+  path="/admin"
+  element={
+    <AdminRoute>
+      <AdminLayout />
+    </AdminRoute>
+  }
+>
   <Route index element={<AdminDashboardPage />} />
   <Route path="users" element={<UsersPage />} />
   <Route path="Adminplaces" element={<AdminplacesPage />} />
   <Route path="reviews" element={<ReviewsPage />} />
 </Route>
-
                 <Route path="driver-form" element={<DriverForm />} />
 
       </Route>
