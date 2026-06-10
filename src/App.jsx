@@ -96,7 +96,7 @@ export default function App() {
 >
   <Route index element={<AdminDashboardPage />} />
   <Route path="users" element={<UsersPage />} />
-  <Route path="Adminplaces" element={<AdminplacesPage />} />
+  <Route path="Adminplaces" element={<AdminPlacesPage />} />
   <Route path="reviews" element={<ReviewsPage />} />
 </Route>
                 <Route path="driver-form" element={<DriverForm />} />
@@ -112,7 +112,10 @@ export default function App() {
         <Route path="settings" element={<AdminSettingsPage />} />
         
       </Route>
+      
+          </Route>
     </Routes>
+    
   </>
 );
 }
