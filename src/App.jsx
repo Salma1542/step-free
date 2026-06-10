@@ -6,7 +6,7 @@ import AdminSettingsPage from './pages/Admin/AdminSettingsPage'
 import "bootstrap-icons/font/bootstrap-icons.css";
 import AdminLayout from "./components/layout/AdminLayout";
 import UsersPage from "./pages/Admin/UsersPage";
-import AdminPlacesPage from "./pages/Admin/AdminplacesPage"
+import AdminPlacesPage from "./pages/Admin/AdminPlacesPage"
 import ReviewsPage from "./pages/Admin/ReviewsPage";
 
 import ScrollToTop from "./components/ScrollToTop";
