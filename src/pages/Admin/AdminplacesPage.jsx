@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import styles from './AdminPlacesPage.module.css';
+import styles from './AdminplacesPage.module.css';
 
 const INITIAL_PLACES = [
   { id: 1, name: 'Cairo Mall', city: 'Cairo', category: 'Mall', accessibility: 'Accessible', rating: 4.8 },
