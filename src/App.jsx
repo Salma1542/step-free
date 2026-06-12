@@ -95,8 +95,7 @@ export default function App() {
         >
           <Route index element={<AdminDashboardPage />} />
           <Route path="users" element={<UsersPage />} />
-<Route path="Adminplaces" element={<AdminPlacesPage />} />
-          <Route path="reviews" element={<ReviewsPage />} />
+<Route path="Adminplaces" element={<AdminPlacesPage />} />          <Route path="reviews" element={<ReviewsPage />} />
           <Route path="analytics" element={<AdminAnalyticsPage />} />
           <Route path="settings" element={<AdminSettingsPage />} />
         </Route>
