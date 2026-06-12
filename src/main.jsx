@@ -6,14 +6,38 @@ import App from "./App.jsx";
 import "leaflet/dist/leaflet.css";
 import { BrowserRouter } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { AuthProvider } from "./context/AuthContext"; 
 
-createRoot(document.getElementById("root")).render(
- <StrictMode>
- <AuthProvider>
- <BrowserRouter>
- <App />
- </BrowserRouter>
- </AuthProvider>
- </StrictMode>
+import { AuthProvider } from "./context/AuthContext";
+
+import {
+GoogleOAuthProvider,
+} from "@react-oauth/google";
+
+createRoot(
+document.getElementById("root")
+).render(
+
+<StrictMode>
+
+<GoogleOAuthProvider
+clientId={
+import.meta.env
+.VITE_GOOGLE_CLIENT_ID
+}
+>
+
+<AuthProvider>
+
+<BrowserRouter>
+
+<App />
+
+</BrowserRouter>
+
+</AuthProvider>
+
+</GoogleOAuthProvider>
+
+</StrictMode>
+
 );
