@@ -24,7 +24,9 @@ import LoginPage from "./features/auth/pages/LoginPage";
 import UserRegisterPage from "./pages/UserRegisterPage";
 import RoleSelectionPage from "./features/auth/pages/RoleSelection";
 import { DriverRegisterAuth } from "./features/auth";
-import { DriverForm } from "./features/driver";
+
+import { DriverForm, DriverPlaces } from "./features/driver";
+
 import "./App.css";
 import RegisterPlace from "./pages/RegisterPlacePage";
 import PlaceForm from './features/placeForm/placeForm';
@@ -82,6 +84,8 @@ export default function App() {
           <Route path="driver" element={<DriverRegisterAuth />} />
           <Route path="organization-profile" element={<OrganizationProfile />} />
           <Route path="driver-form" element={<DriverForm />} />
+          <Route path="driver/places" element={<DriverPlaces />} />
+
         </Route>
 
         {/* Admin Routes */}
