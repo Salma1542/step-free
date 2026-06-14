@@ -258,7 +258,6 @@ export default function OrganizationProfile() {
             <i className="ti ti-arrow-right" />
           </button>
 
-          {/* MY PLACES SECTION */}
           {places.length > 0 && (
             <div className={styles.myPlaces}>
               <div className={styles.myPlacesHeader}>
@@ -271,13 +270,11 @@ export default function OrganizationProfile() {
                   const statusInfo = getStatusInfo(place.status);
                   return (
                     <div key={place._id} className={styles.placeCard}>
-                      {/* Status Badge */}
                       <div className={`${styles.statusBadge} ${styles[statusInfo.color]}`}>
                         <i className={`ti ${statusInfo.icon}`} />
                         <span>{statusInfo.label}</span>
                       </div>
 
-                      {/* Place Info */}
                       <div className={styles.placeInfo}>
                         <h4 className={styles.placeName}>
                           <i className="ti ti-building-store" />
@@ -305,7 +302,6 @@ export default function OrganizationProfile() {
                         )}
                       </div>
 
-                      {/* Action Buttons */}
                       <div className={styles.placeActions}>
                         <button
                           className={`${styles.actionBtn} ${styles.editBtn}`}
