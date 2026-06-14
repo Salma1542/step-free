@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate ,useParams} from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './placeForm.module.css';
 import axios from "axios";
-
 const FEATURES = [
   { icon: "ti-trending-up", label: "Ramp" },
   { icon: "ti-elevator", label: "Elevator" },
@@ -15,47 +14,17 @@ const FEATURES = [
 
 export default function PlaceForm() {
   const navigate  = useNavigate();
-const { id } = useParams();
-const isEditMode = Boolean(id);
   const uploadRef = useRef();
   const [photos, setPhotos]           = useState([]);
   const [serverError, setServerError] = useState('');
   const [submitted, setSubmitted]     = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
 
-const {
-  register,
-  handleSubmit,
-  setValue,
-  formState: { errors, isSubmitting },
-} = useForm();
-
-useEffect(() => {
-  if (!id) return;
-
-  const fetchPlace = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/api/places/${id}`
-      );
-
-      const place = response.data.data;
-
-      setValue("facilityName", place.name);
-      setValue("description", place.description);
-      setValue("category", place.type);
-      setValue("address", place.area);
-      setValue("distance", place.distance);
-      setValue("lat", place.lat);
-      setValue("lng", place.lng);
-      setValue("phone", place.phone);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  fetchPlace();
-}, [id, setValue]);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm();
 
 const handlePhotos = (e) => {
   const files = Array.from(e.target.files);
@@ -87,78 +56,44 @@ const handlePhotos = (e) => {
   try {
     const token = localStorage.getItem("token");
 
-const payload = {
-name: data.facilityName,
-description: data.description,
-type: data.category,
-area: data.address,
-distance: Number(data.distance),
-lat: Number(data.lat),
-lng: Number(data.lng),
+   const payload = {
+  name: data.facilityName,
+  description: data.description,
+  type: data.category,
+  image:
+    data.image ||
+    "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab",
 
-coordinates:{
-type:"Point",
-coordinates:[
-Number(data.lng),
-Number(data.lat),
-],
-},
+  area: data.address,
 
-tags:data.features || [],
-rating:0,
+  distance: Number(data.distance),
+
+  lat: Number(data.lat),
+
+  lng: Number(data.lng),
+
+  coordinates: {
+    type: "Point",
+    coordinates: [
+      Number(data.lng),
+      Number(data.lat),
+    ],
+  },
+
+  tags: data.features || [],
+
+  rating: 0,
 };
 
-   const formData = new FormData();
-
-Object.keys(payload).forEach((key)=>{
-
-if(
-typeof payload[key] === "object"
-){
-formData.append(
-key,
-JSON.stringify(
-payload[key]
-)
-);
-}else{
-formData.append(
-key,
-payload[key]
-);
-}
-
-});
-
-formData.append("image", photos[0]);
-
-photos.slice(1).forEach((photo) => {
-formData.append("images", photo);
-});
-
-if (isEditMode) {
-  await axios.put(
-    `http://localhost:3000/api/places/${id}`,
-    formData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
-} else {
-  await axios.post(
-    "http://localhost:3000/api/places",
-    formData,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "multipart/form-data",
-      },
-    }
-  );
-}
+    const response = await axios.post(
+      "http://localhost:3000/api/places",
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     setSubmittedData(payload);
     setSubmitted(true);
@@ -358,9 +293,8 @@ if (isEditMode) {
         <div className={styles.wrap}>
 
           <div className={styles.head}>
-<h2 className={styles.headTitle}>
-  {isEditMode ? "Edit Facility" : "Facility Details"}
-</h2>            <p className={styles.headSub}>
+            <h2 className={styles.headTitle}>Facility details</h2>
+            <p className={styles.headSub}>
               Step 2 of 2 — Add your facility information &amp; accessibility features
             </p>
           </div>
@@ -482,7 +416,15 @@ if (isEditMode) {
     })}
   />
 </div>
-         <div className={styles.field}>
+<div className={styles.field}>
+<label>Cover Image URL</label>
+  <input
+    type="text"
+    placeholder="https://..."
+    {...register("image")}
+  />
+</div>
+                <div className={styles.field}>
                   <label htmlFor="city">City</label>
                   <select
                     id="city"
@@ -633,7 +575,7 @@ if (isEditMode) {
               {isSubmitting ? (
                 <><i className="ti ti-loader-2" aria-hidden="true" /> Submitting...</>
               ) : (
-                <>{isEditMode ? "Update Place" : "Submit for review"}<i className="ti ti-arrow-right" aria-hidden="true" /></>
+                <>Submit for review <i className="ti ti-arrow-right" aria-hidden="true" /></>
               )}
             </button>
 

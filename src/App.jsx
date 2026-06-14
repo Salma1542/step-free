@@ -81,7 +81,6 @@ export default function App() {
           <Route path="reset-password" element={<ResetPassword />} />
           <Route path="register-place" element={<RegisterPlace />} />
           <Route path="placeForm" element={<PlaceForm />} />
-          <Route path="placeForm/:id" element={<PlaceForm />} />
           <Route path="driver" element={<DriverRegisterAuth />} />
           <Route path="organization-profile" element={<OrganizationProfile />} />
           <Route path="driver-form" element={<DriverForm />} />

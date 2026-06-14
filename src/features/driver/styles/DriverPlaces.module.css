@@ -1,0 +1,288 @@
+.page {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  color: var(--dark-color);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0;
+  color: var(--dark-color);
+  font-weight: 800;
+}
+
+.subtitle {
+  color: var(--text-muted);
+  margin: 6px 0 0;
+}
+
+.errorBox {
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  border: 1px solid #fecaca;
+}
+
+.card,
+.formCard,
+.areaCard {
+  background: var(--white);
+  border: 1px solid var(--primary-border);
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0, 109, 103, 0.08);
+}
+
+.card {
+  padding: 18px;
+  margin-bottom: 20px;
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cardTitle {
+  margin: 0;
+  font-size: 18px;
+  color: var(--dark-color);
+  font-weight: 800;
+}
+
+.cardText {
+  color: var(--text-muted);
+  margin: 6px 0 0;
+}
+
+.editBtn,
+.addBtn {
+  border: 0;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.editBtn {
+  padding: 9px 14px;
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-border);
+}
+
+.editBtn:hover {
+  background: var(--primary-color);
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.infoBox {
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-border);
+  border-radius: 14px;
+  padding: 12px;
+}
+
+.infoLabel {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 800;
+}
+
+.infoValue {
+  margin-top: 4px;
+  color: var(--dark-color);
+  font-weight: 800;
+}
+
+.formCard {
+  padding: 18px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.field {
+  flex: 1;
+  min-width: 220px;
+}
+
+.label {
+  display: block;
+  font-size: 13px;
+  font-weight: 800;
+  margin-bottom: 6px;
+  color: var(--dark-color);
+}
+
+.select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--primary-border);
+  border-radius: 10px;
+  font-size: 14px;
+  background: var(--white);
+  color: var(--dark-color);
+  outline: none;
+}
+
+.select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 109, 103, 0.12);
+}
+
+.addBtn {
+  padding: 11px 22px;
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+.addBtn:hover:not(:disabled) {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.addBtn:disabled {
+  background: #9fb8b5;
+  cursor: not-allowed;
+}
+
+.loadingText {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px;
+  background: var(--primary-soft);
+  border-radius: 18px;
+  border: 2px dashed var(--primary-border);
+}
+
+.emptyState h4 {
+  color: var(--dark-color);
+  margin: 0 0 8px;
+}
+
+.emptyState p {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.areasGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.areaCard {
+  padding: 16px;
+}
+
+.areaTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.areaTitle {
+  margin: 0;
+  color: var(--dark-color);
+  font-weight: 800;
+}
+
+.badge {
+  font-size: 11px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.activeBadge {
+  background: var(--primary-light);
+  color: var(--primary-color);
+  border: 1px solid var(--primary-border);
+}
+
+.offBadge {
+  background: #fff1ed;
+  color: var(--accent-hover);
+  border: 1px solid #ffd4c7;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.toggleBtn,
+.deleteBtn {
+  flex: 1;
+  padding: 8px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+  transition: 0.25s ease;
+}
+
+.toggleBtn {
+  background: var(--primary-light);
+  color: var(--primary-color);
+}
+
+.toggleBtn:hover {
+  background: var(--primary-color);
+  color: var(--white);
+}
+
+.deleteBtn {
+  background: #fff1ed;
+  color: var(--accent-hover);
+}
+
+.deleteBtn:hover {
+  background: var(--accent-color);
+  color: var(--white);
+}
+
+@media (max-width: 600px) {
+  .page {
+    margin: 18px auto;
+    padding: 14px;
+  }
+
+  .header,
+  .cardHeader {
+    align-items: flex-start;
+  }
+
+  .emptyState {
+    padding: 35px 18px;
+  }
+}
