@@ -182,6 +182,80 @@ export default function OrganizationProfile() {
             Complete Place Information
             <i className="ti ti-arrow-right" />
           </button>
+
+          {places.length > 0 && (
+            <div className={styles.myPlaces}>
+              <div className={styles.myPlacesHeader}>
+                <h3>My Places</h3>
+                <span className={styles.placeCount}>{places.length}</span>
+              </div>
+
+              <div className={styles.placesList}>
+                {places.map((place) => {
+                  const statusInfo = getStatusInfo(place.status);
+                  return (
+                    <div key={place._id} className={styles.placeCard}>
+                      <div className={`${styles.statusBadge} ${styles[statusInfo.color]}`}>
+                        <i className={`ti ${statusInfo.icon}`} />
+                        <span>{statusInfo.label}</span>
+                      </div>
+
+                      <div className={styles.placeInfo}>
+                        <h4 className={styles.placeName}>
+                          <i className="ti ti-building-store" />
+                          {place.name}
+                        </h4>
+                        
+                        {place.address && (
+                          <p className={styles.placeAddress}>
+                            <i className="ti ti-map-pin" />
+                            {place.address}
+                          </p>
+                        )}
+
+                        {place.phone && (
+                          <p className={styles.placePhone}>
+                            <i className="ti ti-phone" />
+                            {place.phone}
+                          </p>
+                        )}
+
+                        {place.category && (
+                          <div className={styles.placeCategory}>
+                            <span>{place.category}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className={styles.placeActions}>
+                        <button
+                          className={`${styles.actionBtn} ${styles.editBtn}`}
+                          onClick={() => handleEditPlace(place._id)}
+                          title="Edit place"
+                        >
+                          <i className="ti ti-edit" />
+                        </button>
+                        <button
+                          className={`${styles.actionBtn} ${styles.viewBtn}`}
+                          onClick={() => navigate(`/places/${place._id}`)}
+                          title="View place"
+                        >
+                          <i className="ti ti-eye" />
+                        </button>
+                        <button
+                          className={`${styles.actionBtn} ${styles.deleteBtn}`}
+                          onClick={() => handleDeletePlace(place._id)}
+                          title="Delete place"
+                        >
+                          <i className="ti ti-trash" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </div>
