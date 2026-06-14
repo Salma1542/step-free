@@ -1,4 +1,11 @@
-import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  Popup,
+  useMap,
+  Circle,
+} from "react-leaflet";
 import { useEffect, memo } from "react";
 import L from "leaflet";
 import styles from "./ExploreMap.module.css";
@@ -32,7 +39,6 @@ function createCustomIcon(type, isSelected = false) {
         align-items: center;
         justify-content: center;
         border: 3px solid white;
-        transition: all 0.2s;
       ">
         <i class="ti ${config.icon}" style="color:white;font-size:${
       isSelected ? 24 : 20
@@ -45,6 +51,25 @@ function createCustomIcon(type, isSelected = false) {
   });
 }
 
+/* ⭐ NEW: Fit Egypt bounds */
+function FitEgyptBounds() {
+  const map = useMap();
+
+  useEffect(() => {
+    const egyptBounds = [
+      [31.9167, 24.7000], // north-west
+      [22.0000, 36.9000], // south-east
+    ];
+
+    map.fitBounds(egyptBounds, {
+      padding: [30, 30],
+    });
+  }, [map]);
+
+  return null;
+}
+
+/* Keep your fly-to behavior */
 function FlyToPlace({ selectedPlace }) {
   const map = useMap();
 
@@ -62,19 +87,11 @@ function CustomZoom() {
 
   return (
     <div className={styles.zoomControls}>
-      <button
-        type="button"
-        className={styles.zoomBtn}
-        onClick={() => map.zoomIn()}
-      >
+      <button className={styles.zoomBtn} onClick={() => map.zoomIn()}>
         <i className="ti ti-plus" />
       </button>
 
-      <button
-        type="button"
-        className={styles.zoomBtn}
-        onClick={() => map.zoomOut()}
-      >
+      <button className={styles.zoomBtn} onClick={() => map.zoomOut()}>
         <i className="ti ti-minus" />
       </button>
     </div>
@@ -88,18 +105,18 @@ function NearMeButton({ userLocation, sortByDistance, setSortByDistance }) {
 
   const handleNearMe = () => {
     setSortByDistance(true);
+
     setTimeout(() => {
-      if (map && userLocation.lat && userLocation.lng) {
-        map.flyTo([userLocation.lat, userLocation.lng], 17);
-      }
+      map.flyTo([userLocation.lat, userLocation.lng], 17);
     }, 200);
   };
 
   return (
     <button
-      className={`${styles.nearMeBtn} ${sortByDistance ? styles.active : ""}`}
+      className={`${styles.nearMeBtn} ${
+        sortByDistance ? styles.active : ""
+      }`}
       onClick={handleNearMe}
-      title="Show nearby places sorted by distance"
     >
       📍
     </button>
@@ -115,17 +132,10 @@ function ExploreMap({
   sortByDistance,
   setSortByDistance,
 }) {
-  const center = userLocation 
-    ? [userLocation.lat, userLocation.lng] 
-    : [30.0444, 31.2357];
+  const center = [26.8206, 30.8025]; // Egypt fallback center
 
   return (
-    <div
-      className={styles.mapBox}
-      data-aos="fade-right"
-      data-aos-duration="900"
-      style={{ position: "relative" }}
-    >
+    <div className={styles.mapBox} style={{ position: "relative" }}>
       {loading && (
         <div
           style={{
@@ -141,7 +151,7 @@ function ExploreMap({
 
       <MapContainer
         center={center}
-        zoom={15}
+        zoom={6}
         className={styles.map}
         zoomControl={false}
       >
@@ -149,6 +159,9 @@ function ExploreMap({
           attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {/* ⭐ IMPORTANT */}
+        <FitEgyptBounds />
 
         <FlyToPlace selectedPlace={selectedPlace} />
         <CustomZoom />
@@ -158,19 +171,25 @@ function ExploreMap({
             <Marker
               position={[userLocation.lat, userLocation.lng]}
               icon={L.icon({
-                iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
-                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+                iconUrl:
+                  "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png",
+                shadowUrl:
+                  "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
               })}
             >
               <Popup>Your Location</Popup>
             </Marker>
-            <Circle 
-              center={[userLocation.lat, userLocation.lng]} 
+
+            <Circle
+              center={[userLocation.lat, userLocation.lng]}
               radius={500}
-              pathOptions={{ color: "#006d67", fill: true, opacity: 0.2 }}
+              pathOptions={{
+                color: "#006d67",
+                fill: true,
+                opacity: 0.2,
+              }}
             />
           </>
         )}
@@ -190,13 +209,14 @@ function ExploreMap({
             <Popup>
               <b>{place.name}</b>
               <br />
-              {place.type} · {place.calculatedDistance?.toFixed(1) || place.distance} km
+              {place.type} ·{" "}
+              {place.calculatedDistance?.toFixed(1) || place.distance} km
             </Popup>
           </Marker>
         ))}
 
         {userLocation && (
-          <NearMeButton 
+          <NearMeButton
             userLocation={userLocation}
             sortByDistance={sortByDistance}
             setSortByDistance={setSortByDistance}
