@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/DriverProfile.module.css';
+import { getDriverProfile, saveDriverProfile } from '../services/driverApi';
 
 export default function DriverProfile() {
   const navigate = useNavigate();
@@ -13,6 +14,76 @@ export default function DriverProfile() {
   const [licensePreview, setLicensePreview] = useState(null);
   const [vehicleFile, setVehicleFile] = useState(null);
   const [vehiclePreview, setVehiclePreview] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(true);
+  const [errMsg, setErrMsg] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
+
+  const [formData, setFormData] = useState({
+    vehicleType: '',
+    licensePlate: '',
+    vehicleModel: '',
+    vehicleYear: '',
+    accessibilityFeatures: '',
+    availabilityFrom: '',
+    availabilityTo: '',
+    licenseNumber: '',
+  });
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function loadSavedProfile() {
+      const token = localStorage.getItem('token') || localStorage.getItem('access_token');
+      if (!token) {
+        setLoadingProfile(false);
+        return;
+      }
+
+      const result = await getDriverProfile();
+      if (!mounted) return;
+
+      if (result.success && result.data) {
+        setFormData({
+          vehicleType: result.data.vehicleType || '',
+          licensePlate: result.data.licensePlate || '',
+          vehicleModel: result.data.vehicleModel || '',
+          vehicleYear: result.data.vehicleYear || '',
+          accessibilityFeatures: result.data.accessibilityFeatures || '',
+          availabilityFrom: result.data.availabilityFrom || '',
+          availabilityTo: result.data.availabilityTo || '',
+          licenseNumber: result.data.licenseNumber || '',
+        });
+
+        const profileImage = result.data.photoUrl || result.data.profileImage;
+        if (profileImage) {
+          setPhotoPreview(profileImage.startsWith('/uploads') ? `http://localhost:3000${profileImage}` : profileImage);
+        }
+
+        if (result.data.licenseImageUrl) {
+          const licenseImage = result.data.licenseImageUrl;
+          setLicensePreview(licenseImage.startsWith('/uploads') ? `http://localhost:3000${licenseImage}` : licenseImage);
+        }
+
+        if (result.data.vehicleImageUrl) {
+          const vehicleImage = result.data.vehicleImageUrl;
+          setVehiclePreview(vehicleImage.startsWith('/uploads') ? `http://localhost:3000${vehicleImage}` : vehicleImage);
+        }
+      }
+
+      setLoadingProfile(false);
+    }
+
+    loadSavedProfile();
+    return () => { mounted = false; };
+  }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errMsg) setErrMsg('');
+    if (successMsg) setSuccessMsg('');
+  };
 
   const handlePhoto = (e) => {
     const file = e.target.files[0];
@@ -26,7 +97,7 @@ export default function DriverProfile() {
     if (file.type.startsWith('image/')) {
       setLicensePreview(URL.createObjectURL(file));
     } else {
-      setLicensePreview(null); // PDF أو أى نوع تانى
+      setLicensePreview(null);
     }
   };
 
@@ -41,15 +112,39 @@ export default function DriverProfile() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // مثال: لو هتبعتيهم للباك استخدمى FormData
-    // const fd = new FormData();
-    // if (photoRef.current.files[0]) fd.append('photo', photoRef.current.files[0]);
-    // if (licenseFile) fd.append('license', licenseFile);
-    // if (vehicleFile) fd.append('vehicle', vehicleFile);
-    // await axios.post('/api/driver/profile', fd, { headers: { 'Content-Type': 'multipart/form-data' }});
-    navigate('/login');
+    setErrMsg('');
+
+    const token = localStorage.getItem('token') || localStorage.getItem('access_token');
+    if (!token) {
+      setErrMsg('لازم تعملى Login الأول');
+      navigate('/login');
+      return;
+    }
+
+    const fd = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      fd.append(key, value);
+    });
+
+    if (photoRef.current?.files?.[0]) fd.append('photo', photoRef.current.files[0]);
+    if (licenseFile) fd.append('license', licenseFile);
+    if (vehicleFile) fd.append('vehicle', vehicleFile);
+
+    setSubmitting(true);
+    const result = await saveDriverProfile(fd);
+    setSubmitting(false);
+
+    if (result.success) {
+      if (result.data) {
+        localStorage.setItem('user', JSON.stringify(result.data));
+      }
+      setSuccessMsg('تم حفظ بيانات العربية والبروفايل بنجاح');
+      navigate('/driver/places');
+    } else {
+      setErrMsg(result.message || 'حصل خطأ أثناء حفظ بيانات العربية. البيانات لم يتم حفظها.');
+    }
   };
 
   return (
@@ -139,7 +234,7 @@ export default function DriverProfile() {
                   <label className={styles.label}>Vehicle type</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-car" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <select className={styles.input} required defaultValue="">
+                    <select name="vehicleType" className={styles.input} required value={formData.vehicleType} onChange={handleInputChange}>
                       <option value="" disabled>Select type</option>
                       <option>Wheelchair Van</option>
                       <option>Adapted Minibus</option>
@@ -152,28 +247,28 @@ export default function DriverProfile() {
                   <label className={styles.label}>License plate</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-license" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <input type="text" className={styles.input} placeholder="e.g. ABC 1234" required />
+                    <input name="licensePlate" type="text" className={styles.input} placeholder="e.g. ABC 1234" required value={formData.licensePlate} onChange={handleInputChange} />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <label className={styles.label}>Vehicle model</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-car-suv" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <input type="text" className={styles.input} placeholder="e.g. Toyota Hiace" required />
+                    <input name="vehicleModel" type="text" className={styles.input} placeholder="e.g. Toyota Hiace" required value={formData.vehicleModel} onChange={handleInputChange} />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <label className={styles.label}>Vehicle year</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-calendar" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <input type="number" className={styles.input} placeholder="e.g. 2020" min="2000" max="2025" required />
+                    <input name="vehicleYear" type="number" className={styles.input} placeholder="e.g. 2020" min="2000" max="2035" required value={formData.vehicleYear} onChange={handleInputChange} />
                   </div>
                 </div>
                 <div className="col-12">
                   <label className={styles.label}>Accessibility features</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-wheelchair" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <select className={styles.input} required defaultValue="">
+                    <select name="accessibilityFeatures" className={styles.input} required value={formData.accessibilityFeatures} onChange={handleInputChange}>
                       <option value="" disabled>Select feature</option>
                       <option>Wheelchair Ramp</option>
                       <option>Hydraulic Lift</option>
@@ -187,14 +282,14 @@ export default function DriverProfile() {
                   <label className={styles.label}>Availability from</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-clock" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <input type="time" className={styles.input} required />
+                    <input name="availabilityFrom" type="time" className={styles.input} required value={formData.availabilityFrom} onChange={handleInputChange} />
                   </div>
                 </div>
                 <div className="col-md-6">
                   <label className={styles.label}>Availability to</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-clock" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <input type="time" className={styles.input} required />
+                    <input name="availabilityTo" type="time" className={styles.input} required value={formData.availabilityTo} onChange={handleInputChange} />
                   </div>
                 </div>
               </div>
@@ -213,7 +308,7 @@ export default function DriverProfile() {
                   <label className={styles.label}>Driver's license number</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-id-badge" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <input type="text" className={styles.input} placeholder="Enter license number" required />
+                    <input name="licenseNumber" type="text" className={styles.input} placeholder="Enter license number" required value={formData.licenseNumber} onChange={handleInputChange} />
                   </div>
                 </div>
 
@@ -282,9 +377,13 @@ export default function DriverProfile() {
             <div className={styles.divider} />
 
             <div style={{display:'flex', gap:10, flexWrap:'wrap'}}>
-              <button type="submit" className={styles.btn} style={{flex:1, minWidth:200}}>
-                Submit Application <i className="ti ti-arrow-right" />
+              {errMsg && <div style={{color:'#dc2626', marginBottom:10, width:'100%'}}>✕ {errMsg}</div>}
+              {successMsg && <div style={{color:'#16a34a', marginBottom:10, width:'100%'}}>✓ {successMsg}</div>}
+
+              <button type="submit" disabled={submitting || loadingProfile} className={styles.btn} style={{flex:1, minWidth:200}}>
+                {submitting ? 'Saving...' : loadingProfile ? 'Loading saved data...' : 'Save & Continue'} <i className="ti ti-arrow-right" />
               </button>
+
               <button
                 type="button"
                 onClick={() => navigate('/driver/places')}
@@ -295,7 +394,7 @@ export default function DriverProfile() {
                   cursor:'pointer', fontWeight:600
                 }}
               >
-                 Manage Service Areas
+                Manage Service Areas
               </button>
             </div>
 

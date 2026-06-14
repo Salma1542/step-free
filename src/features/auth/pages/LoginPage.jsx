@@ -8,6 +8,7 @@ import styles from "../styles/Login.module.css";
 import SocialButtons from "../../../components/common/SocialButtons/SocialButtons";
 import PasswordInput from "../../../components/common/PasswordInput/PasswordInput";
 import { useAuth } from  "../../../context/AuthContext"
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000/api";
 export default function LoginPage() {
   const navigate = useNavigate();
   const { login } = useAuth(); // دالة login من السياق
@@ -39,12 +40,11 @@ const handleSubmit = async (e) => {
     setError("");
 
     const response = await axios.post(
-      "http://localhost:3000/api/auth/login",
+      `${API_BASE}/auth/login`,
       formData
     );
 
     if (response.data.success) {
-
       const user = response.data.data;
 
       // تحديث الـ Context + LocalStorage
@@ -52,35 +52,26 @@ const handleSubmit = async (e) => {
 
       // Redirect حسب الرول
       if (user.role === "placeOwner") {
-
         navigate("/organization-profile");
-
       } else if (user.role === "driver") {
-
-        navigate("/driver-form");
-
+        if (user.profileCompleted) {
+          navigate("/driver/places");
+        } else {
+          navigate("/driver-form");
+        }
       } else if (user.role === "admin") {
-
         navigate("/admin");
-
       } else {
-
         navigate("/");
-
       }
     }
-
   } catch (err) {
-
     setError(
       err.response?.data?.message ||
       "Login failed"
     );
-
   } finally {
-
     setLoading(false);
-
   }
 };
   return (

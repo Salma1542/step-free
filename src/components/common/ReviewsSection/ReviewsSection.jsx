@@ -1,7 +1,6 @@
 import styles from "./ReviewsSection.module.css";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
 
 const ReviewsSection = () => {
   const [reviews, setReviews] = useState([]);
@@ -9,7 +8,6 @@ const ReviewsSection = () => {
   const [randomOrder, setRandomOrder] = useState([]);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
-  const { user } = useAuth();
 
   useEffect(() => {
     const fetchReviews = async () => {
@@ -98,13 +96,8 @@ const ReviewsSection = () => {
     return () => clearInterval(interval);
   }, [reviews.length]);
 
-  // Handle card click with authentication check
   const handleCardClick = (placeId) => {
-    if (user) {
-      navigate(`/places/${placeId}`);
-    } else {
-      navigate("/login");
-    }
+    navigate(`/places/${placeId}`);
   };
 
   if (loading) {
