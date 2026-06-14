@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import styles from '../styles/RegisterPlace.module.css';
-
+import axios from 'axios';
 export default function RegisterPlace() {
   const navigate = useNavigate();
   const [showPass, setShowPass]       = useState(false);
@@ -19,14 +19,48 @@ export default function RegisterPlace() {
   const password = watch('password');
 
   const onSubmit = async (data) => {
-    setServerError('');
-    try {
-      // await registerOrg({ ...data, role: 'contributor' });
-      navigate('/placeForm', { state: { email: data.email } });
-    } catch (err) {
-      setServerError(err.response?.data?.message || 'Something went wrong');
+  setServerError('');
+
+  try {
+    const names = data.contactName.trim().split(' ');
+
+    const response = await axios.post(
+      'http://localhost:3000/api/auth/register',
+      {
+        firstName: names[0],
+        lastName: names.slice(1).join(' ') || names[0],
+
+        email: data.email,
+        password: data.password,
+        confirmPassword: data.confirmPassword,
+
+        city: data.city,
+        phone: data.phone,
+
+        role: 'placeOwner',
+      }
+    );
+
+  if (response.data.success) {
+  navigate('/otp', {
+    state: {
+      email: data.email,
+
+      role: 'placeOwner',
+
+      formData: {
+        orgName: data.orgName,
+        category: data.category,
+      }
     }
-  };
+  });
+}
+  } catch (err) {
+    setServerError(
+      err.response?.data?.message || 'Something went wrong'
+    );
+  }
+};
 
   return (
     <div className={styles.root}>
@@ -50,7 +84,7 @@ export default function RegisterPlace() {
               <div className={`${styles.stepDot} ${styles.stepDotActive}`}>1</div>
               <div className={styles.stepText}>
                 <span className={styles.stepTitle}>Account Info</span>
-                <span className={styles.stepSub}>Name, email &amp; password</span>
+                <span className={styles.stepSub}>Name, email &amp; password</span> 
               </div>
             </div>
             <div className={styles.stepLine} />

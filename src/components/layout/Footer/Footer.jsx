@@ -1,13 +1,17 @@
+
+
+
+
+
 import { useState } from "react";
-
-
-
+import { Link } from "react-router-dom";
+ 
 import "./Footer.css";
-
+ 
 export default function Footer() {
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
-
+ 
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (email.trim()) {
@@ -15,20 +19,20 @@ export default function Footer() {
       setEmail("");
     }
   };
-
+ 
   return (
     <>
       
-
+ 
       <footer className="sf-footer">
         {/* Top teal gradient bar */}
         <div className="sf-footer-accent" />
-
+ 
         {/* Main content */}
         <div className="sf-footer-main">
           <div className="container">
             <div className="row g-4 g-lg-5">
-
+ 
               {/* ── Brand Column ── */}
               <div className="col-12 col-sm-6 col-lg-4">
                 {/* Logo */}
@@ -42,12 +46,12 @@ export default function Footer() {
                   </div>
                   <span className="sf-footer-logo-text">Step Free</span>
                 </div>
-
+ 
                 <p className="sf-footer-tagline">
                   Making every place accessible to everyone. Discover, review, and navigate barrier-free locations near you.
                 </p>
-
-                {/* Accessibility badge */}
+ 
+                {/* Accessibility badge
                 <a href="#" className="sf-a11y-badge">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -56,7 +60,7 @@ export default function Footer() {
                   </svg>
                   WCAG 2.1 AA Compliant
                 </a>
-
+  */}
                 {/* Socials */}
                 <div className="sf-socials">
                   {/* Twitter/X */}
@@ -77,31 +81,31 @@ export default function Footer() {
                   </a>
                 </div>
               </div>
-
+ 
               {/* ── Platform Links ── */}
               <div className="col-6 col-sm-3 col-lg-2">
                 <div className="sf-footer-col-title">Platform</div>
                 <ul className="sf-footer-links">
-                  <li><a href="#">Explore Places</a></li>
-                  <li><a href="#">Accessible Map</a></li>
-                  <li><a href="#">Driver Network</a></li>
-                  <li><a href="#">Empowerment Hub</a></li>
-                  <li><a href="#">Blog</a></li>
+                  <li><Link to="/explore">Explore Places</Link></li>
+                  <li><Link to="/explore">Accessible Map</Link></li>
+                  <li><Link to="/">Driver Network</Link></li>
+                  <li><Link to="/">Empowerment Hub</Link></li>
+                  <li><Link to="/blogs">Blog</Link></li>
                 </ul>
               </div>
-
+ 
               {/* ── Company Links ── */}
               <div className="col-6 col-sm-3 col-lg-2">
                 <div className="sf-footer-col-title">Company</div>
                 <ul className="sf-footer-links">
-                  <li><a href="#">About Us</a></li>
-                  <li><a href="#">Our Mission</a></li>
-                  <li><a href="#">Partners</a></li>
-                  <li><a href="#">Volunteer</a></li>
-                  <li><a href="#">Contact</a></li>
+                  <li><a href="/about#about">About Us</a></li>
+                  <li><a href="/about#mission">Our Mission</a></li>
+                  {/* <li><a href="/about#partners">Partners</a></li> */}
+                  <li><a href="/about#volunteer">Volunteer</a></li>
+                  <li><a href="/about#contact">Contact</a></li>
                 </ul>
               </div>
-
+ 
               {/* ── Newsletter ── */}
               <div className="col-12 col-lg-4">
                 <div className="sf-newsletter-box">
@@ -109,7 +113,7 @@ export default function Footer() {
                   <div className="sf-newsletter-sub">
                     Get accessibility updates, new places, and community news.
                   </div>
-
+ 
                   {subscribed ? (
                     <div style={{ fontSize: "13.5px", color: "var(--teal-dark)", fontWeight: 500, display: "flex", alignItems: "center", gap: 6 }}>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -135,26 +139,26 @@ export default function Footer() {
                   )}
                 </div>
               </div>
-
+ 
             </div>
           </div>
         </div>
-
+ 
         {/* Divider */}
         <hr className="sf-footer-divider" />
-
+ 
         {/* Bottom bar */}
         <div className="container">
           <div className="sf-footer-bottom">
             <span className="sf-footer-copy">
               © {new Date().getFullYear()} Step Free. All rights reserved.
             </span>
-
+ 
             <div className="sf-footer-legal">
-              <a href="#">Privacy Policy</a>
-              <a href="#">Terms of Service</a>
-              <a href="#">Accessibility Statement</a>
-              <a href="#">Cookie Policy</a>
+              <Link to="/">Privacy Policy</Link>
+              <Link to="/">Terms of Service</Link>
+              <Link to="/">Accessibility Statement</Link>
+              <Link to="/">Cookie Policy</Link>
             </div>
           </div>
         </div>
@@ -162,3 +166,5 @@ export default function Footer() {
     </>
   );
 }
+ 
+

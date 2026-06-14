@@ -113,16 +113,78 @@ export default function AdminSettingsPage() {
   // Backup settings
   const [autoBackup, setAutoBackup] = useState(true);
   const [backupFrequency, setBackupFrequency] = useState('daily');
-  const [lastBackup] = useState(new Date().toLocaleDateString('en-US'));
+  const [lastBackup, setLastBackup] = useState(new Date().toLocaleDateString('en-US'));
 
   // API settings
   const [apiRateLimit, setApiRateLimit] = useState('1000');
   const [enableAPICaching, setEnableAPICaching] = useState(true);
   const [cacheExpiry, setCacheExpiry] = useState('3600');
 
+  // Loading states
+  const [loadingBackup, setLoadingBackup] = useState(false);
+  const [loadingEmailTest, setLoadingEmailTest] = useState(false);
+
   const handleSaveSettings = (section) => {
     console.log(`Saving ${section} settings...`);
     alert(`${section} settings saved successfully`);
+  };
+
+  const handleTestEmail = async () => {
+    setLoadingEmailTest(true);
+    try {
+      console.log('Sending test email...');
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      alert(`Test email sent successfully to ${emailUsername}`);
+    } catch {
+      alert('Failed to send test email');
+    } finally {
+      setLoadingEmailTest(false);
+    }
+  };
+
+  const handleBackupNow = async () => {
+    setLoadingBackup(true);
+    try {
+      console.log('Creating backup...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      const today = new Date().toLocaleDateString('en-US');
+      setLastBackup(today);
+      alert('Backup created successfully');
+    } catch {
+      alert('Failed to create backup');
+    } finally {
+      setLoadingBackup(false);
+    }
+  };
+
+  const handleDeleteAllData = () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete ALL data? This action cannot be undone.'
+    );
+    if (confirmed) {
+      const doubleConfirm = window.confirm(
+        'This will permanently delete all data. Type "DELETE" to confirm'
+      );
+      if (doubleConfirm) {
+        console.log('Deleting all data...');
+        alert('All data has been deleted');
+      }
+    }
+  };
+
+  const handleResetSystem = () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to reset the system? This action cannot be undone.'
+    );
+    if (confirmed) {
+      const doubleConfirm = window.confirm(
+        'This will reset all system settings to default. Type "RESET" to confirm'
+      );
+      if (doubleConfirm) {
+        console.log('Resetting system...');
+        alert('System has been reset to default settings');
+      }
+    }
   };
 
   return (
@@ -261,8 +323,8 @@ export default function AdminSettingsPage() {
             <Button onClick={() => handleSaveSettings('Email')}>
               <i className="bi bi-check-circle" /> Save Changes
             </Button>
-            <Button variant="secondary">
-              <i className="bi bi-send" /> Test Send
+            <Button variant="secondary" onClick={handleTestEmail} disabled={loadingEmailTest}>
+              <i className="bi bi-send" /> {loadingEmailTest ? 'Sending...' : 'Test Send'}
             </Button>
           </div>
         </SettingsSection>
@@ -323,8 +385,8 @@ export default function AdminSettingsPage() {
             <Button onClick={() => handleSaveSettings('Backup')}>
               <i className="bi bi-check-circle" /> Save Changes
             </Button>
-            <Button variant="secondary">
-              <i className="bi bi-arrow-clockwise" /> Backup Now
+            <Button variant="secondary" onClick={handleBackupNow} disabled={loadingBackup}>
+              <i className="bi bi-arrow-clockwise" /> {loadingBackup ? 'Creating...' : 'Backup Now'}
             </Button>
           </div>
         </SettingsSection>
@@ -364,10 +426,10 @@ export default function AdminSettingsPage() {
             </div>
           </div>
           <div className={styles.dangerButtons}>
-            <Button variant="danger">
+            <Button variant="danger" onClick={handleDeleteAllData}>
               <i className="bi bi-x-circle" /> Delete All Data
             </Button>
-            <Button variant="danger">
+            <Button variant="danger" onClick={handleResetSystem}>
               <i className="bi bi-arrow-counterclockwise" /> Reset System
             </Button>
           </div>

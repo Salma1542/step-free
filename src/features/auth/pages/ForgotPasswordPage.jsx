@@ -1,29 +1,109 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import styles from '../styles/ForgotPassword.module.css';
 
 const STEPS = [
   { id: 1, label: 'Step 1' },
   { id: 2, label: 'Step 2' },
-  { id: 3, label: 'Step 3' },
-  { id: 4, label: 'Done ✓' },
+  { id: 3, label: 'Done ✓' },
 ];
 
 const timeline = [
   { n: 1, title: 'Enter your email',   sub: "We'll send a verification code" },
-  { n: 2, title: 'Verify the code',    sub: 'Enter the 6-digit OTP sent to you' },
-  { n: 3, title: 'Set new password',   sub: 'Choose a strong new password' },
+  { n: 2, title: 'Reset password',     sub: 'Enter OTP and your new password' },
 ];
 
 export default function ForgotPassword() {
   const navigate = useNavigate();
   const [step, setStep]         = useState(1);
   const [email, setEmail]       = useState('');
+  const [otp, setOtp]           = useState(['', '', '', '', '', '']);
   const [pass, setPass]         = useState('');
   const [confirm, setConfirm]   = useState('');
   const [showPass, setShowPass] = useState(false);
+  const [loading, setLoading]   = useState(false);
+  const [error, setError]       = useState('');
 
-  const next = () => setStep(s => Math.min(s + 1, 4));
+  const handleSendCode = async () => {
+    if (!email.trim()) {
+      setError('Email is required');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/api/auth/forgot-password',
+        { email }
+      );
+
+      if (response.data.success) {
+        setStep(2);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to send code');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleOtp = (val, idx) => {
+    if (!/^\d?$/.test(val)) return;
+
+    const next = [...otp];
+    next[idx] = val;
+    setOtp(next);
+
+    if (val && idx < 5) {
+      document.getElementById(`otp-fp-${idx + 1}`)?.focus();
+    }
+  };
+
+  const handleOtpKey = (e, idx) => {
+    if (e.key === 'Backspace' && !otp[idx] && idx > 0) {
+      document.getElementById(`otp-fp-${idx - 1}`)?.focus();
+    }
+  };
+
+  const handleResetPassword = async () => {
+    const otpCode = otp.join('');
+
+    if (otpCode.length !== 6) {
+      setError('Please enter complete OTP');
+      return;
+    }
+
+    if (!pass || pass !== confirm || pass.length < 8) {
+      setError('Passwords do not match or less than 8 characters');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await axios.post(
+        'http://localhost:3000/api/auth/reset-password',
+        { 
+          email, 
+          otp: otpCode, 
+          newPassword: pass,
+          confirmPassword: confirm
+        }
+      );
+
+      if (response.data.success) {
+        setStep(3);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || 'Failed to reset password');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const renderStep = () => {
     if (step === 1) return (
@@ -31,57 +111,135 @@ export default function ForgotPassword() {
         <div className={`${styles.fpStepIcon} mb-3`}><i className="ti ti-mail" /></div>
         <h4 className={styles.fpFormTitle}>Forgot your password?</h4>
         <p className={styles.fpFormSub}>No worries! Enter your email and we'll send you a verification code.</p>
+        
+        {error && (
+          <div style={{ backgroundColor: '#fee2e2', color: '#991b1b', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px' }}>
+            ✕ {error}
+          </div>
+        )}
+
         <div className={styles.fpField}>
           <label className={styles.fpLabel}>Email address</label>
           <div className={styles.fpInputWrap}>
             <i className="ti ti-mail" style={{position:'absolute',left:13,top:'50%',transform:'translateY(-50%)',color:'#aaa',fontSize:16}} />
-            <input className={styles.fpInput} type="email" placeholder="you@example.com"
-              value={email} onChange={e => setEmail(e.target.value)} />
+            <input 
+              className={styles.fpInput} 
+              type="email" 
+              placeholder="you@example.com"
+              value={email} 
+              onChange={e => {
+                setEmail(e.target.value);
+                if (error) setError('');
+              }}
+              disabled={loading}
+            />
           </div>
         </div>
-        <button className={styles.fpBtn} onClick={next} disabled={!email}>Send Code</button>
+        <button 
+          className={styles.fpBtn} 
+          onClick={handleSendCode} 
+          disabled={!email || loading}
+        >
+          {loading ? 'Sending...' : 'Send Code'}
+        </button>
         <p className={styles.fpBack} onClick={() => navigate('/login')}>Back to Sign in</p>
       </>
     );
 
     if (step === 2) return (
-      // بيروح على صفحة OTP منفصلة
-      navigate('/otp', { state: { email } })
-    );
-
-    if (step === 3) return (
       <>
         <div className={`${styles.fpStepIcon} mb-3`}><i className="ti ti-lock-open" /></div>
-        <h4 className={styles.fpFormTitle}>Set a new password</h4>
-        <p className={styles.fpFormSub}>Choose a strong password with at least 8 characters.</p>
+        <h4 className={styles.fpFormTitle}>Reset your password</h4>
+        <p className={styles.fpFormSub}>Enter the 6-digit OTP sent to<br /><strong>{email}</strong> and set a new password</p>
+
+        {error && (
+          <div style={{ backgroundColor: '#fee2e2', color: '#991b1b', padding: '12px 16px', borderRadius: '8px', marginBottom: '16px' }}>
+            ✕ {error}
+          </div>
+        )}
+
+        <div className={styles.fpField}>
+          <label className={styles.fpLabel}>Verification code</label>
+          <div className={styles.fpOtpRow} style={{ display: 'flex', gap: '10px', justifyContent: 'center', marginBottom: '16px' }}>
+            {otp.map((v, i) => (
+              <input
+                key={i}
+                id={`otp-fp-${i}`}
+                type="text"
+                inputMode="numeric"
+                maxLength={1}
+                value={v}
+                onChange={(e) => handleOtp(e.target.value, i)}
+                onKeyDown={(e) => handleOtpKey(e, i)}
+                disabled={loading}
+                style={{
+                  width: '40px',
+                  height: '48px',
+                  fontSize: '20px',
+                  textAlign: 'center',
+                  border: '2px solid #ddd',
+                  borderRadius: '8px',
+                  fontWeight: 'bold',
+                  transition: 'border-color 0.2s',
+                }}
+              />
+            ))}
+          </div>
+        </div>
+
         <div className={styles.fpField}>
           <label className={styles.fpLabel}>New password</label>
           <div className={styles.fpInputWrap}>
             <i className="ti ti-lock" style={{position:'absolute',left:13,top:'50%',transform:'translateY(-50%)',color:'#aaa',fontSize:16}} />
-            <input className={`${styles.fpInput} ${styles.fpInputPaddedRight}`}
+            <input 
+              className={`${styles.fpInput} ${styles.fpInputPaddedRight}`}
               type={showPass ? 'text' : 'password'}
               placeholder="Min. 8 characters"
-              value={pass} onChange={e => setPass(e.target.value)} />
-            <button type="button" className={styles.fpEye} onClick={() => setShowPass(p => !p)}>
+              value={pass} 
+              onChange={e => {
+                setPass(e.target.value);
+                if (error) setError('');
+              }}
+              disabled={loading}
+            />
+            <button 
+              type="button" 
+              className={styles.fpEye} 
+              onClick={() => setShowPass(p => !p)}
+              disabled={loading}
+            >
               <i className={`ti ${showPass ? 'ti-eye-off' : 'ti-eye'}`} />
             </button>
           </div>
         </div>
+
         <div className={styles.fpField}>
           <label className={styles.fpLabel}>Confirm password</label>
           <div className={styles.fpInputWrap}>
             <i className="ti ti-lock-check" style={{position:'absolute',left:13,top:'50%',transform:'translateY(-50%)',color:'#aaa',fontSize:16}} />
-            <input className={styles.fpInput} type="password"
+            <input 
+              className={styles.fpInput} 
+              type="password"
               placeholder="Repeat your password"
-              value={confirm} onChange={e => setConfirm(e.target.value)} />
+              value={confirm} 
+              onChange={e => {
+                setConfirm(e.target.value);
+                if (error) setError('');
+              }}
+              disabled={loading}
+            />
           </div>
           {confirm && pass !== confirm && <span className={styles.fpError}>Passwords do not match</span>}
         </div>
-        <button className={styles.fpBtn} onClick={next}
-          disabled={!pass || pass !== confirm || pass.length < 8}>
-          Reset Password
+
+        <button 
+          className={styles.fpBtn} 
+          onClick={handleResetPassword}
+          disabled={otp.some(v => !v) || !pass || pass !== confirm || pass.length < 8 || loading}
+        >
+          {loading ? 'Resetting...' : 'Reset Password'}
         </button>
-        <p className={styles.fpBack} onClick={() => setStep(2)}>← Back</p>
+        <p className={styles.fpBack} onClick={() => setStep(1)}>← Back</p>
       </>
     );
 
