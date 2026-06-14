@@ -7,7 +7,9 @@ import {
   deleteArea,
   getGovernorates,
   EGYPT_GOVERNORATES,
+  getDriverProfile,
 } from "../services/driverApi";
+import styles from "../styles/DriverPlaces.module.css";
 
 export default function DriverPlaces() {
   const navigate = useNavigate();
@@ -17,13 +19,17 @@ export default function DriverPlaces() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [profile, setProfile] = useState(null);
 
   const load = async () => {
     setLoading(true);
     try {
-      const res = await listMyAreas();
-      if (res.success) setAreas(res.data);
-      else setError(res.message || "Failed to load");
+      const [areasRes, profileRes] = await Promise.all([listMyAreas(), getDriverProfile()]);
+
+      if (areasRes.success) setAreas(areasRes.data);
+      else setError(areasRes.message || "Failed to load service areas");
+
+      if (profileRes.success) setProfile(profileRes.data);
     } catch (e) {
       setError(e.message);
     }
@@ -73,74 +79,104 @@ export default function DriverPlaces() {
   };
 
   return (
-    <div style={{ maxWidth: 900, margin: "30px auto", padding: 20 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+    <div className={styles.page}>
+      <div className={styles.header}>
         <div>
-          <h2 style={{ margin: 0 }}>Manage Service Areas</h2>
-          <p style={{ color: "#64748b", margin: "6px 0 0" }}>
+          <h2 className={styles.title}>Manage Service Areas</h2>
+          <p className={styles.subtitle}>
             Choose the Egyptian governorates where you are available to drive users.
           </p>
         </div>
-        
       </div>
 
-      {error && (
-        <div style={{ background: "#fee2e2", color: "#991b1b", padding: 10, borderRadius: 6, marginBottom: 16 }}>
-          {error}
+      {error && <div className={styles.errorBox}>{error}</div>}
+
+      {profile && (
+        <div className={styles.card}>
+          <div className={styles.cardHeader}>
+            <div>
+              <h3 className={styles.cardTitle}>Saved Vehicle & Profile Data</h3>
+              <p className={styles.cardText}>
+                These are the details saved from Vehicle & Profile Setup.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => navigate("/driver-form")}
+              className={styles.editBtn}
+            >
+              Edit Vehicle Data
+            </button>
+          </div>
+
+          <div className={styles.infoGrid}>
+            <Info label="Vehicle type" value={profile.vehicleType} />
+            <Info label="License plate" value={profile.licensePlate} />
+            <Info label="Vehicle model" value={profile.vehicleModel} />
+            <Info label="Vehicle year" value={profile.vehicleYear} />
+            <Info label="Accessibility" value={profile.accessibilityFeatures} />
+            <Info
+              label="Available"
+              value={
+                profile.availabilityFrom && profile.availabilityTo
+                  ? `${profile.availabilityFrom} - ${profile.availabilityTo}`
+                  : "Not saved"
+              }
+            />
+            <Info label="License number" value={profile.licenseNumber} />
+            <Info label="Profile completed" value={profile.profileCompleted ? "Yes" : "No"} />
+          </div>
         </div>
       )}
 
-      <form onSubmit={handleAdd} style={{ background: "#fff", padding: 18, borderRadius: 12, border: "1px solid #e2e8f0", marginBottom: 20, display: "flex", gap: 10, alignItems: "end", flexWrap: "wrap" }}>
-        <div style={{ flex: 1, minWidth: 220 }}>
-          <label style={lbl}>Governorate</label>
+      <form onSubmit={handleAdd} className={styles.formCard}>
+        <div className={styles.field}>
+          <label className={styles.label}>Governorate</label>
           <select
             value={selected}
             onChange={(e) => setSelected(e.target.value)}
-            style={inp}
+            className={styles.select}
           >
             <option value="">Select a governorate</option>
             {available.map((g) => (
-              <option key={g} value={g}>{g}</option>
+              <option key={g} value={g}>
+                {g}
+              </option>
             ))}
           </select>
         </div>
-        <button
-          type="submit"
-          disabled={saving || !selected}
-          style={{
-            padding: "10px 20px",
-            background: saving || !selected ? "#94a3b8" : "#2563eb",
-            color: "#fff", border: 0, borderRadius: 8,
-            cursor: saving || !selected ? "not-allowed" : "pointer",
-          }}
-        >
+        <button type="submit" disabled={saving || !selected} className={styles.addBtn}>
           {saving ? "Saving..." : "+ Add"}
         </button>
       </form>
 
       {loading ? (
-        <p>Loading…</p>
+        <p className={styles.loadingText}>Loading…</p>
       ) : areas.length === 0 ? (
-        <div style={{ textAlign: "center", padding: 60, background: "#f8fafc", borderRadius: 12, border: "2px dashed #cbd5e1" }}>
+        <div className={styles.emptyState}>
           <h4>No service areas yet</h4>
-          <p style={{ color: "#64748b" }}>Select a governorate from the dropdown and click Add.</p>
+          <p>Select a governorate from the dropdown and click Add.</p>
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14 }}>
+        <div className={styles.areasGrid}>
           {areas.map((a) => (
-            <div key={a._id} style={{ background: "#fff", padding: 16, borderRadius: 12, border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,.04)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h4 style={{ margin: 0 }}> {a.governorate}</h4>
-                <span style={{ fontSize: 11, padding: "3px 8px", borderRadius: 12, background: a.active ? "#dcfce7" : "#fee2e2", color: a.active ? "#166534" : "#991b1b" }}>
+            <div key={a._id} className={styles.areaCard}>
+              <div className={styles.areaTop}>
+                <h4 className={styles.areaTitle}>{a.governorate}</h4>
+                <span
+                  className={`${styles.badge} ${
+                    a.active ? styles.activeBadge : styles.offBadge
+                  }`}
+                >
                   {a.active ? "Active" : "Off"}
                 </span>
               </div>
-              <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-                <button onClick={() => toggleActive(a)} style={{ flex: 1, padding: "7px", background: "#f1f5f9", border: 0, borderRadius: 6, cursor: "pointer", fontSize: 13 }}>
+              <div className={styles.actions}>
+                <button onClick={() => toggleActive(a)} className={styles.toggleBtn}>
                   {a.active ? "Turn off" : "Turn on"}
                 </button>
-                <button onClick={() => handleDelete(a._id)} style={{ flex: 1, padding: "7px", background: "#fee2e2", color: "#991b1b", border: 0, borderRadius: 6, cursor: "pointer", fontSize: 13 }}>
-                   Delete
+                <button onClick={() => handleDelete(a._id)} className={styles.deleteBtn}>
+                  Delete
                 </button>
               </div>
             </div>
@@ -151,5 +187,11 @@ export default function DriverPlaces() {
   );
 }
 
-const lbl = { display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "#334155" };
-const inp = { width: "100%", padding: "10px 12px", border: "1px solid #cbd5e1", borderRadius: 6, fontSize: 14, background: "#fff" };
+function Info({ label, value }) {
+  return (
+    <div className={styles.infoBox}>
+      <div className={styles.infoLabel}>{label}</div>
+      <div className={styles.infoValue}>{value || "Not saved"}</div>
+    </div>
+  );
+}

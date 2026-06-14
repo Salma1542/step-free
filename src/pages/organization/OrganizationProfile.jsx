@@ -5,7 +5,7 @@ import styles from "./styles/OrganizationProfile.module.css";
 
 export default function OrganizationProfile() {
   const navigate = useNavigate();
-  const [places, setPlaces] = useState([]);
+
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -14,9 +14,6 @@ export default function OrganizationProfile() {
       try {
         const token = localStorage.getItem("token");
 
-        console.log("TOKEN =", token);
-        console.log("ALL STORAGE =", localStorage);
-        // Get User
         const response = await axios.get(
           "http://localhost:3000/api/auth/me",
           {
@@ -29,22 +26,8 @@ export default function OrganizationProfile() {
         if (response.data.success) {
           setUser(response.data.data);
         }
-
-        // Get User Places
-        const placesResponse = await axios.get(
-          "http://localhost:3000/api/places/my-places",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (placesResponse.data.success) {
-          setPlaces(placesResponse.data.data);
-        }
       } catch (error) {
-        console.log("Error fetching data:", error);
+        console.log("Error fetching user:", error);
       } finally {
         setLoading(false);
       }
@@ -53,56 +36,6 @@ export default function OrganizationProfile() {
     getCurrentUser();
   }, []);
 
-  const handleEditPlace = (placeId) => {
-    navigate(`/placeForm/${placeId}`);
-  };
-
-  const handleDeletePlace = async (placeId) => {
-    if (window.confirm("Are you sure you want to delete this place?")) {
-      try {
-        const token = localStorage.getItem("token");
-        await axios.delete(
-          `http://localhost:3000/api/places/${placeId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setPlaces(places.filter((p) => p._id !== placeId));
-      } catch (error) {
-        console.log("Error deleting place:", error);
-      }
-    }
-  };
-
- const getStatusInfo = (status) => {
-  const statusMap = {
-    accepted: {
-      icon: "ti-circle-check",
-      label: "Accepted",
-      color: "approved",
-    },
-    pending: {
-      icon: "ti-clock-hour-4",
-      label: "Pending Review",
-      color: "pending",
-    },
-    rejected: {
-      icon: "ti-alert-circle",
-      label: "Rejected",
-      color: "rejected",
-    },
-  };
-
-  return (
-    statusMap[status] || {
-      icon: "ti-help",
-      label: status,
-      color: "default",
-    }
-  );
-};
   if (loading) {
     return (
       <div
@@ -156,28 +89,10 @@ export default function OrganizationProfile() {
             </div>
 
             <div className={styles.status}>
-              {places.some((p) => p.status === "accepted") ? (
-                <>
-                  <i className="ti ti-circle-check" />
-                  Approved Places Available
-                </>
-              ) : places.some((p) => p.status === "pending") ? (
-                <>
-                  <i className="ti ti-clock-hour-4" />
-                  Waiting For Admin Review
-                </>
-              ) : places.some((p) => p.status === "rejected") ? (
-                <>
-                  <i className="ti ti-alert-circle" />
-                  Some Places Were Rejected
-                </>
-              ) : (
-                <>
-                  <i className="ti ti-building-store" />
-                  No Places Added Yet
-                </>
-              )}
+              <i className="ti ti-clock-hour-4" />
+              Waiting For Admin Review
             </div>
+
             <h2>Organization Profile</h2>
 
             <p>Review your account information below.</p>
@@ -218,6 +133,18 @@ export default function OrganizationProfile() {
               </div>
             </div>
 
+            {/* <div className={styles.infoCard}>
+              <i className="ti ti-calendar" />
+              <div>
+                <label>Date Of Birth</label>
+                <span>
+                  {user?.dateOfBirth
+                    ? new Date(user.dateOfBirth).toLocaleDateString()
+                    : "-"}
+                </span>
+              </div>
+            </div> */}
+
             <div className={styles.infoCard}>
               <i className="ti ti-shield-check" />
               <div>
@@ -252,9 +179,7 @@ export default function OrganizationProfile() {
             className={styles.btn}
             onClick={() => navigate("/placeForm")}
           >
-            {places.length > 0
-              ? "Add Another Place"
-              : "Complete Place Information"}
+            Complete Place Information
             <i className="ti ti-arrow-right" />
           </button>
 
