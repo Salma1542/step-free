@@ -81,12 +81,8 @@ export default function CommunityReviews({ placeId }) {
         setReviews((prev) => [data.data, ...prev]);
         setNewRating(0);
         setNewText("");
-<<<<<<< HEAD
-        setCurrentPage(0); // رجوع للصفحة الأولى بعد الإضافة
-=======
         setNewReviewError("");
         setCurrentPage(0);
->>>>>>> basmala2
       } else {
         setNewReviewError(data.message || "Failed to submit review");
       }
