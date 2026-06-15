@@ -15,8 +15,6 @@ export default function AdminPlacesPage() {
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [activeImage, setActiveImage]     = useState(null);
   const [statusFilter, setStatusFilter]   = useState("all");
-
-  // confirm dialog state: { type: "reject" | "delete", place }
   const [confirmAction, setConfirmAction] = useState(null);
 
   useEffect(() => {
