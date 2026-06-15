@@ -15,11 +15,11 @@ import {
   HiUserGroup,
   HiBuildingOffice2
 } from "react-icons/hi2";
+import { useAuth } from "../../context/AuthContext";
 
 import ReviewsSection from "../../components/common/ReviewsSection/ReviewsSection";
 import LocationIcon from "../../components/common/LocationIcon/LocationIcon";
 
-/* ── scroll-reveal hook ── */
 function useScrollReveal() {
   useEffect(() => {
     const els = document.querySelectorAll(
@@ -45,6 +45,16 @@ export default function HomePage() {
   useScrollReveal(); 
 
 const navigate = useNavigate();
+const { user } = useAuth();
+
+// Helper function: Check login and navigate accordingly
+const handleAuthenticatedNavigation = (destination) => {
+  if (user) {
+    navigate(destination);
+  } else {
+    navigate("/login");
+  }
+};
 
   return (
     <div className={styles.homePage}>
@@ -70,7 +80,7 @@ const navigate = useNavigate();
               entrances — every detail you need before you leave home.
             </p>
 
-            <button className={`${styles.mainBtn} revealUp`}  onClick={() => navigate("/explore")}>
+            <button className={`${styles.mainBtn} revealUp`}  onClick={() => handleAuthenticatedNavigation("/explore")}>
                   Explore Places <FaArrowRight />
             </button>
           </div>
@@ -325,7 +335,7 @@ const navigate = useNavigate();
       <section className={`container text-center ${styles.ctaSection} revealUp`}>
         <h2>Ready to Explore Without Limits?</h2>
         <p>Join 50,000+ users discovering their city with confidence and independence.</p>
-        <button className={styles.mainBtn} onClick={() => navigate("/login")}>Get Started — It's Free</button>
+        <button className={styles.mainBtn} onClick={() => handleAuthenticatedNavigation(user ? "/explore" : "/login")}>Get Started — It's Free</button>
       </section>
 
       <LocationIcon />

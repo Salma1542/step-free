@@ -1,11 +1,12 @@
-// import { useEffect, useRef } from "react";
+// import { useState, useEffect, useRef } from "react";
 // import DriverCard from "../driver/DriverCard";
+// import "leaflet/dist/leaflet.css";
 
+// /* ---------- خريطة المكان (بدون تغيير) ---------- */
 // function VenueMap({ lat = 30.0444, lng = 31.2357, venueName = "Grand Central District" }) {
 //   const mapRef = useRef(null);
 //   const instanceRef = useRef(null);
 
-//   // فتح Google Maps لما يضغط على المابس
 //   const openInMaps = () => {
 //     window.open(`https://www.google.com/maps?q=${lat},${lng}`, "_blank");
 //   };
@@ -26,6 +27,10 @@
 
 //       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
+//       setTimeout(() => {
+//         map.invalidateSize();
+//       }, 0);
+
 //       const venueIcon = L.divIcon({
 //         className: "",
 //         html: `
@@ -37,7 +42,6 @@
 //             border:3px solid white;
 //             box-shadow:0 2px 12px rgba(42,157,143,0.45);
 //           ">
-//             <span class="material-symbols-rounded" style="color:white;font-size:20px;">location_on</span>
 //           </div>
 //         `,
 //         iconSize: [44, 44],
@@ -57,10 +61,9 @@
 //       instanceRef.current?.remove();
 //       instanceRef.current = null;
 //     };
-//   }, [lat, lng]);
+//   }, [lat, lng, venueName]);
 
 //   return (
-//     // ✅ overlay شفاف فوق المابس يفتح Google Maps عند الضغط
 //     <div style={{ position: "relative", height: 220 }}>
 //       <div ref={mapRef} style={{ height: "100%", width: "100%" }} />
 //       <div
@@ -76,15 +79,41 @@
 //   );
 // }
 
-// export default function DriversSidebar({ drivers, venueLat, venueLng, venueName }) {
+// /* ---------- المكون الرئيسي المعدل ---------- */
+// export default function DriversSidebar({ placeId, venueLat, venueLng, venueName }) {
+//   const [drivers, setDrivers] = useState([]);
+//   const [loading, setLoading] = useState(true);
+
 //   const openInMaps = () => {
 //     window.open(`https://www.google.com/maps?q=${venueLat},${venueLng}`, "_blank");
 //   };
 
+//   // ✅ جلب السائقين المرتبطين بهذا المكان
+//   useEffect(() => {
+//     const fetchDrivers = async () => {
+//       if (!placeId) {
+//         setLoading(false);
+//         return;
+//       }
+//       try {
+//         const res = await fetch(`/api/drivers/place/${placeId}`);
+//         const data = await res.json();
+//         if (data.success) {
+//           setDrivers(data.data);
+//         }
+//       } catch (err) {
+//         console.error("Failed to fetch drivers", err);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchDrivers();
+//   }, [placeId]);
+
 //   return (
 //     <>
-
-//       {/* ✅ Map Card — أول حاجة فوق كل شيء */}
+//       {/* Map Card */}
 //       <div
 //         className="card border-0 rounded-4 overflow-hidden shadow-card hover-lift mb-4"
 //         style={{ cursor: "pointer" }}
@@ -95,14 +124,6 @@
 //             <p className="fw-semibold mb-0">{venueName ?? "Grand Central District"}</p>
 //             <small className="text-muted">0.8 mi from city center</small>
 //           </div>
-//           <button
-//             className="btn btn-sm rounded-pill px-3"
-//             style={{ background: "#edf6f4", color: "#2a9d8f", fontWeight: 600, fontSize: 12 }}
-//             onClick={openInMaps}
-//           >
-//             <Icon name="location_on" className="me-1 small" />
-//             Open in Maps
-//           </button>
 //         </div>
 //       </div>
 
@@ -138,19 +159,25 @@
 
 //       {/* Driver Cards */}
 //       <div className="d-flex flex-column gap-3 gap-lg-4">
-//         {drivers.map((driver) => (
-//           <DriverCard key={driver.id} driver={driver} className="hover-lift" />
-//         ))}
+//         {loading ? (
+//           <div className="text-center py-3 text-muted">Loading accessible rides...</div>
+//         ) : drivers.length === 0 ? (
+//           <div className="text-muted text-center py-3">No accessible rides found nearby</div>
+//         ) : (
+//           drivers.map((driver) => (
+//             <DriverCard key={driver._id} driver={driver} className="hover-lift" />
+//           ))
+//         )}
 //       </div>
 //     </>
 //   );
 // }
 
-
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import DriverCard from "../driver/DriverCard";
 import "leaflet/dist/leaflet.css";
 
+/* ---------- خريطة المكان (مع دبوس بدلاً من الدائرة) ---------- */
 function VenueMap({ lat = 30.0444, lng = 31.2357, venueName = "Grand Central District" }) {
   const mapRef = useRef(null);
   const instanceRef = useRef(null);
@@ -176,26 +203,15 @@ function VenueMap({ lat = 30.0444, lng = 31.2357, venueName = "Grand Central Dis
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
       setTimeout(() => {
-  map.invalidateSize();
-}, 0);
+        map.invalidateSize();
+      }, 0);
 
-      const venueIcon = L.divIcon({
-        className: "",
-        html: `
-          <div style="
-            width:44px; height:44px;
-            background:#2a9d8f;
-            border-radius:50%;
-            display:flex; align-items:center; justify-content:center;
-            border:3px solid white;
-            box-shadow:0 2px 12px rgba(42,157,143,0.45);
-          ">
-            <span class="material-symbols-rounded" style="color:white;font-size:20px;">location_on</span>
-          </div>
-        `,
-        iconSize: [44, 44],
-        iconAnchor: [22, 22],
-        popupAnchor: [0, -26],
+      // ✅ أيقونة دبوس (مثل جوجل مابس)
+      const venueIcon = L.icon({
+iconUrl: "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png",        shadowUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
       });
 
       L.marker([lat, lng], { icon: venueIcon })
@@ -228,10 +244,36 @@ function VenueMap({ lat = 30.0444, lng = 31.2357, venueName = "Grand Central Dis
   );
 }
 
-export default function DriversSidebar({ drivers, venueLat, venueLng, venueName }) {
+/* ---------- المكون الرئيسي ---------- */
+export default function DriversSidebar({ placeId, venueLat, venueLng, venueName }) {
+  const [drivers, setDrivers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const openInMaps = () => {
     window.open(`https://www.google.com/maps?q=${venueLat},${venueLng}`, "_blank");
   };
+
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      if (!placeId) {
+        setLoading(false);
+        return;
+      }
+      try {
+        const res = await fetch(`/api/drivers/place/${placeId}`);
+        const data = await res.json();
+        if (data.success) {
+          setDrivers(data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch drivers", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDrivers();
+  }, [placeId]);
 
   return (
     <>
@@ -239,6 +281,7 @@ export default function DriversSidebar({ drivers, venueLat, venueLng, venueName 
       <div
         className="card border-0 rounded-4 overflow-hidden shadow-card hover-lift mb-4"
         style={{ cursor: "pointer" }}
+        onClick={openInMaps}
       >
         <VenueMap lat={venueLat} lng={venueLng} venueName={venueName} />
         <div className="card-body d-flex align-items-center justify-content-between py-3 px-3">
@@ -246,15 +289,6 @@ export default function DriversSidebar({ drivers, venueLat, venueLng, venueName 
             <p className="fw-semibold mb-0">{venueName ?? "Grand Central District"}</p>
             <small className="text-muted">0.8 mi from city center</small>
           </div>
-          <button
-            className="btn btn-sm rounded-pill px-3"
-            style={{ background: "#edf6f4", color: "#2a9d8f", fontWeight: 600, fontSize: 12 }}
-            onClick={openInMaps}
-          >
-            {/* ✅ Fixed: Use Material Symbols span instead of missing <Icon> */}
-            <span className="material-symbols-rounded me-1 small">location_on</span>
-            Open in Maps
-          </button>
         </div>
       </div>
 
@@ -290,9 +324,15 @@ export default function DriversSidebar({ drivers, venueLat, venueLng, venueName 
 
       {/* Driver Cards */}
       <div className="d-flex flex-column gap-3 gap-lg-4">
-        {drivers.map((driver) => (
-          <DriverCard key={driver.id} driver={driver} className="hover-lift" />
-        ))}
+        {loading ? (
+          <div className="text-center py-3 text-muted">Loading accessible rides...</div>
+        ) : drivers.length === 0 ? (
+          <div className="text-muted text-center py-3">No accessible rides found nearby</div>
+        ) : (
+          drivers.map((driver) => (
+            <DriverCard key={driver._id} driver={driver} className="hover-lift" />
+          ))
+        )}
       </div>
     </>
   );

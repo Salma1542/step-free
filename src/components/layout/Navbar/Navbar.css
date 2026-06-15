@@ -132,7 +132,68 @@
 .sf-mobile-buttons {
   display: none;
 }
+.profile-box{
+display:flex;
+align-items:center;
+gap:10px;
 
+padding:6px 10px;
+
+border-radius:999px;
+
+background:#fff;
+
+border:1px solid #eef2f7;
+}
+
+.profile-avatar{
+width:40px;
+height:40px;
+
+border-radius:50%;
+
+background:#0F766E;
+
+color:white;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:18px;
+
+font-weight:700;
+}
+
+.profile-name{
+font-size:15px;
+
+font-weight:600;
+
+color:#0f172a;
+}
+
+.logout-icon{
+border:none;
+
+background:transparent;
+
+color:#94a3b8;
+
+font-size:14px;
+
+font-weight:500;
+
+cursor:pointer;
+
+padding-left:8px;
+}
+
+.logout-icon:hover{
+color:#ef4444;
+}
 /* ===== استايلات الموبايل (شاشة أقل من 768px) ===== */
 @media (max-width: 768px) {
   .sf-container {
