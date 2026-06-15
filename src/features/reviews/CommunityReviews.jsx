@@ -12,6 +12,9 @@ export default function CommunityReviews({ placeId }) {
   const [loading, setLoading] = useState(true);
   const [newRating, setNewRating] = useState(0);
   const [newText, setNewText] = useState("");
+  // رسائل التحقق
+  const [newReviewError, setNewReviewError] = useState("");
+  const [editError, setEditError] = useState("");
   // حالة التعديل المضمن
   const [editingReviewId, setEditingReviewId] = useState(null);
   const [editRating, setEditRating] = useState(0);
@@ -42,7 +45,18 @@ export default function CommunityReviews({ placeId }) {
   // إرسال مراجعة جديدة
   const handleNewSubmit = async (e) => {
     e.preventDefault();
-    if (!newText.trim() || newRating === 0) return;
+    setNewReviewError(""); // مسح الرسالة السابقة
+
+    // التحقق من الصحة
+    if (!newText.trim()) {
+      setNewReviewError("Please write a review");
+      return;
+    }
+    if (newRating === 0) {
+      setNewReviewError("Please select a rating");
+      return;
+    }
+
     if (!user) {
       navigate("/login");
       return;
@@ -67,12 +81,18 @@ export default function CommunityReviews({ placeId }) {
         setReviews((prev) => [data.data, ...prev]);
         setNewRating(0);
         setNewText("");
+<<<<<<< HEAD
         setCurrentPage(0); // رجوع للصفحة الأولى بعد الإضافة
+=======
+        setNewReviewError("");
+        setCurrentPage(0);
+>>>>>>> basmala2
       } else {
-        alert(data.message || "Failed to submit review");
+        setNewReviewError(data.message || "Failed to submit review");
       }
     } catch (err) {
       console.error("Submit error", err);
+      setNewReviewError("An error occurred. Please try again");
     } finally {
       setSubmitting(false);
     }
@@ -81,7 +101,18 @@ export default function CommunityReviews({ placeId }) {
   // إرسال تعديل مراجعة
   const handleEditSubmit = async (e, reviewId) => {
     e.preventDefault();
-    if (!editText.trim() || editRating === 0) return;
+    setEditError(""); // مسح الرسالة السابقة
+
+    // التحقق من الصحة
+    if (!editText.trim()) {
+      setEditError("Please write a review");
+      return;
+    }
+    if (editRating === 0) {
+      setEditError("Please select a rating");
+      return;
+    }
+
     setSubmitting(true);
     try {
       const res = await fetch(`/api/reviews/${reviewId}`, {
@@ -104,10 +135,11 @@ export default function CommunityReviews({ placeId }) {
         );
         cancelEdit();
       } else {
-        alert(data.message || "Failed to update review");
+        setEditError(data.message || "Failed to update review");
       }
     } catch (err) {
       console.error("Update error", err);
+      setEditError("An error occurred. Please try again");
     } finally {
       setSubmitting(false);
     }
@@ -147,6 +179,7 @@ export default function CommunityReviews({ placeId }) {
     setEditingReviewId(review._id);
     setEditRating(review.rating);
     setEditText(review.comment);
+    setEditError(""); // مسح أي أخطاء سابقة
   };
 
   // إلغاء التعديل
@@ -154,6 +187,7 @@ export default function CommunityReviews({ placeId }) {
     setEditingReviewId(null);
     setEditRating(0);
     setEditText("");
+    setEditError("");
   };
 
   // الإحصائيات
@@ -235,6 +269,20 @@ export default function CommunityReviews({ placeId }) {
       {user && (
         <div className="card shadow-card border-0 rounded-4 p-3 p-sm-4 mb-4 hover-lift">
           <form onSubmit={handleNewSubmit}>
+            {/* رسالة الخطأ */}
+            {newReviewError && (
+              <div className="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                <i className="ti ti-alert-circle me-2"></i>
+                {newReviewError}
+                <button
+                  type="button"
+                  className="btn-close"
+                  onClick={() => setNewReviewError("")}
+                  aria-label="Close"
+                ></button>
+              </div>
+            )}
+
             <div className="mb-3">
               <label className="form-label fw-semibold d-block">Your Rating</label>
               <div className="d-flex gap-1">
@@ -243,7 +291,10 @@ export default function CommunityReviews({ placeId }) {
                     key={star}
                     type="button"
                     className="btn p-0 border-0 bg-transparent"
-                    onClick={() => setNewRating(star)}
+                    onClick={() => {
+                      setNewRating(star);
+                      setNewReviewError(""); // مسح الخطأ عند الاختيار
+                    }}
                   >
                     <Icon
                       name="star"
@@ -264,8 +315,10 @@ export default function CommunityReviews({ placeId }) {
                 rows="4"
                 placeholder="Share your experience…"
                 value={newText}
-                onChange={(e) => setNewText(e.target.value)}
-                required
+                onChange={(e) => {
+                  setNewText(e.target.value);
+                  setNewReviewError(""); // مسح الخطأ عند الكتابة
+                }}
               />
             </div>
             <div>
@@ -303,6 +356,20 @@ export default function CommunityReviews({ placeId }) {
                 {editingReviewId === review._id && (
                   <div className="card shadow-card border-0 rounded-4 p-3 p-sm-4 mt-2 hover-lift">
                     <form onSubmit={(e) => handleEditSubmit(e, review._id)}>
+                      {/* رسالة الخطأ */}
+                      {editError && (
+                        <div className="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                          <i className="ti ti-alert-circle me-2"></i>
+                          {editError}
+                          <button
+                            type="button"
+                            className="btn-close"
+                            onClick={() => setEditError("")}
+                            aria-label="Close"
+                          ></button>
+                        </div>
+                      )}
+
                       <div className="mb-3">
                         <label className="form-label fw-semibold d-block">Update your rating</label>
                         <div className="d-flex gap-1">
@@ -311,7 +378,10 @@ export default function CommunityReviews({ placeId }) {
                               key={star}
                               type="button"
                               className="btn p-0 border-0 bg-transparent"
-                              onClick={() => setEditRating(star)}
+                              onClick={() => {
+                                setEditRating(star);
+                                setEditError(""); // مسح الخطأ عند الاختيار
+                              }}
                             >
                               <Icon
                                 name="star"
@@ -332,8 +402,10 @@ export default function CommunityReviews({ placeId }) {
                           rows="4"
                           placeholder="Update your experience…"
                           value={editText}
-                          onChange={(e) => setEditText(e.target.value)}
-                          required
+                          onChange={(e) => {
+                            setEditText(e.target.value);
+                            setEditError(""); // مسح الخطأ عند الكتابة
+                          }}
                         />
                       </div>
                       <div className="d-flex gap-2">
