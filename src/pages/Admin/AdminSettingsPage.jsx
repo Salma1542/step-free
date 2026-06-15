@@ -1,440 +1,304 @@
-import { useState } from 'react';
-import styles from './AdminSettingsPage.module.css';
+import { useEffect, useState } from "react";
+import axios from "../../config/axiosInstance";
+import styles from "./AdminSettingsPage.module.css";
 
-const SettingsSection = ({ icon, title, description, children, active = true }) => (
-  <div className={styles.section}>
-    <div className={styles.sectionHeader}>
-      <div className={styles.headerContent}>
-        <i className={`bi ${icon} ${styles.sectionIcon}`} />
-        <div>
-          <h2 className={styles.sectionTitle}>{title}</h2>
-          <p className={styles.sectionDesc}>{description}</p>
-        </div>
-      </div>
-    </div>
-    {active && <div className={styles.sectionContent}>{children}</div>}
-  </div>
-);
-
-const SettingItem = ({ label, description, children, type = 'normal' }) => (
-  <div className={`${styles.settingItem} ${styles[`type${type.charAt(0).toUpperCase() + type.slice(1)}`]}`}>
-    <div className={styles.settingLabel}>
-      <label>{label}</label>
-      {description && <p className={styles.settingDesc}>{description}</p>}
-    </div>
-    <div className={styles.settingControl}>{children}</div>
-  </div>
-);
-
-const Toggle = ({ checked, onChange }) => (
-  <label className={styles.toggleLabel}>
-    <input
-      type="checkbox"
-      checked={checked}
-      onChange={(e) => onChange(e.target.checked)}
-      className={styles.toggleInput}
-    />
-    <span className={styles.toggleSwitch} />
-  </label>
-);
-
-const ColorInput = ({ value, onChange }) => (
-  <div className={styles.colorInput}>
-    <input
-      type="color"
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className={styles.colorField}
-    />
-    <span className={styles.colorValue}>{value}</span>
-  </div>
-);
-
-const Select = ({ value, onChange, options }) => (
-  <select value={value} onChange={(e) => onChange(e.target.value)} className={styles.select}>
-    {options.map((opt) => (
-      <option key={opt.value} value={opt.value}>
-        {opt.label}
-      </option>
-    ))}
-  </select>
-);
-
-const Input = ({ type = 'text', value, onChange, placeholder }) => (
-  <input
-    type={type}
-    value={value}
-    onChange={(e) => onChange(e.target.value)}
-    placeholder={placeholder}
-    className={styles.input}
-  />
-);
-
-const Button = ({ children, variant = 'primary', onClick, disabled = false }) => (
-  <button
-    className={`${styles.button} ${styles[`btn${variant.charAt(0).toUpperCase() + variant.slice(1)}`]}`}
-    onClick={onClick}
-    disabled={disabled}
-  >
-    {children}
-  </button>
-);
+function SavedBadge({ show }) {
+  if (!show) return null;
+  return (
+    <span className={styles.savedBadge}>
+      <i className="ti ti-check" aria-hidden="true" /> Saved
+    </span>
+  );
+}
 
 export default function AdminSettingsPage() {
-  // General settings
-  const [siteName, setSiteName] = useState('Step Free');
-  const [siteEmail, setSiteEmail] = useState('admin@stepfree.com');
-  const [sitePhone, setSitePhone] = useState('+966 50 000 0000');
-  const [maintenanceMode, setMaintenanceMode] = useState(false);
+  const [profile, setProfile] = useState({ firstName: "", lastName: "", email: "", role: "" });
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [profileSaved, setProfileSaved] = useState(false);
+  const [profileError, setProfileError] = useState("");
 
-  // Site settings
-  const [language, setLanguage] = useState('en');
-  const [timezone, setTimezone] = useState('Asia/Riyadh');
-  const [currency, setCurrency] = useState('SAR');
-  const [itemsPerPage, setItemsPerPage] = useState('20');
+  const [passwords, setPasswords] = useState({ current: "", next: "", confirm: "" });
+  const [showPasswords, setShowPasswords] = useState(false);
+  const [passwordSaved, setPasswordSaved] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
 
-  // Security settings
-  const [twoFactorAuth, setTwoFactorAuth] = useState(true);
-  const [sessionTimeout, setSessionTimeout] = useState('30');
-  const [maxLoginAttempts, setMaxLoginAttempts] = useState('5');
-  const [passwordExpiry, setPasswordExpiry] = useState('90');
+  const [notifications, setNotifications] = useState({
+    newPlace: true,
+    newReview: true,
+    reportedReview: false,
+  });
+  const [notificationsSaved, setNotificationsSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Email settings
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [emailHost, setEmailHost] = useState('smtp.gmail.com');
-  const [emailPort, setEmailPort] = useState('587');
-  const [emailUsername, setEmailUsername] = useState('');
+  useEffect(() => { fetchProfile(); }, []);
 
-  // Interface settings
-  const [theme, setTheme] = useState('light');
-  const [primaryColor, setPrimaryColor] = useState('#667eea');
-  const [accentColor, setAccentColor] = useState('#764ba2');
+const fetchProfile = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    console.log("TOKEN =", token);
 
-  // Backup settings
-  const [autoBackup, setAutoBackup] = useState(true);
-  const [backupFrequency, setBackupFrequency] = useState('daily');
-  const [lastBackup, setLastBackup] = useState(new Date().toLocaleDateString('en-US'));
-
-  // API settings
-  const [apiRateLimit, setApiRateLimit] = useState('1000');
-  const [enableAPICaching, setEnableAPICaching] = useState(true);
-  const [cacheExpiry, setCacheExpiry] = useState('3600');
-
-  // Loading states
-  const [loadingBackup, setLoadingBackup] = useState(false);
-  const [loadingEmailTest, setLoadingEmailTest] = useState(false);
-
-  const handleSaveSettings = (section) => {
-    console.log(`Saving ${section} settings...`);
-    alert(`${section} settings saved successfully`);
-  };
-
-  const handleTestEmail = async () => {
-    setLoadingEmailTest(true);
-    try {
-      console.log('Sending test email...');
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      alert(`Test email sent successfully to ${emailUsername}`);
-    } catch {
-      alert('Failed to send test email');
-    } finally {
-      setLoadingEmailTest(false);
-    }
-  };
-
-  const handleBackupNow = async () => {
-    setLoadingBackup(true);
-    try {
-      console.log('Creating backup...');
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      const today = new Date().toLocaleDateString('en-US');
-      setLastBackup(today);
-      alert('Backup created successfully');
-    } catch {
-      alert('Failed to create backup');
-    } finally {
-      setLoadingBackup(false);
-    }
-  };
-
-  const handleDeleteAllData = () => {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete ALL data? This action cannot be undone.'
-    );
-    if (confirmed) {
-      const doubleConfirm = window.confirm(
-        'This will permanently delete all data. Type "DELETE" to confirm'
-      );
-      if (doubleConfirm) {
-        console.log('Deleting all data...');
-        alert('All data has been deleted');
+    const res = await axios.get("/admin/profile");
+      const data = res?.data?.data;
+      if (data) {
+        setProfile({
+          firstName: data.firstName || "",
+          lastName: data.lastName || "",
+          email: data.email || "",
+          role: data.role || "",
+        });
+        if (data.notificationSettings) {
+          setNotifications({
+            newPlace: data.notificationSettings.newPlace ?? true,
+            newReview: data.notificationSettings.newReview ?? true,
+            reportedReview: data.notificationSettings.reportedReview ?? false,
+          });
+        }
       }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleResetSystem = () => {
-    const confirmed = window.confirm(
-      'Are you sure you want to reset the system? This action cannot be undone.'
-    );
-    if (confirmed) {
-      const doubleConfirm = window.confirm(
-        'This will reset all system settings to default. Type "RESET" to confirm'
-      );
-      if (doubleConfirm) {
-        console.log('Resetting system...');
-        alert('System has been reset to default settings');
-      }
+  const flash = (setter) => {
+    setter(true);
+    setTimeout(() => setter(false), 2500);
+  };
+
+  const getInitials = () => {
+    const f = profile.firstName?.[0] || "";
+    const l = profile.lastName?.[0] || "";
+    return (f + l).toUpperCase() || "A";
+  };
+
+  const handleProfileSave = async (e) => {
+    e.preventDefault();
+    setProfileError("");
+    if (!profile.firstName || !profile.lastName || !profile.email) {
+      setProfileError("Please fill in all fields.");
+      return;
+    }
+    try {
+      await axios.patch("/admin/profile", {
+        firstName: profile.firstName,
+        lastName: profile.lastName,
+        email: profile.email,
+      });
+      setEditingProfile(false);
+      flash(setProfileSaved);
+    } catch (err) {
+      setProfileError(err?.response?.data?.message || "Could not update profile.");
     }
   };
+
+  const handlePasswordSave = async (e) => {
+    e.preventDefault();
+    setPasswordError("");
+    if (!passwords.current || !passwords.next || !passwords.confirm) {
+      setPasswordError("Please fill in all password fields.");
+      return;
+    }
+    if (passwords.next.length < 8) {
+      setPasswordError("New password must be at least 8 characters.");
+      return;
+    }
+    if (passwords.next !== passwords.confirm) {
+      setPasswordError("Passwords do not match.");
+      return;
+    }
+    try {
+      await axios.patch("/admin/change-password", {
+        currentPassword: passwords.current,
+        newPassword: passwords.next,
+      });
+      setPasswords({ current: "", next: "", confirm: "" });
+      flash(setPasswordSaved);
+    } catch (err) {
+      setPasswordError(err?.response?.data?.message || "Could not update password. Please check your current password.");
+    }
+  };
+
+  const handleNotificationsSave = async () => {
+    try {
+      await axios.patch("/admin/notification-settings", notifications);
+      flash(setNotificationsSaved);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className={styles.page}>
+        <div className={styles.loadingState}>
+          <i className="ti ti-refresh" />
+          <p>Loading settings…</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={styles.container}>
-      {/* Page Header */}
-      <div className={styles.header}>
-        <div>
-          <h1 className={styles.title}>Settings</h1>
-          <p className={styles.subtitle}>Manage all system settings and configurations</p>
+    <div className={styles.page}>
+      <header className={styles.pageHead}>
+        <h1 className={styles.title}>Settings</h1>
+        <p className={styles.subtitle}>Manage your admin account and preferences.</p>
+      </header>
+
+      {/* ── Profile ── */}
+      <section className={styles.card}>
+        <div className={styles.cardHead}>
+          <div className={styles.cardIcon}><i className="ti ti-user-circle" aria-hidden="true" /></div>
+          <div>
+            <p className={styles.cardTitle}>Profile information</p>
+            <p className={styles.cardDesc}>Your basic account details.</p>
+          </div>
         </div>
-      </div>
 
-      {/* Settings */}
-      <div className={styles.contentWrapper}>
-        {/* General Settings */}
-        <SettingsSection
-          icon="bi-gear-fill"
-          title="General Settings"
-          description="Basic information about the site"
-        >
-          <SettingItem label="Site Name" description="The name that will appear in the page header">
-            <Input value={siteName} onChange={setSiteName} />
-          </SettingItem>
-          
-          <SettingItem label="Email Address" description="Email for communication">
-            <Input type="email" value={siteEmail} onChange={setSiteEmail} />
-          </SettingItem>
-          
-          <SettingItem label="Phone Number" description="Phone number for technical support">
-            <Input value={sitePhone} onChange={setSitePhone} />
-          </SettingItem>
-          
-          <SettingItem label="Maintenance Mode" description="Put the site temporarily on maintenance">
-            <Toggle checked={maintenanceMode} onChange={setMaintenanceMode} />
-          </SettingItem>
-
-          <div className={styles.buttonGroup}>
-            <Button onClick={() => handleSaveSettings('General')}>
-              <i className="bi bi-check-circle" /> Save Changes
-            </Button>
+        {!editingProfile ? (
+          <div className={styles.hero}>
+            <div className={styles.avatar}>{getInitials()}</div>
+            <p className={styles.heroName}>{profile.firstName} {profile.lastName}</p>
+            <p className={styles.heroEmail}>{profile.email}</p>
+            <span className={styles.rolePill}>
+              <i className="ti ti-shield-check" aria-hidden="true" />
+              {profile.role === "admin" ? "Admin" : profile.role || "—"}
+            </span>
+            <button className={styles.editBtn} onClick={() => setEditingProfile(true)}>
+              <i className="ti ti-pencil" aria-hidden="true" /> Edit profile
+            </button>
           </div>
-        </SettingsSection>
-
-        {/* Site Settings */}
-        <SettingsSection
-          icon="bi-globe"
-          title="Site Settings"
-          description="Customize basic site behavior"
-        >
-          <SettingItem label="Language">
-            <Select value={language} onChange={setLanguage} options={[
-              { value: 'en', label: 'English' },
-              { value: 'ar', label: 'العربية' },
-            ]} />
-          </SettingItem>
-          
-          <SettingItem label="Timezone">
-            <Select value={timezone} onChange={setTimezone} options={[
-              { value: 'Asia/Riyadh', label: 'Riyadh' },
-              { value: 'Asia/Dubai', label: 'Dubai' },
-              { value: 'Europe/London', label: 'London' },
-            ]} />
-          </SettingItem>
-          
-          <SettingItem label="Currency">
-            <Select value={currency} onChange={setCurrency} options={[
-              { value: 'SAR', label: 'Saudi Riyal' },
-              { value: 'AED', label: 'UAE Dirham' },
-              { value: 'USD', label: 'US Dollar' },
-            ]} />
-          </SettingItem>
-          
-          <SettingItem label="Items Per Page">
-            <Input type="number" value={itemsPerPage} onChange={setItemsPerPage} />
-          </SettingItem>
-
-          <div className={styles.buttonGroup}>
-            <Button onClick={() => handleSaveSettings('Site')}>
-              <i className="bi bi-check-circle" /> Save Changes
-            </Button>
-          </div>
-        </SettingsSection>
-
-        {/* Security Settings */}
-        <SettingsSection
-          icon="bi-shield-lock-fill"
-          title="Security Settings"
-          description="System and account protection"
-        >
-          <SettingItem label="Two-Factor Authentication" description="Enable two-step verification">
-            <Toggle checked={twoFactorAuth} onChange={setTwoFactorAuth} />
-          </SettingItem>
-          
-          <SettingItem label="Session Timeout (Minutes)">
-            <Input type="number" value={sessionTimeout} onChange={setSessionTimeout} />
-          </SettingItem>
-          
-          <SettingItem label="Maximum Login Attempts">
-            <Input type="number" value={maxLoginAttempts} onChange={setMaxLoginAttempts} />
-          </SettingItem>
-          
-          <SettingItem label="Password Expiry (Days)">
-            <Input type="number" value={passwordExpiry} onChange={setPasswordExpiry} />
-          </SettingItem>
-
-          <div className={styles.buttonGroup}>
-            <Button onClick={() => handleSaveSettings('Security')}>
-              <i className="bi bi-check-circle" /> Save Changes
-            </Button>
-          </div>
-        </SettingsSection>
-
-        {/* Email Settings */}
-        <SettingsSection
-          icon="bi-envelope-fill"
-          title="Email Settings"
-          description="Email messaging configuration"
-        >
-          <SettingItem label="Enable Email Notifications">
-            <Toggle checked={emailNotifications} onChange={setEmailNotifications} />
-          </SettingItem>
-          
-          <SettingItem label="Mail Server">
-            <Input value={emailHost} onChange={setEmailHost} />
-          </SettingItem>
-          
-          <SettingItem label="SMTP Port">
-            <Input type="number" value={emailPort} onChange={setEmailPort} />
-          </SettingItem>
-          
-          <SettingItem label="Username">
-            <Input type="email" value={emailUsername} onChange={setEmailUsername} />
-          </SettingItem>
-
-          <div className={styles.buttonGroup}>
-            <Button onClick={() => handleSaveSettings('Email')}>
-              <i className="bi bi-check-circle" /> Save Changes
-            </Button>
-            <Button variant="secondary" onClick={handleTestEmail} disabled={loadingEmailTest}>
-              <i className="bi bi-send" /> {loadingEmailTest ? 'Sending...' : 'Test Send'}
-            </Button>
-          </div>
-        </SettingsSection>
-
-        {/* Interface Settings */}
-        <SettingsSection
-          icon="bi-palette-fill"
-          title="Interface Settings"
-          description="Customize system appearance"
-        >
-          <SettingItem label="Theme">
-            <Select value={theme} onChange={setTheme} options={[
-              { value: 'light', label: 'Light' },
-              { value: 'dark', label: 'Dark' },
-              { value: 'auto', label: 'Auto' },
-            ]} />
-          </SettingItem>
-          
-          <SettingItem label="Primary Color">
-            <ColorInput value={primaryColor} onChange={setPrimaryColor} />
-          </SettingItem>
-          
-          <SettingItem label="Accent Color">
-            <ColorInput value={accentColor} onChange={setAccentColor} />
-          </SettingItem>
-
-          <div className={styles.buttonGroup}>
-            <Button onClick={() => handleSaveSettings('Interface')}>
-              <i className="bi bi-check-circle" /> Save Changes
-            </Button>
-          </div>
-        </SettingsSection>
-
-        {/* Backup Settings */}
-        <SettingsSection
-          icon="bi-cloud-arrow-down-fill"
-          title="Backup Settings"
-          description="System data protection"
-        >
-          <SettingItem label="Automatic Backup">
-            <Toggle checked={autoBackup} onChange={setAutoBackup} />
-          </SettingItem>
-          
-          <SettingItem label="Backup Frequency">
-            <Select value={backupFrequency} onChange={setBackupFrequency} options={[
-              { value: 'hourly', label: 'Hourly' },
-              { value: 'daily', label: 'Daily' },
-              { value: 'weekly', label: 'Weekly' },
-              { value: 'monthly', label: 'Monthly' },
-            ]} />
-          </SettingItem>
-          
-          <SettingItem label="Last Backup" type="readonly">
-            <div className={styles.readonlyValue}>{lastBackup}</div>
-          </SettingItem>
-
-          <div className={styles.buttonGroup}>
-            <Button onClick={() => handleSaveSettings('Backup')}>
-              <i className="bi bi-check-circle" /> Save Changes
-            </Button>
-            <Button variant="secondary" onClick={handleBackupNow} disabled={loadingBackup}>
-              <i className="bi bi-arrow-clockwise" /> {loadingBackup ? 'Creating...' : 'Backup Now'}
-            </Button>
-          </div>
-        </SettingsSection>
-
-        {/* API Settings */}
-        <SettingsSection
-          icon="bi-plug-fill"
-          title="API Settings"
-          description="API configuration"
-        >
-          <SettingItem label="Rate Limit (Requests/Hour)">
-            <Input type="number" value={apiRateLimit} onChange={setApiRateLimit} />
-          </SettingItem>
-          
-          <SettingItem label="Enable Caching">
-            <Toggle checked={enableAPICaching} onChange={setEnableAPICaching} />
-          </SettingItem>
-          
-          <SettingItem label="Cache Expiry (Seconds)">
-            <Input type="number" value={cacheExpiry} onChange={setCacheExpiry} />
-          </SettingItem>
-
-          <div className={styles.buttonGroup}>
-            <Button onClick={() => handleSaveSettings('API')}>
-              <i className="bi bi-check-circle" /> Save Changes
-            </Button>
-          </div>
-        </SettingsSection>
-
-        {/* Danger Zone */}
-        <div className={styles.dangerZone}>
-          <div className={styles.dangerHeader}>
-            <i className="bi bi-exclamation-triangle-fill" />
-            <div>
-              <h3>Danger Zone</h3>
-              <p>Irreversible actions</p>
+        ) : (
+          <form onSubmit={handleProfileSave}>
+            <div className={styles.form}>
+              <div className={styles.row2}>
+                <div className={styles.field}>
+                  <label htmlFor="fn">First name</label>
+                  <input id="fn" type="text" value={profile.firstName}
+                    onChange={(e) => setProfile({ ...profile, firstName: e.target.value })} />
+                </div>
+                <div className={styles.field}>
+                  <label htmlFor="ln">Last name</label>
+                  <input id="ln" type="text" value={profile.lastName}
+                    onChange={(e) => setProfile({ ...profile, lastName: e.target.value })} />
+                </div>
+              </div>
+              <div className={styles.field}>
+                <label htmlFor="em">Email address</label>
+                <input id="em" type="email" value={profile.email}
+                  onChange={(e) => setProfile({ ...profile, email: e.target.value })} />
+              </div>
+              <div className={styles.field}>
+                <label>Role</label>
+                <input type="text" value={profile.role === "admin" ? "Admin" : profile.role} disabled className={styles.disabledInput} />
+              </div>
+              {profileError && (
+                <p className={styles.errorText}>
+                  <i className="ti ti-alert-circle" aria-hidden="true" /> {profileError}
+                </p>
+              )}
             </div>
-          </div>
-          <div className={styles.dangerButtons}>
-            <Button variant="danger" onClick={handleDeleteAllData}>
-              <i className="bi bi-x-circle" /> Delete All Data
-            </Button>
-            <Button variant="danger" onClick={handleResetSystem}>
-              <i className="bi bi-arrow-counterclockwise" /> Reset System
-            </Button>
+            <div className={styles.cardFoot}>
+              <button type="button" className={styles.ghostBtn}
+                onClick={() => { setEditingProfile(false); setProfileError(""); }}>
+                Cancel
+              </button>
+              <SavedBadge show={profileSaved} />
+              <button type="submit" className={styles.primaryBtn}>Save changes</button>
+            </div>
+          </form>
+        )}
+      </section>
+
+      {/* ── Password ── */}
+      <section className={styles.card}>
+        <div className={styles.cardHead}>
+          <div className={styles.cardIcon}><i className="ti ti-lock" aria-hidden="true" /></div>
+          <div>
+            <p className={styles.cardTitle}>Change password</p>
+            <p className={styles.cardDesc}>Keep your account secure with a strong password.</p>
           </div>
         </div>
-      </div>
+
+        <form onSubmit={handlePasswordSave}>
+          <div className={styles.form}>
+            <div className={styles.field}>
+              <label htmlFor="cp">Current password</label>
+              <input id="cp" type={showPasswords ? "text" : "password"}
+                placeholder="••••••••" value={passwords.current}
+                onChange={(e) => setPasswords({ ...passwords, current: e.target.value })}
+                autoComplete="current-password" />
+            </div>
+            <div className={styles.row2}>
+              <div className={styles.field}>
+                <label htmlFor="np">New password</label>
+                <input id="np" type={showPasswords ? "text" : "password"}
+                  placeholder="Min. 8 characters" value={passwords.next}
+                  onChange={(e) => setPasswords({ ...passwords, next: e.target.value })}
+                  autoComplete="new-password" />
+              </div>
+              <div className={styles.field}>
+                <label htmlFor="cnp">Confirm new password</label>
+                <input id="cnp" type={showPasswords ? "text" : "password"}
+                  placeholder="Repeat new password" value={passwords.confirm}
+                  onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
+                  autoComplete="new-password" />
+              </div>
+            </div>
+            <label className={styles.checkboxRow}>
+              <input type="checkbox" checked={showPasswords}
+                onChange={(e) => setShowPasswords(e.target.checked)} />
+              Show passwords
+            </label>
+            {passwordError && (
+              <p className={styles.errorText}>
+                <i className="ti ti-alert-circle" aria-hidden="true" /> {passwordError}
+              </p>
+            )}
+          </div>
+          <div className={styles.cardFoot}>
+            <SavedBadge show={passwordSaved} />
+            <button type="submit" className={styles.primaryBtn}>Update password</button>
+          </div>
+        </form>
+      </section>
+
+      {/* ── Notifications ── */}
+      <section className={styles.card}>
+        <div className={styles.cardHead}>
+          <div className={styles.cardIcon}><i className="ti ti-bell" aria-hidden="true" /></div>
+          <div>
+            <p className={styles.cardTitle}>Notifications</p>
+            <p className={styles.cardDesc}>Choose what to be notified about.</p>
+          </div>
+        </div>
+
+        {[
+          { key: "newPlace", title: "New place submissions", desc: "When a user submits a place for review." },
+          { key: "newReview", title: "New reviews", desc: "When a user posts a new review." },
+          { key: "reportedReview", title: "Reported reviews", desc: "When a review is flagged by a user." },
+        ].map(({ key, title, desc }) => (
+          <div key={key} className={styles.toggleRow}>
+            <div>
+              <p className={styles.toggleTitle}>{title}</p>
+              <p className={styles.toggleDesc}>{desc}</p>
+            </div>
+            <label className={styles.switch}>
+              <input type="checkbox" checked={notifications[key]}
+                onChange={() => setNotifications((prev) => ({ ...prev, [key]: !prev[key] }))} />
+              <span className={styles.slider} />
+            </label>
+          </div>
+        ))}
+
+        <div className={styles.notifFoot}>
+          <SavedBadge show={notificationsSaved} />
+          <button type="button" className={styles.primaryBtn} onClick={handleNotificationsSave}>
+            Save preferences
+          </button>
+        </div>
+      </section>
     </div>
   );
 }

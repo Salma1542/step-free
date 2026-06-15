@@ -1,13 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from "react";
+import axios from "axios";
 import styles from './ReviewsPage.module.css';
 
-const INITIAL_REVIEWS = [
-  { id: 1, user: 'Sara Khalifa', place: 'Cairo Mall', rating: 5, comment: 'Amazing accessibility and ramps everywhere. Staff was super helpful.', date: '2 days ago' },
-  { id: 2, user: 'Ali Hassan', place: 'Smart Village', rating: 4, comment: 'Good experience overall. Could improve signage for accessible routes.', date: '5 days ago' },
-  { id: 3, user: 'Mona Ahmed', place: 'City Center', rating: 2, comment: 'Needs better wheelchair access. Elevators were out of service.', date: '1 week ago' },
-  { id: 4, user: 'Omar Nabil', place: 'The Terrace Bistro', rating: 5, comment: 'Wide doors and accessible bathroom. Great food too!', date: '1 week ago' },
-  { id: 5, user: 'Yara Mostafa', place: 'Brew Co Cafe', rating: 3, comment: 'Mostly accessible but tight spaces between tables.', date: '2 weeks ago' },
-];
+
 
 const RATING_FILTERS = [
   { label: 'All', value: 0 },
@@ -79,31 +74,107 @@ function ViewReviewModal({ isOpen, review, onClose }) {
   );
 }
 
+// Confirmation dialog for deleting a review
+function ConfirmDeleteModal({ isOpen, review, onConfirm, onCancel }) {
+  if (!isOpen || !review) return null;
+
+  return (
+    <div className={styles.confirmOverlay} onClick={onCancel}>
+      <div className={styles.confirmBox} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.confirmIcon}>
+          <i className="bi bi-trash" />
+        </div>
+        <h3 className={styles.confirmTitle}>Delete this review?</h3>
+        <p className={styles.confirmText}>
+          The review by "{review.user}" on "{review.place}" will be permanently removed and cannot be recovered.
+        </p>
+        <div className={styles.confirmActions}>
+          <button type="button" className={styles.confirmCancel} onClick={onCancel}>
+            Cancel
+          </button>
+          <button type="button" className={styles.confirmDelete} onClick={onConfirm}>
+            <i className="bi bi-trash" /> Yes, delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function ReviewsPage() {
-  const [reviews, setReviews] = useState(INITIAL_REVIEWS);
+  const [reviews, setReviews] = useState([]);
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState(0);
   const [selectedReview, setSelectedReview] = useState(null);
   const [showViewModal, setShowViewModal] = useState(false);
+  const [reviewToDelete, setReviewToDelete] = useState(null);
+
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3000/api/admin/reviews"
+      );
+
+      const formattedReviews = res.data.reviews.map((review) => ({
+        id: review._id,
+        user: `${review.user?.firstName || ""} ${review.user?.lastName || ""}`,
+        place: review.place?.name || "Unknown Place",
+        rating: review.rating,
+        comment: review.comment,
+        date: new Date(review.createdAt).toLocaleDateString(),
+      }));
+
+      setReviews(formattedReviews);
+    } catch (error) {
+      console.log("ERROR =", error);
+    }
+  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
+
     return reviews.filter((r) => {
       const matchesRating =
         filter === 0 ||
         (filter === 2 ? r.rating <= 2 : r.rating === filter);
+
       const matchesQuery =
         !q ||
         r.user.toLowerCase().includes(q) ||
         r.place.toLowerCase().includes(q) ||
         r.comment.toLowerCase().includes(q);
+
       return matchesRating && matchesQuery;
     });
   }, [reviews, query, filter]);
 
-  const handleDelete = (id) => {
-    if (window.confirm('Delete this review?')) {
-      setReviews((prev) => prev.filter((r) => r.id !== id));
+  const requestDelete = (review) => {
+    setReviewToDelete(review);
+  };
+
+  const cancelDelete = () => {
+    setReviewToDelete(null);
+  };
+
+  const confirmDelete = async () => {
+    if (!reviewToDelete) return;
+
+    try {
+      await axios.delete(
+        `http://localhost:3000/api/admin/reviews/${reviewToDelete.id}`
+      );
+
+      setReviews((prev) =>
+        prev.filter((r) => r.id !== reviewToDelete.id)
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setReviewToDelete(null);
     }
   };
 
@@ -173,8 +244,8 @@ export default function ReviewsPage() {
               <footer className={styles.cardFoot}>
                 <span className={styles.date}>{r.date}</span>
                 <div className={styles.actions}>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className={styles.btnGhost}
                     onClick={() => handleView(r)}
                   >
@@ -183,7 +254,7 @@ export default function ReviewsPage() {
                   <button
                     type="button"
                     className={styles.btnDanger}
-                    onClick={() => handleDelete(r.id)}
+                    onClick={() => requestDelete(r)}
                   >
                     <i className="bi bi-trash" /> Delete
                   </button>
@@ -198,6 +269,13 @@ export default function ReviewsPage() {
         isOpen={showViewModal}
         review={selectedReview}
         onClose={() => setShowViewModal(false)}
+      />
+
+      <ConfirmDeleteModal
+        isOpen={!!reviewToDelete}
+        review={reviewToDelete}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
       />
     </div>
   );
