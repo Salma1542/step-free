@@ -168,12 +168,13 @@ export default function PlacesPage() {
 
           <div className="col-12 col-lg-4">
             <div className="animate-on-scroll hover-lift rounded-4">
-              <DriversSidebar
-                placeId={id}
-                venueLat={place.lat}
-                venueLng={place.lng}
-                venueName={name}
-              />
+   <DriversSidebar
+  placeId={place._id}
+  venueLat={place.lat}
+  venueLng={place.lng}
+  venueName={place.name}
+  venueArea={place.area}
+/>
             </div>
           </div>
         </div>

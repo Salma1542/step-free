@@ -1,18 +1,20 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import styles from "../styles/DriverPlaces.module.css";
 import {
   listMyAreas,
   createArea,
   updateArea,
   deleteArea,
-  getGovernorates,
-  EGYPT_GOVERNORATES,
+  getCairoCities,
+  CAIRO_CITIES,
 } from "../services/driverApi";
 
 export default function DriverPlaces() {
   const navigate = useNavigate();
+
   const [areas, setAreas] = useState([]);
-  const [governorates, setGovernorates] = useState(EGYPT_GOVERNORATES);
+  const [cities, setCities] = useState(CAIRO_CITIES);
   const [selected, setSelected] = useState("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -20,37 +22,53 @@ export default function DriverPlaces() {
 
   const load = async () => {
     setLoading(true);
+    setError("");
+
     try {
       const res = await listMyAreas();
-      if (res.success) setAreas(res.data);
-      else setError(res.message || "Failed to load");
+
+      if (res.success) {
+        setAreas(res.data || []);
+      } else {
+        setError(res.message || "Failed to load service areas");
+      }
     } catch (e) {
-      setError(e.message);
+      setError(e.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
-    (async () => setGovernorates(await getGovernorates()))();
+    (async () => {
+      const cairoCities = await getCairoCities();
+      setCities(cairoCities);
+    })();
+
     load();
   }, []);
 
-  const selectedAreaNames = useMemo(() => new Set(areas.map((a) => a.governorate)), [areas]);
+  const selectedAreaNames = useMemo(() => {
+    return new Set(areas.map((area) => area.governorate));
+  }, [areas]);
 
   const available = useMemo(() => {
-    return governorates.filter((g) => !selectedAreaNames.has(g));
-  }, [governorates, selectedAreaNames]);
+    return cities.filter((city) => !selectedAreaNames.has(city));
+  }, [cities, selectedAreaNames]);
 
   const handleAdd = async (e) => {
     e.preventDefault();
     setError("");
+
     if (!selected) {
-      setError("Please select a governorate first");
+      setError("Please select an area first");
       return;
     }
+
     setSaving(true);
     const res = await createArea(selected);
     setSaving(false);
+
     if (res.success) {
       setSelected("");
       await load();
@@ -60,96 +78,161 @@ export default function DriverPlaces() {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Remove this governorate from your service areas?")) return;
+    const confirmDelete = window.confirm(
+      "Remove this area from your service areas?"
+    );
+
+    if (!confirmDelete) return;
+
     const res = await deleteArea(id);
-    if (res.success) await load();
-    else alert(res.message);
+
+    if (res.success) {
+      await load();
+    } else {
+      alert(res.message || "Delete failed");
+    }
   };
 
-  const toggleActive = async (a) => {
-    const res = await updateArea(a._id, { active: !a.active });
-    if (res.success) await load();
-    else alert(res.message);
+  const toggleActive = async (area) => {
+    const res = await updateArea(area._id, { active: !area.active });
+
+    if (res.success) {
+      await load();
+    } else {
+      alert(res.message || "Update failed");
+    }
   };
 
   return (
-    <div style={{ maxWidth: 900, margin: "30px auto", padding: 20 }}>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div>
-          <h2 style={{ margin: 0 }}>Manage Service Areas</h2>
-          <p style={{ color: "#64748b", margin: "6px 0 0" }}>
-            Choose the Egyptian governorates where you are available to drive users.
+    <div className={styles.page}>
+      {/* HEADER */}
+      <div className={styles.header}>
+        <div className={styles.headerContent}>
+          <span className={styles.badge}>Step Free Driver</span>
+          <h1 className={styles.title}>Manage Service Areas</h1>
+          <p className={styles.subtitle}>
+            Select the Cairo areas where you are available to receive accessible
+            ride requests.
           </p>
         </div>
-        
       </div>
 
+      {/* ERROR MESSAGE */}
       {error && (
-        <div style={{ background: "#fee2e2", color: "#991b1b", padding: 10, borderRadius: 6, marginBottom: 16 }}>
-          {error}
+        <div className={styles.alertContainer}>
+          <div className={styles.error}>
+            <span className={styles.errorIcon}>⚠</span>
+            <p>{error}</p>
+          </div>
         </div>
       )}
 
-      <form onSubmit={handleAdd} style={{ background: "#fff", padding: 18, borderRadius: 12, border: "1px solid #e2e8f0", marginBottom: 20, display: "flex", gap: 10, alignItems: "end", flexWrap: "wrap" }}>
-        <div style={{ flex: 1, minWidth: 220 }}>
-          <label style={lbl}>Governorate</label>
-          <select
-            value={selected}
-            onChange={(e) => setSelected(e.target.value)}
-            style={inp}
+      {/* ADD AREA FORM */}
+      <form onSubmit={handleAdd} className={styles.formContainer}>
+        <div className={styles.formContent}>
+          <div className={styles.fieldGroup}>
+            <label className={styles.label}>Where are you available?</label>
+
+            <div className={styles.selectWrapper}>
+              <select
+                value={selected}
+                onChange={(e) => setSelected(e.target.value)}
+                className={styles.select}
+              >
+                <option value="">Select a Cairo area</option>
+
+                {available.map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <p className={styles.helperText}>
+              Choose the places you can cover regularly. You can turn any area
+              on or off later.
+            </p>
+          </div>
+
+          <button
+            type="submit"
+            disabled={saving || !selected}
+            className={styles.addBtn}
           >
-            <option value="">Select a governorate</option>
-            {available.map((g) => (
-              <option key={g} value={g}>{g}</option>
-            ))}
-          </select>
+            {saving ? "Saving..." : "+ Add Area"}
+          </button>
         </div>
-        <button
-          type="submit"
-          disabled={saving || !selected}
-          style={{
-            padding: "10px 20px",
-            background: saving || !selected ? "#94a3b8" : "#2563eb",
-            color: "#fff", border: 0, borderRadius: 8,
-            cursor: saving || !selected ? "not-allowed" : "pointer",
-          }}
-        >
-          {saving ? "Saving..." : "+ Add"}
-        </button>
       </form>
 
+      {/* CONTENT AREA */}
       {loading ? (
-        <p>Loading…</p>
+        <div className={styles.loadingContainer}>
+          <div className={styles.spinner}></div>
+          <p className={styles.loading}>Loading service areas...</p>
+        </div>
       ) : areas.length === 0 ? (
-        <div style={{ textAlign: "center", padding: 60, background: "#f8fafc", borderRadius: 12, border: "2px dashed #cbd5e1" }}>
-          <h4>No service areas yet</h4>
-          <p style={{ color: "#64748b" }}>Select a governorate from the dropdown and click Add.</p>
+        <div className={styles.emptyState}>
+          <div className={styles.emptyIcon}>📍</div>
+          <h3>No service areas yet</h3>
+          <p>
+            Select the places where you are available to drive, then click "Add
+            Area" above.
+          </p>
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 14 }}>
-          {areas.map((a) => (
-            <div key={a._id} style={{ background: "#fff", padding: 16, borderRadius: 12, border: "1px solid #e2e8f0", boxShadow: "0 1px 4px rgba(0,0,0,.04)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <h4 style={{ margin: 0 }}> {a.governorate}</h4>
-                <span style={{ fontSize: 11, padding: "3px 8px", borderRadius: 12, background: a.active ? "#dcfce7" : "#fee2e2", color: a.active ? "#166534" : "#991b1b" }}>
-                  {a.active ? "Active" : "Off"}
+        <div className={styles.grid}>
+          {areas.map((area) => (
+            <div key={area._id} className={styles.card}>
+              <div className={styles.cardHeader}>
+                <div className={styles.cardTitle}>
+                  <h4 className={styles.city}>{area.governorate}</h4>
+                  <p className={styles.cardText}>Service area available</p>
+                </div>
+
+                <span
+                  className={
+                    area.active ? styles.activeBadge : styles.inactiveBadge
+                  }
+                >
+                  {area.active ? "Active" : "Off"}
                 </span>
               </div>
-              <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
-                <button onClick={() => toggleActive(a)} style={{ flex: 1, padding: "7px", background: "#f1f5f9", border: 0, borderRadius: 6, cursor: "pointer", fontSize: 13 }}>
-                  {a.active ? "Turn off" : "Turn on"}
+
+              <div className={styles.cardActions}>
+                <button
+                  type="button"
+                  onClick={() => toggleActive(area)}
+                  className={
+                    area.active ? styles.toggleOffBtn : styles.toggleOnBtn
+                  }
+                >
+                  {area.active ? "Turn Off" : "Turn On"}
                 </button>
-                <button onClick={() => handleDelete(a._id)} style={{ flex: 1, padding: "7px", background: "#fee2e2", color: "#991b1b", border: 0, borderRadius: 6, cursor: "pointer", fontSize: 13 }}>
-                   Delete
+
+                <button
+                  type="button"
+                  onClick={() => handleDelete(area._id)}
+                  className={styles.deleteBtn}
+                >
+                  Remove
                 </button>
               </div>
             </div>
           ))}
         </div>
       )}
+
+      {/* FOOTER - PROFILE BUTTON */}
+      <div className={styles.footer}>
+        <button
+          type="button"
+          className={styles.profileBtn}
+          onClick={() => navigate("/driver/profile-view")}
+        >
+           View My Profile
+        </button>
+      </div>
     </div>
   );
 }
-
-const lbl = { display: "block", fontSize: 13, fontWeight: 600, marginBottom: 6, color: "#334155" };
-const inp = { width: "100%", padding: "10px 12px", border: "1px solid #cbd5e1", borderRadius: 6, fontSize: 14, background: "#fff" };
