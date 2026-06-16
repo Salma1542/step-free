@@ -94,7 +94,7 @@ function ExplorePage() {
       />
 
       <div className="row mt-4">
-        <div className="col-lg-7 mb-4">
+        <div className="col-lg-6 mb-4">
           <ExploreMap
             places={displayedPlaces}
             selectedPlace={selectedPlace}
@@ -106,7 +106,7 @@ function ExplorePage() {
           />
         </div>
 
-        <div className="col-lg-5">
+        <div className="col-lg-6">
           <PlacesList
             places={displayedPlaces}
             selectedPlace={selectedPlace}
