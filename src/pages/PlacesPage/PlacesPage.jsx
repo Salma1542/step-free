@@ -28,7 +28,7 @@ export default function PlacesPage() {
   useEffect(() => {
     const fetchPlace = async () => {
       try {
-        const res = await fetch(`/places/${id}`);
+        const res = await fetch(`https://step-free-backend.vercel.app/api/places/${id}`);
         const data = await res.json();
         if (!data.success) throw new Error(data.message || "Failed to fetch place");
         setPlace(data.data);
