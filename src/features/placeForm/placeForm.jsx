@@ -22,7 +22,28 @@ const isEditMode = Boolean(id);
   const [serverError, setServerError] = useState('');
   const [submitted, setSubmitted]     = useState(false);
   const [submittedData, setSubmittedData] = useState(null);
-
+const CAIRO_AREAS = [
+  "Nasr City",
+  "Heliopolis",
+  "New Cairo",
+  "Maadi",
+  "Zamalek",
+  "Downtown Cairo",
+  "Garden City",
+  "Shubra",
+  "Ain Shams",
+  "El Marg",
+  "Mokattam",
+  "Abbassia",
+  "Sayeda Zeinab",
+  "El Rehab",
+  "Madinaty",
+  "Badr City",
+  "Helwan",
+  "Dar El Salam",
+  "El Basatin",
+  "15 May City",
+];
 const {
   register,
   handleSubmit,
@@ -44,8 +65,8 @@ useEffect(() => {
       setValue("facilityName", place.name);
       setValue("description", place.description);
       setValue("category", place.type);
-      setValue("address", place.area);
-      setValue("distance", place.distance);
+setValue("address", place.address || "");
+setValue("area", place.area || "");      setValue("distance", place.distance);
       setValue("lat", place.lat);
       setValue("lng", place.lng);
       setValue("phone", place.phone);
@@ -91,8 +112,8 @@ const payload = {
 name: data.facilityName,
 description: data.description,
 type: data.category,
-area: data.address,
-distance: Number(data.distance),
+address: data.address,
+area: data.area,distance: Number(data.distance),
 lat: Number(data.lat),
 lng: Number(data.lng),
 
@@ -448,6 +469,31 @@ if (isEditMode) {
                     <span className={styles.fieldErr}>{errors.address.message}</span>
                   )}
                 </div>
+                <div className={styles.field}>
+  <label htmlFor="area">Cairo Area</label>
+
+  <select
+    id="area"
+    className={errors.area ? styles.inputErr : ""}
+    {...register("area", {
+      required: "Please select Cairo area",
+    })}
+  >
+    <option value="">Select Cairo Area</option>
+
+    {CAIRO_AREAS.map((area) => (
+      <option key={area} value={area}>
+        {area}
+      </option>
+    ))}
+  </select>
+
+  {errors.area && (
+    <span className={styles.fieldErr}>
+      {errors.area.message}
+    </span>
+  )}
+</div>
                 <div className={styles.field}>
   <label>Distance (KM)</label>
 

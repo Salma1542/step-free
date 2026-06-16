@@ -1,4 +1,6 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 import styles from "./ExplorePage.module.css";
 import { useFetchPlaces } from "../../hooks/useFetchPlaces";
 import ExploreSearch from "../../features/explore/components/ExploreSearch/ExploreSearch";
@@ -19,12 +21,21 @@ function getDistance(lat1, lng1, lat2, lng2) {
 }
 
 function ExplorePage() {
+  const navigate = useNavigate();
+  const { user, loading } = useAuth();
+
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [selectedPlace, setSelectedPlace] = useState(null);
   const [sortByDistance, setSortByDistance] = useState(false);
 
-  const { places, loading, error, userLocation } = useFetchPlaces(category, search);
+  const { places, loading: placesLoading, error, userLocation } = useFetchPlaces(category, search);
+
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate("/login", { replace: true });
+    }
+  }, [user, loading, navigate]);
 
   const memoizedPlaces = useMemo(() => places, [places]);
 
@@ -47,6 +58,14 @@ function ExplorePage() {
   const handleSetSelectedPlace = useCallback((place) => {
     setSelectedPlace(place);
   }, []);
+
+  if (loading || !user) {
+    return (
+      <div className="explore-page container">
+        <h1 className={styles.exploreH1}>Loading...</h1>
+      </div>
+    );
+  }
 
   if (error) {
     return (
@@ -73,24 +92,24 @@ function ExplorePage() {
       />
 
       <div className="row mt-4">
-        <div className="col-lg-7 mb-4">
+        <div className="col-lg-6 mb-4">
           <ExploreMap
             places={displayedPlaces}
             selectedPlace={selectedPlace}
             setSelectedPlace={handleSetSelectedPlace}
-            loading={loading}
+            loading={placesLoading}
             userLocation={userLocation}
             sortByDistance={sortByDistance}
             setSortByDistance={setSortByDistance}
           />
         </div>
 
-        <div className="col-lg-5">
+        <div className="col-lg-6">
           <PlacesList
             places={displayedPlaces}
             selectedPlace={selectedPlace}
             setSelectedPlace={handleSetSelectedPlace}
-            loading={loading}
+            loading={placesLoading}
           />
         </div>
       </div>

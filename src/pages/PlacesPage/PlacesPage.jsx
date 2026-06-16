@@ -1,4 +1,4 @@
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import HeroSection from "../../features/places/HeroSection";
@@ -9,12 +9,18 @@ import "./PlacesPage.module.css";
 
 export default function PlacesPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [place, setPlace] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // إذا لم يوجد id صحيح، ننتقل إلى صفحة explore
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/login", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
   if (!id) {
     return <Navigate to="/explore" replace />;
   }
@@ -24,8 +30,50 @@ export default function PlacesPage() {
       try {
         const res = await fetch(`/api/places/${id}`);
         const data = await res.json();
-        if (!data.success) throw new Error(data.message || "Failed to fetch place");
-        setPlace(data.data);
+
+        console.log("Full API response:", data);
+
+        if (!data.success)
+          throw new Error(data.message || "Failed to fetch place");
+
+        // 1. اجمع كل المصادر الممكنة للميزات
+        let rawFeatures =
+          data.data.features ||
+          data.data.accessibility_features ||
+          data.data.highlights ||
+          [];
+
+        // 2. إذا لم توجد ميزات، استخدم tags إن وجدت
+        if (
+          (!rawFeatures || rawFeatures.length === 0) &&
+          data.data.tags &&
+          Array.isArray(data.data.tags)
+        ) {
+          rawFeatures = data.data.tags;
+        }
+
+        // تأكد أنها مصفوفة
+        if (!Array.isArray(rawFeatures)) rawFeatures = [];
+
+        // 3. توحيد كل عنصر إلى { icon, label }
+        const normalizedFeatures = rawFeatures.map((item) => {
+          if (typeof item === "string") {
+            // حول النص إلى أيقونة (lowercase) ونفس النص كتسمية
+            return { icon: item.toLowerCase(), label: item };
+          }
+          // إذا كان كائنًا، تأكد من وجود icon و label
+          return {
+            icon: item.icon || item.name || "check-circle",
+            label: item.label || item.name || item.title || "Feature",
+          };
+        });
+
+        console.log("Normalized features:", normalizedFeatures);
+
+        setPlace({
+          ...data.data,
+          features: normalizedFeatures,
+        });
       } catch (err) {
         setError(err.message);
       } finally {
@@ -35,7 +83,6 @@ export default function PlacesPage() {
     fetchPlace();
   }, [id]);
 
-  // Animation observer
   useEffect(() => {
     if (!place) return;
     const observer = new IntersectionObserver(
@@ -64,6 +111,10 @@ export default function PlacesPage() {
     );
   }
 
+  if (!user) {
+    return null;
+  }
+
   if (error) {
     return (
       <div className="container mt-5">
@@ -80,15 +131,10 @@ export default function PlacesPage() {
     );
   }
 
-  const {
-    name,
-    description,
-    features = [],
-    images = [],
-  } = place;
+  const { name, description, features = [], images = [] } = place;
 
   return (
-<div className="min-vh-100" style={{ background: "var(--light-bg)" }}>
+    <div className="min-vh-100" style={{ background: "var(--light-bg)" }}>
       <div className="container-xl px-3 px-sm-4 py-4 py-lg-5">
         <div className="animate-on-scroll">
           <HeroSection
@@ -101,9 +147,10 @@ export default function PlacesPage() {
           />
         </div>
 
-        <h2 className="display-6 fw-extrabold mb-4 mb-lg-5 animate-on-scroll">
-          Accessibility Highlights
-        </h2>
+        {/* قسم Accessibility Features - يظهر دائمًا */}
+        {/* <div className="animate-on-scroll">
+          <HighlightsGrid features={features} />
+        </div> */}
 
         <div className="row g-4 g-lg-5">
           <div className="col-12 col-lg-8 d-flex flex-column gap-4 gap-lg-5">
@@ -114,19 +161,20 @@ export default function PlacesPage() {
             <div className="animate-on-scroll hover-lift rounded-4">
               <CommunityReviews
                 placeId={id}
-                currentUser={user}   // المستخدم الحقيقي (أو null)
+                currentUser={user}   
               />
             </div>
           </div>
 
           <div className="col-12 col-lg-4">
             <div className="animate-on-scroll hover-lift rounded-4">
-              <DriversSidebar
-                placeId={id}
-                venueLat={place.lat}
-                venueLng={place.lng}
-                venueName={name}
-              />
+   <DriversSidebar
+  placeId={place._id}
+  venueLat={place.lat}
+  venueLng={place.lng}
+  venueName={place.name}
+  venueArea={place.area}
+/>
             </div>
           </div>
         </div>

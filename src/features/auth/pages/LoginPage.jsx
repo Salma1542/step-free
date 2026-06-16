@@ -56,10 +56,36 @@ const handleSubmit = async (e) => {
         navigate("/organization-profile");
 
       } else if (user.role === "driver") {
+  try {
+    const profileRes = await axios.get(
+      "http://localhost:3000/api/drivers/profile",
+      {
+        headers: {
+          Authorization: `Bearer ${response.data.token}`,
+        },
+      }
+    );
 
-        navigate("/driver-form");
+    if (profileRes.data.success) {
+      navigate("/driver/profile-view");
+      return;
+    }
 
-      } else if (user.role === "admin") {
+    navigate("/driver-form");
+    return;
+
+  } catch (error) {
+    // أول مرة يدخل
+    if (error.response?.status === 404) {
+      navigate("/driver-form");
+      return;
+    }
+
+    // أي خطأ تاني
+    setError("Unable to load driver profile.");
+    return;
+  }
+} else if (user.role === "admin") {
 
         navigate("/admin");
 
