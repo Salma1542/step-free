@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./AboutPage.css";
 
 /* ─── Animated counter hook ─── */
@@ -335,13 +336,14 @@ const volunteerRoles = [
 ];
 
 const contactChannels = [
-  { icon: <IconMail size={20} />, label: "Email Us",  value: "hello@stepfree.app",  href: "mailto:hello@stepfree.app" },
+  { icon: <IconMail size={20} />, label: "Email Us",  value: "sarraelhussieny@gmail.com",  href: "mailto:sarraelhussieny@gmail.com" },
   { icon: <IconPhone size={20} />, label: "Call Us",  value: "+20 100 000 0000",     href: "tel:+201000000000" },
   { icon: <IconPin size={20} />,   label: "Visit Us", value: "Cairo, Egypt",         href: "#" },
 ];
 
 /* ══ MAIN COMPONENT ══ */
 export default function AboutPage() {
+  const navigate = useNavigate();
   return (
     <>
       <div className="sf-about">
@@ -560,7 +562,13 @@ export default function AboutPage() {
               ))}
             </div>
             <div className="text-center mt-4">
-              <a href="#contact" className="sf-hero-cta-primary">Apply to Volunteer</a>
+              <button 
+                className="sf-hero-cta-primary" 
+                onClick={() => navigate("/driver")}
+                style={{ border: "none", cursor: "pointer" }}
+              >
+                Apply to Volunteer
+              </button>
             </div>
           </div>
         </section>

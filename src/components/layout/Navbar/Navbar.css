@@ -24,12 +24,11 @@
   margin: 0 auto;
   padding: 0 32px;
   display: grid;
-  grid-template-columns: auto 1fr auto;  /* الأعمدة: يسار | وسط | يمين */
+  grid-template-columns: auto 1fr auto; 
   align-items: center;
   gap: 24px;
 }
 
-/* ===== اللوجو (العمود الأول) ===== */
 .sf-logo-area {
   justify-self: start;
 }
@@ -51,9 +50,8 @@
   color: #0f172a;
 }
 
-/* ===== روابط المنتصف (العمود الثاني) ===== */
 .sf-links-area {
-  justify-self: center;  /* هذا يوسّط الروابط داخل العمود الثاني */
+  justify-self: center;  
   width: 100%;
   display: flex;
   justify-content: center;
@@ -84,9 +82,8 @@
   font-weight: 600;
 }
 
-/* ===== أزرار اليمين (العمود الثالث) ===== */
 .sf-buttons-area {
-  justify-self: end;   /* يلتصق باليمين */
+  justify-self: end;   
   display: flex;
   gap: 12px;
 }
@@ -119,7 +116,6 @@
   transform: translateY(-2px);
 }
 
-/* ===== عناصر الموبايل (مخفية على سطح المكتب) ===== */
 .sf-toggler {
   display: none;
   background: none;
@@ -194,7 +190,6 @@ padding-left:8px;
 .logout-icon:hover{
 color:#ef4444;
 }
-/* ===== استايلات الموبايل (شاشة أقل من 768px) ===== */
 @media (max-width: 768px) {
   .sf-container {
     padding: 0 20px;
@@ -203,18 +198,15 @@ color:#ef4444;
     gap: 0;
   }
   
-  /* إخفاء أزرار سطح المكتب */
   .sf-buttons-area {
     display: none;
   }
   
-  /* إظهار زر التوجل */
   .sf-toggler {
     display: block;
     margin-left: auto;
   }
   
-  /* القائمة المنسدلة */
   .sf-links-area {
     position: absolute;
     top: 72px;
@@ -251,7 +243,6 @@ color:#ef4444;
     display: block;
   }
   
-  /* أزرار الموبايل داخل القائمة */
   .sf-mobile-buttons {
     display: flex;
     flex-direction: column;

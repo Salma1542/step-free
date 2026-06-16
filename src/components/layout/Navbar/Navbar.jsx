@@ -16,10 +16,20 @@ export default function Navbar() {
     navigate("/login");
   };
 
+  // عند الضغط على Explore - التحقق من اللوجن
+  const handleExploreClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      navigate("/login");
+    } else {
+      setIsNavCollapsed(true);
+    }
+  };
+
   const links = [
     { name: "Home", path: "/" },
     { name: "Explore", path: "/explore" },
-    { name: "Blogs", path: "/blogs" },
+    { name: "Organization", path: "/blogs" },
     { name: "About", path: "/about" },
   ];
 
@@ -40,7 +50,14 @@ export default function Navbar() {
               <li key={link.name}>
                 <NavLink
                   to={link.path}
-                  onClick={() => setIsNavCollapsed(true)}
+                  onClick={(e) => {
+                    // للـ Explore فقط - تحقق من اللوجن
+                    if (link.name === "Explore") {
+                      handleExploreClick(e);
+                    } else {
+                      setIsNavCollapsed(true);
+                    }
+                  }}
                   className={({ isActive }) =>
                     isActive ? "active" : ""
                   }
@@ -81,24 +98,24 @@ export default function Navbar() {
 
         <div className="sf-buttons-area">
           {user ? (
-   <div className="profile-box">
+            <div className="profile-box">
 
-  <div className="profile-avatar">
-    {(user?.firstName || user?.name)?.charAt(0)}
-  </div>
+              <div className="profile-avatar">
+                {(user?.firstName || user?.name)?.charAt(0)}
+              </div>
 
-  <span className="profile-name">
-    {user?.firstName || user?.name}
-  </span>
+              <span className="profile-name">
+                {user?.firstName || user?.name}
+              </span>
 
-  <button
-    className="logout-icon"
-    onClick={handleLogout}
-  >
-    Logout
-  </button>
+              <button
+                className="logout-icon"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
 
-</div>
+            </div>
           ) : (
             <>
               <NavLink

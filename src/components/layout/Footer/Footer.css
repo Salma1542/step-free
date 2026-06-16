@@ -11,25 +11,22 @@
     --border-soft: rgba(0, 109, 103, 0.12);
   }
 
-  /* ─── FOOTER SHELL ─── */
+
   .sf-footer {
     font-family: 'Inter', -apple-system, sans-serif;
     background: #ffffff;
     border-top: 1px solid var(--border);
   }
 
-  /* ─── TOP ACCENT BAR ─── */
   .sf-footer-accent {
     height: 3px;
     background: linear-gradient(90deg, var(--primary-color) 0%, var(--primary-color) 50%, #5eead4 100%);
   }
 
-  /* ─── MAIN CONTENT AREA ─── */
   .sf-footer-main {
     padding: 52px 0 40px;
   }
 
-  /* ─── BRAND COLUMN ─── */
   .sf-footer-brand-icon {
     width: 32px;
     height: 32px;
@@ -77,7 +74,6 @@
     color: var(--teal-dark);
   }
 
-  /* Social icons */
   .sf-socials {
     display: flex;
     gap: 8px;
@@ -110,7 +106,6 @@
     fill: currentColor;
   }
 
-  /* ─── LINK COLUMNS ─── */
   .sf-footer-col-title {
     font-size: 11px;
     font-weight: 700;
@@ -203,14 +198,12 @@
   }
   .sf-newsletter-btn:hover { background: var(--teal-dark); }
 
-  /* ─── DIVIDER ─── */
   .sf-footer-divider {
     border: none;
     border-top: 1px solid var(--border);
     margin: 0;
   }
 
-  /* ─── BOTTOM BAR ─── */
   .sf-footer-bottom {
     padding: 18px 0;
     display: flex;
@@ -239,7 +232,6 @@
   }
   .sf-footer-legal a:hover { color: var(--teal); }
 
-  /* ─── RESPONSIVE ─── */
   @media (max-width: 767px) {
     .sf-footer-main { padding: 36px 0 28px; }
     .sf-footer-bottom {

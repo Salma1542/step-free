@@ -1,4 +1,4 @@
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import HeroSection from "../../features/places/HeroSection";
@@ -9,12 +9,18 @@ import "./PlacesPage.module.css";
 
 export default function PlacesPage() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
   const [place, setPlace] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // إذا لم يوجد id صحيح، ننتقل إلى صفحة explore
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/login", { replace: true });
+    }
+  }, [user, authLoading, navigate]);
+
   if (!id) {
     return <Navigate to="/explore" replace />;
   }
@@ -35,7 +41,6 @@ export default function PlacesPage() {
     fetchPlace();
   }, [id]);
 
-  // Animation observer
   useEffect(() => {
     if (!place) return;
     const observer = new IntersectionObserver(
@@ -64,6 +69,10 @@ export default function PlacesPage() {
     );
   }
 
+  if (!user) {
+    return null;
+  }
+
   if (error) {
     return (
       <div className="container mt-5">
@@ -88,7 +97,7 @@ export default function PlacesPage() {
   } = place;
 
   return (
-<div className="min-vh-100" style={{ background: "var(--light-bg)" }}>
+    <div className="min-vh-100" style={{ background: "var(--light-bg)" }}>
       <div className="container-xl px-3 px-sm-4 py-4 py-lg-5">
         <div className="animate-on-scroll">
           <HeroSection
@@ -114,7 +123,7 @@ export default function PlacesPage() {
             <div className="animate-on-scroll hover-lift rounded-4">
               <CommunityReviews
                 placeId={id}
-                currentUser={user}   // المستخدم الحقيقي (أو null)
+                currentUser={user}   
               />
             </div>
           </div>
