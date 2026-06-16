@@ -30,8 +30,50 @@ export default function PlacesPage() {
       try {
         const res = await fetch(`/api/places/${id}`);
         const data = await res.json();
-        if (!data.success) throw new Error(data.message || "Failed to fetch place");
-        setPlace(data.data);
+
+        console.log("Full API response:", data);
+
+        if (!data.success)
+          throw new Error(data.message || "Failed to fetch place");
+
+        // 1. اجمع كل المصادر الممكنة للميزات
+        let rawFeatures =
+          data.data.features ||
+          data.data.accessibility_features ||
+          data.data.highlights ||
+          [];
+
+        // 2. إذا لم توجد ميزات، استخدم tags إن وجدت
+        if (
+          (!rawFeatures || rawFeatures.length === 0) &&
+          data.data.tags &&
+          Array.isArray(data.data.tags)
+        ) {
+          rawFeatures = data.data.tags;
+        }
+
+        // تأكد أنها مصفوفة
+        if (!Array.isArray(rawFeatures)) rawFeatures = [];
+
+        // 3. توحيد كل عنصر إلى { icon, label }
+        const normalizedFeatures = rawFeatures.map((item) => {
+          if (typeof item === "string") {
+            // حول النص إلى أيقونة (lowercase) ونفس النص كتسمية
+            return { icon: item.toLowerCase(), label: item };
+          }
+          // إذا كان كائنًا، تأكد من وجود icon و label
+          return {
+            icon: item.icon || item.name || "check-circle",
+            label: item.label || item.name || item.title || "Feature",
+          };
+        });
+
+        console.log("Normalized features:", normalizedFeatures);
+
+        setPlace({
+          ...data.data,
+          features: normalizedFeatures,
+        });
       } catch (err) {
         setError(err.message);
       } finally {
@@ -89,12 +131,7 @@ export default function PlacesPage() {
     );
   }
 
-  const {
-    name,
-    description,
-    features = [],
-    images = [],
-  } = place;
+  const { name, description, features = [], images = [] } = place;
 
   return (
     <div className="min-vh-100" style={{ background: "var(--light-bg)" }}>
@@ -110,9 +147,10 @@ export default function PlacesPage() {
           />
         </div>
 
-        <h2 className="display-6 fw-extrabold mb-4 mb-lg-5 animate-on-scroll">
-          Accessibility Highlights
-        </h2>
+        {/* قسم Accessibility Features - يظهر دائمًا */}
+        {/* <div className="animate-on-scroll">
+          <HighlightsGrid features={features} />
+        </div> */}
 
         <div className="row g-4 g-lg-5">
           <div className="col-12 col-lg-8 d-flex flex-column gap-4 gap-lg-5">
