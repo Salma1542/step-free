@@ -91,12 +91,7 @@ export default function PlacesPage() {
     );
   }
 
-  const {
-    name,
-    description,
-    features = [],
-    images = [],
-  } = place;
+  const { name, description, features = [], images = [] } = place;
 
   return (
     <div className="min-vh-100" style={{ background: "var(--light-bg)" }}>
@@ -112,9 +107,10 @@ export default function PlacesPage() {
           />
         </div>
 
-        <h2 className="display-6 fw-extrabold mb-4 mb-lg-5 animate-on-scroll">
-          Accessibility Highlights
-        </h2>
+        {/* قسم Accessibility Features - يظهر دائمًا */}
+        {/* <div className="animate-on-scroll">
+          <HighlightsGrid features={features} />
+        </div> */}
 
         <div className="row g-4 g-lg-5">
           <div className="col-12 col-lg-8 d-flex flex-column gap-4 gap-lg-5">
@@ -132,12 +128,13 @@ export default function PlacesPage() {
 
           <div className="col-12 col-lg-4">
             <div className="animate-on-scroll hover-lift rounded-4">
-              <DriversSidebar
-                placeId={id}
-                venueLat={place.lat}
-                venueLng={place.lng}
-                venueName={name}
-              />
+   <DriversSidebar
+  placeId={place._id}
+  venueLat={place.lat}
+  venueLng={place.lng}
+  venueName={place.name}
+  venueArea={place.area}
+/>
             </div>
           </div>
         </div>
