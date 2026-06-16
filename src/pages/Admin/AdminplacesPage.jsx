@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "../../config/axiosInstance";
-import styles from "./AdminPlacesPage.module.css";
+import styles from "./AdminplacesPage.module.css";
 
 const STATUS_TABS = [
   { key: "all", label: "All" },
