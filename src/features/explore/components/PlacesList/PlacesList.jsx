@@ -1,9 +1,11 @@
 import { useState } from "react";
 import PlaceCard from "../PlaceCard/PlaceCard";
 import styles from "./PlacesList.module.css";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 function PlacesList({ places, selectedPlace, setSelectedPlace, loading }) {
-  const [showAll, setShowAll] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 3;
 
   if (loading) {
     return (
@@ -28,7 +30,32 @@ function PlacesList({ places, selectedPlace, setSelectedPlace, loading }) {
     );
   }
 
-  const visiblePlaces = showAll ? places : places.slice(0, 4);
+  // Calculate pagination
+  const totalPages = Math.ceil(places.length / itemsPerPage);
+  const startIndex = currentPage * itemsPerPage;
+  const visiblePlaces = places.slice(startIndex, startIndex + itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Handle place card click with scroll to top
+  const handlePlaceCardClick = (place) => {
+    setSelectedPlace(place);
+    // Scroll to top smoothly
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
 
   return (
     <div className={styles.list}>
@@ -48,18 +75,36 @@ function PlacesList({ places, selectedPlace, setSelectedPlace, loading }) {
           <PlaceCard
             place={place}
             isSelected={selectedPlace?._id === place._id}
-            onClick={() => setSelectedPlace(place)}
+            onClick={() => handlePlaceCardClick(place)}
           />
         </div>
       ))}
 
-      {places.length > 4 && (
-        <button
-          className={styles.moreBtn}
-          onClick={() => setShowAll(!showAll)}
-        >
-          {showAll ? "Show Less" : "More"}
-        </button>
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className={styles.paginationContainer}>
+          <button
+            className={`${styles.paginationBtn} ${currentPage === 0 ? styles.disabled : ""}`}
+            onClick={handlePrevPage}
+            disabled={currentPage === 0}
+            title="Previous page"
+          >
+            <FaChevronLeft /> Previous
+          </button>
+
+          <span className={styles.pageInfo}>
+            Page {currentPage + 1} of {totalPages}
+          </span>
+
+          <button
+            className={`${styles.paginationBtn} ${currentPage === totalPages - 1 ? styles.disabled : ""}`}
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages - 1}
+            title="Next page"
+          >
+            Next <FaChevronRight />
+          </button>
+        </div>
       )}
     </div>
   );

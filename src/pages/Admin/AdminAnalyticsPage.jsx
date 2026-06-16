@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import styles from './AdminAnalyticsPage.module.css';
+import axiosInstance from '../../config/axiosInstance';
 
 // Custom Chart Components
 const AnalyticsCard = ({ title, value, change, icon, bgColor }) => (
@@ -156,66 +157,75 @@ const DonutChart = ({ data, title }) => {
 };
 
 export default function AdminAnalyticsPage() {
-  // Sample data
   const [timeRange, setTimeRange] = useState('month');
-  
-  const analyticsData = useMemo(() => ({
-    month: {
-      users: 1250,
-      places: 342,
-      reviews: 5680,
-      bookings: 2314,
-      userChange: 12,
-      placesChange: 8,
-      reviewsChange: -5,
-      bookingsChange: 18
-    },
-    week: {
-      users: 280,
-      places: 45,
-      reviews: 890,
-      bookings: 320,
-      userChange: 5,
-      placesChange: 2,
-      reviewsChange: 10,
-      bookingsChange: 8
-    }
-  }), []);
-  
-  const currentData = analyticsData[timeRange];
-  
-  // Chart data
-  const usersTrend = [
-    { label: 'January', value: 850 },
-    { label: 'February', value: 920 },
-    { label: 'March', value: 1050 },
-    { label: 'April', value: 1100 },
-    { label: 'May', value: 1200 },
-    { label: 'June', value: 1250 }
-  ];
-  
-  const placesByType = [
-    { label: 'Restaurants', value: 156, color: '#FF6B6B' },
-    { label: 'Shops', value: 98, color: '#4ECDC4' },
-    { label: 'Hotels', value: 64, color: '#45B7D1' },
-    { label: 'Others', value: 24, color: '#FFA07A' }
-  ];
-  
-  const ratingDistribution = [
-    { label: '5 Stars', value: 2834 },
-    { label: '4 Stars', value: 1456 },
-    { label: '3 Stars', value: 892 },
-    { label: '2 Stars', value: 342 },
-    { label: '1 Star', value: 156 }
-  ];
-  
-  const topPlaces = [
-    { name: 'The Flavor Restaurant', reviews: 245, rating: 4.8 },
-    { name: 'Comfort Hotel', reviews: 198, rating: 4.6 },
-    { name: 'Fragrance Store', reviews: 167, rating: 4.7 },
-    { name: 'Quiet Cafe', reviews: 142, rating: 4.5 }
-  ];
-  
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [analyticsData, setAnalyticsData] = useState(null);
+
+  // Fetch data from API
+  useEffect(() => {
+    const fetchAnalytics = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        const response = await axiosInstance.get('/admin/analytics', {
+  params: { timeRange }
+});
+
+        if (response.data.success) {
+          setAnalyticsData(response.data.data);
+        } else {
+          setError('Failed to fetch analytics data');
+        }
+      } catch (err) {
+        console.error('Analytics Error:', err);
+        setError(err.response?.data?.message || 'Error fetching analytics');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAnalytics();
+  }, [timeRange]);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loadingContainer}>
+          <div className={styles.spinner}></div>
+          <p>Loading analytics...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.errorContainer}>
+          <i className="bi bi-exclamation-triangle"></i>
+          <p>{error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  // No data state
+  if (!analyticsData) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.emptyContainer}>
+          <p>No analytics data available</p>
+        </div>
+      </div>
+    );
+  }
+
+  const { summary, charts } = analyticsData;
+
   return (
     <div className={styles.container}>
       {/* Page Header */}
@@ -246,29 +256,29 @@ export default function AdminAnalyticsPage() {
       <div className={styles.metricsGrid}>
         <AnalyticsCard
           title="Users"
-          value={currentData.users}
-          change={currentData.userChange}
+          value={summary.users}
+          change={summary.userChange}
           icon="bi-people-fill"
           bgColor="bgBlue"
         />
         <AnalyticsCard
           title="Places"
-          value={currentData.places}
-          change={currentData.placesChange}
+          value={summary.places}
+          change={summary.placesChange}
           icon="bi-geo-alt-fill"
           bgColor="bgGreen"
         />
         <AnalyticsCard
           title="Reviews"
-          value={currentData.reviews}
-          change={currentData.reviewsChange}
+          value={summary.reviews}
+          change={summary.reviewsChange}
           icon="bi-star-fill"
           bgColor="bgOrange"
         />
         <AnalyticsCard
           title="Bookings"
-          value={currentData.bookings}
-          change={currentData.bookingsChange}
+          value={summary.bookings}
+          change={summary.bookingsChange}
           icon="bi-calendar-check-fill"
           bgColor="bgPurple"
         />
@@ -277,23 +287,23 @@ export default function AdminAnalyticsPage() {
       {/* Main Charts */}
       <div className={styles.chartsSection}>
         <div className={styles.chartLarge}>
-          <LineChart data={usersTrend} title="User Growth" />
+          <LineChart data={charts.userTrend} title="User Growth" />
         </div>
         <div className={styles.chartMedium}>
-          <BarChart data={placesByType} title="Places by Type" />
+          <BarChart data={charts.placesByType} title="Places by Type" />
         </div>
       </div>
       
       {/* Additional Charts */}
       <div className={styles.chartsSection}>
         <div className={styles.chartMedium}>
-          <DonutChart data={ratingDistribution} title="Rating Distribution" />
+          <DonutChart data={charts.ratingDistribution} title="Rating Distribution" />
         </div>
         <div className={styles.chartMedium}>
           <div className={styles.topPlacesCard}>
             <h3 className={styles.chartTitle}>Top Places</h3>
             <div className={styles.topPlacesList}>
-              {topPlaces.map((place, i) => (
+              {charts.topPlaces.map((place, i) => (
                 <div key={i} className={styles.placeItem}>
                   <div className={styles.placeInfo}>
                     <div className={styles.placeName}>{place.name}</div>

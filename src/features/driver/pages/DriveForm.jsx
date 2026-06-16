@@ -7,21 +7,53 @@ export default function DriverProfile() {
   const photoRef = useRef();
   const licenseRef = useRef();
   const vehicleRef = useRef();
+
   const [photoPreview, setPhotoPreview] = useState(null);
+  const [licenseFile, setLicenseFile] = useState(null);
+  const [licensePreview, setLicensePreview] = useState(null);
+  const [vehicleFile, setVehicleFile] = useState(null);
+  const [vehiclePreview, setVehiclePreview] = useState(null);
 
   const handlePhoto = (e) => {
     const file = e.target.files[0];
     if (file) setPhotoPreview(URL.createObjectURL(file));
   };
 
+  const handleLicense = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setLicenseFile(file);
+    if (file.type.startsWith('image/')) {
+      setLicensePreview(URL.createObjectURL(file));
+    } else {
+      setLicensePreview(null); // PDF أو أى نوع تانى
+    }
+  };
+
+  const handleVehicle = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setVehicleFile(file);
+    if (file.type.startsWith('image/')) {
+      setVehiclePreview(URL.createObjectURL(file));
+    } else {
+      setVehiclePreview(null);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+    // مثال: لو هتبعتيهم للباك استخدمى FormData
+    // const fd = new FormData();
+    // if (photoRef.current.files[0]) fd.append('photo', photoRef.current.files[0]);
+    // if (licenseFile) fd.append('license', licenseFile);
+    // if (vehicleFile) fd.append('vehicle', vehicleFile);
+    // await axios.post('/api/driver/profile', fd, { headers: { 'Content-Type': 'multipart/form-data' }});
     navigate('/login');
   };
 
   return (
     <div className={styles.root}>
-
       {/* ===== Left Panel ===== */}
       <aside className={styles.panel}>
         <div className={styles.dots} />
@@ -107,7 +139,7 @@ export default function DriverProfile() {
                   <label className={styles.label}>Vehicle type</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-car" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <select className={styles.input} required>
+                    <select className={styles.input} required defaultValue="">
                       <option value="" disabled>Select type</option>
                       <option>Wheelchair Van</option>
                       <option>Adapted Minibus</option>
@@ -141,7 +173,7 @@ export default function DriverProfile() {
                   <label className={styles.label}>Accessibility features</label>
                   <div className={styles.inputWrap}>
                     <i className="ti ti-wheelchair" style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)',fontSize:15,color:'#94a3b8'}} />
-                    <select className={styles.input} required>
+                    <select className={styles.input} required defaultValue="">
                       <option value="" disabled>Select feature</option>
                       <option>Wheelchair Ramp</option>
                       <option>Hydraulic Lift</option>
@@ -184,32 +216,88 @@ export default function DriverProfile() {
                     <input type="text" className={styles.input} placeholder="Enter license number" required />
                   </div>
                 </div>
+
+                {/* === Upload Driver's License === */}
                 <div className="col-md-6">
                   <label className={styles.label}>Upload driver's license</label>
                   <div className={styles.upload} onClick={() => licenseRef.current.click()}>
-                    <i className="ti ti-file-upload" />
-                    <p>Click to upload license</p>
-                    <span>PDF, JPEG, PNG up to 10 MB</span>
+                    {licensePreview ? (
+                      <img src={licensePreview} alt="license preview"
+                           style={{maxWidth:'100%',maxHeight:140,borderRadius:8,objectFit:'cover'}} />
+                    ) : licenseFile ? (
+                      <>
+                        <i className="ti ti-file-check" style={{color:'#16a34a',fontSize:28}} />
+                        <p style={{color:'#16a34a',margin:'6px 0 0',fontWeight:600}}>{licenseFile.name}</p>
+                        <span>{(licenseFile.size/1024).toFixed(1)} KB • Click to change</span>
+                      </>
+                    ) : (
+                      <>
+                        <i className="ti ti-file-upload" />
+                        <p>Click to upload license</p>
+                        <span>PDF, JPEG, PNG up to 10 MB</span>
+                      </>
+                    )}
                   </div>
-                  <input ref={licenseRef} type="file" hidden />
+                  <input
+                    ref={licenseRef}
+                    type="file"
+                    accept="image/*,application/pdf"
+                    hidden
+                    onChange={handleLicense}
+                  />
                 </div>
+
+                {/* === Upload Vehicle Photo === */}
                 <div className="col-md-6">
                   <label className={styles.label}>Upload vehicle photo</label>
                   <div className={styles.upload} onClick={() => vehicleRef.current.click()}>
-                    <i className="ti ti-cloud-upload" />
-                    <p>Click to upload vehicle photo</p>
-                    <span>JPEG, PNG up to 10 MB</span>
+                    {vehiclePreview ? (
+                      <img src={vehiclePreview} alt="vehicle preview"
+                           style={{maxWidth:'100%',maxHeight:140,borderRadius:8,objectFit:'cover'}} />
+                    ) : vehicleFile ? (
+                      <>
+                        <i className="ti ti-file-check" style={{color:'#16a34a',fontSize:28}} />
+                        <p style={{color:'#16a34a',margin:'6px 0 0',fontWeight:600}}>{vehicleFile.name}</p>
+                        <span>{(vehicleFile.size/1024).toFixed(1)} KB • Click to change</span>
+                      </>
+                    ) : (
+                      <>
+                        <i className="ti ti-cloud-upload" />
+                        <p>Click to upload vehicle photo</p>
+                        <span>JPEG, PNG up to 10 MB</span>
+                      </>
+                    )}
                   </div>
-                  <input ref={vehicleRef} type="file" hidden />
+                  <input
+                    ref={vehicleRef}
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={handleVehicle}
+                  />
                 </div>
               </div>
             </div>
 
             <div className={styles.divider} />
 
-            <button type="submit" className={styles.btn}>
-              Submit Application <i className="ti ti-arrow-right" />
-            </button>
+            <div style={{display:'flex', gap:10, flexWrap:'wrap'}}>
+              <button type="submit" className={styles.btn} style={{flex:1, minWidth:200}}>
+                Submit Application <i className="ti ti-arrow-right" />
+              </button>
+              <button
+                type="button"
+                onClick={() => navigate('/driver/places')}
+                style={{
+                  flex:1, minWidth:200, padding:'12px 20px',
+                  background:'#e0f2fe', color:'#0369a1',
+                  border:'1px solid #7dd3fc', borderRadius:8,
+                  cursor:'pointer', fontWeight:600
+                }}
+              >
+                 Manage Service Areas
+              </button>
+            </div>
 
           </form>
         </div>
