@@ -176,7 +176,19 @@
   z-index: 40;
 }
 .backdropOpen { opacity: 1; pointer-events: auto; }
-
+.avatarInitials {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #006d67, #004a45);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+}
 /* === Responsive === */
 @media (max-width: 992px) {
   .sidebar { transform: translateX(-100%); }

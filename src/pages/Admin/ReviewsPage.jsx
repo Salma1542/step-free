@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import axios from "../../config/axiosInstance";
 import styles from './ReviewsPage.module.css';
-
-
 
 const RATING_FILTERS = [
   { label: 'All', value: 0 },
@@ -22,10 +20,8 @@ function Stars({ value }) {
   );
 }
 
-// Modal for viewing review details
 function ViewReviewModal({ isOpen, review, onClose }) {
   if (!isOpen || !review) return null;
-
   return (
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -35,7 +31,6 @@ function ViewReviewModal({ isOpen, review, onClose }) {
             <i className="bi bi-x-lg" />
           </button>
         </div>
-
         <div className={styles.modalBody}>
           <div className={styles.reviewHeader}>
             <div className={styles.userBlock}>
@@ -52,17 +47,14 @@ function ViewReviewModal({ isOpen, review, onClose }) {
               <span className={styles.ratingValue}>{review.rating}/5</span>
             </div>
           </div>
-
           <div className={styles.dateBlock}>
             <i className="bi bi-calendar" />
             <span>{review.date}</span>
           </div>
-
           <div className={styles.commentBlock}>
             <h4>Comment</h4>
             <p>{review.comment}</p>
           </div>
-
           <div className={styles.modalActions}>
             <button type="button" className={styles.primaryBtn} onClick={onClose}>
               Close
@@ -74,10 +66,8 @@ function ViewReviewModal({ isOpen, review, onClose }) {
   );
 }
 
-// Confirmation dialog for deleting a review
 function ConfirmDeleteModal({ isOpen, review, onConfirm, onCancel }) {
   if (!isOpen || !review) return null;
-
   return (
     <div className={styles.confirmOverlay} onClick={onCancel}>
       <div className={styles.confirmBox} onClick={(e) => e.stopPropagation()}>
@@ -108,20 +98,21 @@ export default function ReviewsPage() {
   const [selectedReview, setSelectedReview] = useState(null);
   const [showViewModal, setShowViewModal] = useState(false);
   const [reviewToDelete, setReviewToDelete] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchReviews();
   }, []);
 
   const fetchReviews = async () => {
+    setLoading(true);
     try {
-      const res = await axios.get(
-        "http://localhost:3000/api/admin/reviews"
-      );
+      // limit=10000 عشان ناخد كل الريفيوز
+      const res = await axios.get("/admin/reviews?limit=10000");
 
       const formattedReviews = res.data.reviews.map((review) => ({
         id: review._id,
-        user: `${review.user?.firstName || ""} ${review.user?.lastName || ""}`,
+        user: `${review.user?.firstName || ""} ${review.user?.lastName || ""}`.trim() || "Unknown",
         place: review.place?.name || "Unknown Place",
         rating: review.rating,
         comment: review.comment,
@@ -131,46 +122,28 @@ export default function ReviewsPage() {
       setReviews(formattedReviews);
     } catch (error) {
       console.log("ERROR =", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-
     return reviews.filter((r) => {
-      const matchesRating =
-        filter === 0 ||
-        (filter === 2 ? r.rating <= 2 : r.rating === filter);
-
-      const matchesQuery =
-        !q ||
-        r.user.toLowerCase().includes(q) ||
-        r.place.toLowerCase().includes(q) ||
-        r.comment.toLowerCase().includes(q);
-
+      const matchesRating = filter === 0 || (filter === 2 ? r.rating <= 2 : r.rating === filter);
+      const matchesQuery = !q || r.user.toLowerCase().includes(q) || r.place.toLowerCase().includes(q) || r.comment.toLowerCase().includes(q);
       return matchesRating && matchesQuery;
     });
   }, [reviews, query, filter]);
 
-  const requestDelete = (review) => {
-    setReviewToDelete(review);
-  };
-
-  const cancelDelete = () => {
-    setReviewToDelete(null);
-  };
+  const requestDelete = (review) => setReviewToDelete(review);
+  const cancelDelete = () => setReviewToDelete(null);
 
   const confirmDelete = async () => {
     if (!reviewToDelete) return;
-
     try {
-      await axios.delete(
-        `http://localhost:3000/api/admin/reviews/${reviewToDelete.id}`
-      );
-
-      setReviews((prev) =>
-        prev.filter((r) => r.id !== reviewToDelete.id)
-      );
+      await axios.delete(`/admin/reviews/${reviewToDelete.id}`);
+      setReviews((prev) => prev.filter((r) => r.id !== reviewToDelete.id));
     } catch (error) {
       console.log(error);
     } finally {
@@ -188,7 +161,10 @@ export default function ReviewsPage() {
       <header className={styles.pageHead}>
         <div>
           <h1 className={styles.title}>Reviews Management</h1>
-          <p className={styles.subtitle}>Monitor all user reviews and reports.</p>
+          <p className={styles.subtitle}>
+            Monitor all user reviews and reports.
+            {!loading && <span style={{ color: '#006d67', fontWeight: 600 }}> ({reviews.length} total)</span>}
+          </p>
         </div>
       </header>
 
@@ -217,7 +193,12 @@ export default function ReviewsPage() {
         </div>
       </div>
 
-      {filtered.length === 0 ? (
+      {loading ? (
+        <div style={{ textAlign: 'center', padding: '60px 20px', color: '#94a3b8' }}>
+          <i className="bi bi-arrow-repeat" style={{ fontSize: 32, display: 'block', marginBottom: 8 }} />
+          <p style={{ margin: 0, fontSize: 14 }}>Loading reviews…</p>
+        </div>
+      ) : filtered.length === 0 ? (
         <div className={styles.empty}>
           <i className="bi bi-chat-square-text" />
           <p>No reviews match your filters.</p>
@@ -228,7 +209,7 @@ export default function ReviewsPage() {
             <article key={r.id} className={styles.card}>
               <header className={styles.cardHead}>
                 <div className={styles.userBlock}>
-                  <span className={styles.avatar}>{r.user.charAt(0)}</span>
+                  <span className={styles.avatar}>{r.user.charAt(0).toUpperCase()}</span>
                   <div>
                     <h3 className={styles.userName}>{r.user}</h3>
                     <p className={styles.placeName}>
@@ -238,24 +219,14 @@ export default function ReviewsPage() {
                 </div>
                 <Stars value={r.rating} />
               </header>
-
               <p className={styles.comment}>{r.comment}</p>
-
               <footer className={styles.cardFoot}>
                 <span className={styles.date}>{r.date}</span>
                 <div className={styles.actions}>
-                  <button
-                    type="button"
-                    className={styles.btnGhost}
-                    onClick={() => handleView(r)}
-                  >
+                  <button type="button" className={styles.btnGhost} onClick={() => handleView(r)}>
                     <i className="bi bi-eye" /> View
                   </button>
-                  <button
-                    type="button"
-                    className={styles.btnDanger}
-                    onClick={() => requestDelete(r)}
-                  >
+                  <button type="button" className={styles.btnDanger} onClick={() => requestDelete(r)}>
                     <i className="bi bi-trash" /> Delete
                   </button>
                 </div>
