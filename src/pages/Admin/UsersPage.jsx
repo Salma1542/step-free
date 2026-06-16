@@ -1,29 +1,63 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styles from './UsersPage.module.css';
+import axios from "../../config/axiosInstance";
 
-const INITIAL_USERS = [
-  { id: 1, name: 'Sara Khalifa', email: 'sara@gmail.com', role: 'Admin', status: 'Active', joined: '2024-01-12' },
-  { id: 2, name: 'Mona Ahmed', email: 'mona@gmail.com', role: 'Owner', status: 'Pending', joined: '2024-03-04' },
-  { id: 3, name: 'Ali Hassan', email: 'ali@gmail.com', role: 'User', status: 'Blocked', joined: '2024-04-22' },
-  { id: 4, name: 'Omar Nabil', email: 'omar@gmail.com', role: 'User', status: 'Active', joined: '2024-05-09' },
-  { id: 5, name: 'Yara Mostafa', email: 'yara@gmail.com', role: 'Owner', status: 'Active', joined: '2024-06-18' },
-  { id: 6, name: 'Hassan Adel', email: 'hassan@gmail.com', role: 'User', status: 'Pending', joined: '2024-07-01' },
-];
-
-const STATUSES = ['All', 'Active', 'Pending', 'Blocked'];
+const STATUSES = ['All', 'Registered', 'Blocked'];
 
 function statusClass(status) {
-  if (status === 'Active') return styles.badgeSuccess;
-  if (status === 'Pending') return styles.badgeWarning;
+  if (status === 'Registered') return styles.badgeSuccess;
   return styles.badgeDanger;
 }
 
+// ─── Delete Confirm Modal ───────────────────────────────────────────────────
+function DeleteConfirmModal({ isOpen, onClose, onConfirm }) {
+  if (!isOpen) return null;
+  return (
+    <div className={styles.modalOverlay} onClick={onClose}>
+      <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalHead}>
+          <h2>Delete User</h2>
+          <button type="button" className={styles.closeBtn} onClick={onClose}>
+            <i className="bi bi-x-lg" />
+          </button>
+        </div>
+        <div style={{ padding: '24px', textAlign: 'center' }}>
+          <div style={{
+            width: 56, height: 56, borderRadius: '50%',
+            background: '#fee2e2', display: 'grid',
+            placeItems: 'center', margin: '0 auto 16px'
+          }}>
+            <i className="bi bi-trash" style={{ fontSize: 24, color: '#dc2626' }} />
+          </div>
+          <p style={{ margin: '0 0 8px', fontWeight: 600, fontSize: 16, color: '#0f172a' }}>
+            Are you sure?
+          </p>
+          <p style={{ margin: 0, color: '#64748b', fontSize: 14 }}>
+            This action cannot be undone. The user will be permanently deleted.
+          </p>
+        </div>
+        <div className={styles.modalActions}>
+          <button type="button" className={styles.secondaryBtn} onClick={onClose}>
+            Cancel
+          </button>
+          <button
+            type="button"
+            className={styles.primaryBtn}
+            style={{ background: '#dc2626' }}
+            onClick={onConfirm}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ─── Add User Modal ─────────────────────────────────────────────────────────
 function AddUserModal({ isOpen, onClose, onAdd }) {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    role: 'User',
-    status: 'Pending'
+    name: '', email: '', role: 'User', status: 'Active'
   });
 
   const handleChange = (e) => {
@@ -34,11 +68,8 @@ function AddUserModal({ isOpen, onClose, onAdd }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.name.trim() && formData.email.trim()) {
-      onAdd({
-        ...formData,
-        joined: new Date().toISOString().split('T')[0]
-      });
-      setFormData({ name: '', email: '', role: 'User', status: 'Pending' });
+      onAdd({ ...formData, joined: new Date().toISOString().split('T')[0] });
+      setFormData({ name: '', email: '', role: 'User', status: 'Active' });
     }
   };
 
@@ -53,69 +84,37 @@ function AddUserModal({ isOpen, onClose, onAdd }) {
             <i className="bi bi-x-lg" />
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
             <label htmlFor="name">Full Name</label>
-            <input
-              id="name"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter user full name"
-              required
-            />
+            <input id="name" type="text" name="name" value={formData.name}
+              onChange={handleChange} placeholder="Enter user full name" required />
           </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="email">Email Address</label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="example@gmail.com"
-              required
-            />
+            <input id="email" type="email" name="email" value={formData.email}
+              onChange={handleChange} placeholder="example@gmail.com" required />
           </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="role">Role</label>
-            <select
-              id="role"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
+            <select id="role" name="role" value={formData.role} onChange={handleChange}>
               <option>User</option>
+              <option>Driver</option>
+              <option>PlaceOwner</option>
               <option>Admin</option>
-              <option>Owner</option>
             </select>
           </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="status">Status</label>
-            <select
-              id="status"
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-            >
-              <option>Pending</option>
+            <select id="status" name="status" value={formData.status} onChange={handleChange}>
               <option>Active</option>
               <option>Blocked</option>
             </select>
           </div>
-
           <div className={styles.modalActions}>
-            <button type="button" className={styles.secondaryBtn} onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit" className={styles.primaryBtn}>
-              Add User
-            </button>
+            <button type="button" className={styles.secondaryBtn} onClick={onClose}>Cancel</button>
+            <button type="submit" className={styles.primaryBtn}>Add User</button>
           </div>
         </form>
       </div>
@@ -123,13 +122,23 @@ function AddUserModal({ isOpen, onClose, onAdd }) {
   );
 }
 
+// ─── Edit User Modal ─────────────────────────────────────────────────────────
 function EditUserModal({ isOpen, onClose, onSave, user }) {
-  const [formData, setFormData] = useState(user || {
-    name: '',
-    email: '',
-    role: 'User',
-    status: 'Pending'
+  const [formData, setFormData] = useState({
+    name: '', email: '', role: 'User', status: 'Active'
   });
+
+  useEffect(() => {
+    if (user && isOpen) {
+      const roleMap = { user: 'User', driver: 'Driver', placeowner: 'PlaceOwner', admin: 'Admin' };
+      setFormData({
+        name: user.name?.trim() || '',
+        email: user.email || '',
+        role: roleMap[user.role?.toLowerCase()] || 'User',
+        status: user.status || 'Active'
+      });
+    }
+  }, [user, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -139,10 +148,9 @@ function EditUserModal({ isOpen, onClose, onSave, user }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.name.trim() && formData.email.trim()) {
-      onSave({
-        ...user,
-        ...formData
-      });
+      onSave({ ...user, ...formData });
+    } else {
+      alert('Please fill in all required fields');
     }
   };
 
@@ -157,69 +165,37 @@ function EditUserModal({ isOpen, onClose, onSave, user }) {
             <i className="bi bi-x-lg" />
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className={styles.form}>
           <div className={styles.formGroup}>
             <label htmlFor="editName">Full Name</label>
-            <input
-              id="editName"
-              type="text"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Enter user full name"
-              required
-            />
+            <input id="editName" type="text" name="name" value={formData.name}
+              onChange={handleChange} placeholder="Enter user full name" required />
           </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="editEmail">Email Address</label>
-            <input
-              id="editEmail"
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="example@gmail.com"
-              required
-            />
+            <input id="editEmail" type="email" name="email" value={formData.email}
+              onChange={handleChange} placeholder="example@gmail.com" required />
           </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="editRole">Role</label>
-            <select
-              id="editRole"
-              name="role"
-              value={formData.role}
-              onChange={handleChange}
-            >
+            <select id="editRole" name="role" value={formData.role} onChange={handleChange}>
               <option>User</option>
+              <option>Driver</option>
+              <option>PlaceOwner</option>
               <option>Admin</option>
-              <option>Owner</option>
             </select>
           </div>
-
           <div className={styles.formGroup}>
             <label htmlFor="editStatus">Status</label>
-            <select
-              id="editStatus"
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-            >
-              <option>Pending</option>
+            <select id="editStatus" name="status" value={formData.status} onChange={handleChange}>
               <option>Active</option>
               <option>Blocked</option>
             </select>
           </div>
-
           <div className={styles.modalActions}>
-            <button type="button" className={styles.secondaryBtn} onClick={onClose}>
-              Cancel
-            </button>
-            <button type="submit" className={styles.primaryBtn}>
-              Save Changes
-            </button>
+            <button type="button" className={styles.secondaryBtn} onClick={onClose}>Cancel</button>
+            <button type="submit" className={styles.primaryBtn}>Save Changes</button>
           </div>
         </form>
       </div>
@@ -227,27 +203,67 @@ function EditUserModal({ isOpen, onClose, onSave, user }) {
   );
 }
 
+// ─── Main Page ───────────────────────────────────────────────────────────────
 export default function UsersPage() {
-  const [users, setUsers] = useState(INITIAL_USERS);
+  const [users, setUsers] = useState([]);
   const [query, setQuery] = useState('');
   const [filter, setFilter] = useState('All');
   const [showAddModal, setShowAddModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [userToDelete, setUserToDelete] = useState(null);
+
+  useEffect(() => { fetchUsers(); }, []);
+
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get("/admin/users");
+      const formattedUsers = res.data.data.map((user) => {
+        const firstName = user.firstName?.trim() || "";
+        const lastName = user.lastName?.trim() || "";
+        const fullName = `${firstName} ${lastName}`.trim() || "Unknown User";
+        return {
+          id: user._id,
+          name: fullName,
+          email: user.email || "",
+          role: user.role || "user",
+          status: user.isBlocked ? "Blocked" : "Registered",
+          joined: user.createdAt ? new Date(user.createdAt).toLocaleDateString() : "",
+        };
+      });
+      setUsers(formattedUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     return users.filter((u) => {
       const matchesStatus = filter === 'All' || u.status === filter;
-      const matchesQuery =
-        !q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q);
+      const matchesQuery = !q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q);
       return matchesStatus && matchesQuery;
     });
   }, [users, query, filter]);
 
+  // فتح modal التأكيد
   const handleDelete = (id) => {
-    if (window.confirm('Delete this user? This action cannot be undone.')) {
-      setUsers((prev) => prev.filter((u) => u.id !== id));
+    setUserToDelete(id);
+    setShowDeleteModal(true);
+  };
+
+  // تنفيذ الحذف بعد التأكيد
+  const confirmDelete = async () => {
+    try {
+      await axios.delete(`/admin/users/${userToDelete}`);
+      setUsers((prev) => prev.filter((u) => u.id !== userToDelete));
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      alert('Error deleting user: ' + (error.response?.data?.message || error.message));
+    } finally {
+      setShowDeleteModal(false);
+      setUserToDelete(null);
     }
   };
 
@@ -256,19 +272,42 @@ export default function UsersPage() {
     setShowEditModal(true);
   };
 
-  const handleAddUser = (newUserData) => {
-    const newUser = {
-      id: Math.max(...users.map(u => u.id), 0) + 1,
-      ...newUserData
-    };
-    setUsers(prev => [newUser, ...prev]);
-    setShowAddModal(false);
+  const handleAddUser = async (newUserData) => {
+    try {
+      await axios.post('/admin/users', {
+        firstName: newUserData.name.split(' ')[0] || '',
+        lastName: newUserData.name.split(' ').slice(1).join(' ') || '',
+        email: newUserData.email,
+        role: newUserData.role.toLowerCase(),
+        isBlocked: newUserData.status === 'Blocked'
+      });
+      fetchUsers();
+      setShowAddModal(false);
+    } catch (error) {
+      console.error('Error adding user:', error);
+      alert('Error adding user: ' + (error.response?.data?.message || error.message));
+    }
   };
 
-  const handleSaveUser = (updatedUser) => {
-    setUsers(prev => prev.map(u => u.id === updatedUser.id ? updatedUser : u));
-    setShowEditModal(false);
-    setSelectedUser(null);
+  const handleSaveUser = async (updatedUser) => {
+    try {
+      const nameParts = updatedUser.name.trim().split(' ');
+      const firstName = nameParts[0] || '';
+      const lastName = nameParts.slice(1).join(' ') || '';
+      await axios.patch(`/admin/users/${updatedUser.id}`, {
+        firstName, lastName,
+        email: updatedUser.email,
+        role: updatedUser.role.toLowerCase(),
+        isBlocked: updatedUser.status === 'Blocked'
+      });
+      setUsers(prev => prev.map(u => u.id === updatedUser.id ? updatedUser : u));
+      setShowEditModal(false);
+      setSelectedUser(null);
+      await fetchUsers();
+    } catch (error) {
+      console.error('Error updating user:', error);
+      alert('Error updating user: ' + (error.response?.data?.message || error.message));
+    }
   };
 
   return (
@@ -278,11 +317,7 @@ export default function UsersPage() {
           <h1 className={styles.title}>Users Management</h1>
           <p className={styles.subtitle}>Manage all platform users and permissions.</p>
         </div>
-        <button 
-          type="button" 
-          className={styles.primaryBtn}
-          onClick={() => setShowAddModal(true)}
-        >
+        <button type="button" className={styles.primaryBtn} onClick={() => setShowAddModal(true)}>
           <i className="bi bi-plus-lg" /> Add User
         </button>
       </header>
@@ -301,8 +336,7 @@ export default function UsersPage() {
         <div className={styles.tabs} role="tablist">
           {STATUSES.map((s) => (
             <button
-              key={s}
-              type="button"
+              key={s} type="button"
               className={`${styles.tab} ${filter === s ? styles.tabActive : ''}`}
               onClick={() => setFilter(s)}
             >
@@ -350,20 +384,13 @@ export default function UsersPage() {
                     </td>
                     <td data-label="Actions">
                       <div className={styles.actions}>
-                        <button 
-                          type="button" 
-                          className={styles.iconBtn} 
-                          aria-label="Edit user"
-                          onClick={() => handleEdit(u)}
-                        >
+                        <button type="button" className={styles.iconBtn}
+                          aria-label="Edit user" onClick={() => handleEdit(u)}>
                           <i className="bi bi-pencil" />
                         </button>
-                        <button
-                          type="button"
+                        <button type="button"
                           className={`${styles.iconBtn} ${styles.iconBtnDanger}`}
-                          aria-label="Delete user"
-                          onClick={() => handleDelete(u.id)}
-                        >
+                          aria-label="Delete user" onClick={() => handleDelete(u.id)}>
                           <i className="bi bi-trash" />
                         </button>
                       </div>
@@ -374,7 +401,6 @@ export default function UsersPage() {
             </tbody>
           </table>
         </div>
-        
         <footer className={styles.tableFoot}>
           <span>Showing <strong>{filtered.length}</strong> of <strong>{users.length}</strong> users</span>
         </footer>
@@ -388,12 +414,15 @@ export default function UsersPage() {
 
       <EditUserModal
         isOpen={showEditModal}
-        onClose={() => {
-          setShowEditModal(false);
-          setSelectedUser(null);
-        }}
+        onClose={() => { setShowEditModal(false); setSelectedUser(null); }}
         onSave={handleSaveUser}
         user={selectedUser}
+      />
+
+      <DeleteConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => { setShowDeleteModal(false); setUserToDelete(null); }}
+        onConfirm={confirmDelete}
       />
     </div>
   );

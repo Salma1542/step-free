@@ -1,7 +1,7 @@
-
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import styles from './AdminLayout.module.css';
+import { useAuth } from '../../context/AuthContext';
 
 const NAV_ITEMS = [
   { to: '/admin', label: 'Dashboard', icon: 'bi-speedometer2', end: true },
@@ -14,27 +14,30 @@ const NAV_ITEMS = [
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
 
-  
+  // بناء اسم الادمن من الـ AuthContext
+  const firstName = user?.firstName?.trim() || '';
+  const lastName = user?.lastName?.trim() || '';
+  const fullName = `${firstName} ${lastName}`.trim() || 'Admin';
+
+  // أول حرفين للـ avatar
+  const initials = [firstName.charAt(0), lastName.charAt(0)]
+    .filter(Boolean)
+    .join('')
+    .toUpperCase() || 'A';
 
   // Lock body scroll when mobile sidebar open
   useEffect(() => {
     document.body.style.overflow = sidebarOpen ? 'hidden' : '';
-
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, [sidebarOpen]);
 
   const handleLogout = () => {
-    // Replace with real logout logic
+    logout();
     navigate('/login');
   };
-
-
-  
 
   return (
     <div className={styles.shell}>
@@ -61,16 +64,16 @@ export default function AdminLayout() {
             {NAV_ITEMS.map((item) => (
               <li key={item.to}>
                 <NavLink
-  to={item.to}
-  end={item.end}
-  onClick={() => setSidebarOpen(false)}
-  className={({ isActive }) =>
-    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
-  }
->
-  <i className={`bi ${item.icon}`} />
-  <span>{item.label}</span>
-</NavLink>
+                  to={item.to}
+                  end={item.end}
+                  onClick={() => setSidebarOpen(false)}
+                  className={({ isActive }) =>
+                    `${styles.menuLink} ${isActive ? styles.menuLinkActive : ''}`
+                  }
+                >
+                  <i className={`bi ${item.icon}`} />
+                  <span>{item.label}</span>
+                </NavLink>
               </li>
             ))}
           </ul>
@@ -99,19 +102,14 @@ export default function AdminLayout() {
 
           <div className={styles.topbarTitle}>Admin Panel</div>
 
+          {/* Avatar بس — من غير notification ومن غير صورة */}
           <div className={styles.topbarActions}>
-            <button type="button" className={styles.iconBtn} aria-label="Notifications">
-              <i className="bi bi-bell" />
-              <span className={styles.notifyDot} aria-hidden="true" />
-            </button>
             <div className={styles.profile}>
-              <img
-                src="https://i.pravatar.cc/80?img=47"
-                alt="Sara Khalifa"
-                className={styles.avatar}
-              />
+              <div className={styles.avatarInitials} aria-hidden="true">
+                {initials}
+              </div>
               <div className={styles.profileMeta}>
-                <strong>Sara Khalifa</strong>
+                <strong>{fullName}</strong>
                 <span>Super Admin</span>
               </div>
             </div>
