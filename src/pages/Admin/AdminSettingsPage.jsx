@@ -264,41 +264,7 @@ const fetchProfile = async () => {
         </form>
       </section>
 
-      {/* ── Notifications ── */}
-      <section className={styles.card}>
-        <div className={styles.cardHead}>
-          <div className={styles.cardIcon}><i className="ti ti-bell" aria-hidden="true" /></div>
-          <div>
-            <p className={styles.cardTitle}>Notifications</p>
-            <p className={styles.cardDesc}>Choose what to be notified about.</p>
-          </div>
-        </div>
-
-        {[
-          { key: "newPlace", title: "New place submissions", desc: "When a user submits a place for review." },
-          { key: "newReview", title: "New reviews", desc: "When a user posts a new review." },
-          { key: "reportedReview", title: "Reported reviews", desc: "When a review is flagged by a user." },
-        ].map(({ key, title, desc }) => (
-          <div key={key} className={styles.toggleRow}>
-            <div>
-              <p className={styles.toggleTitle}>{title}</p>
-              <p className={styles.toggleDesc}>{desc}</p>
-            </div>
-            <label className={styles.switch}>
-              <input type="checkbox" checked={notifications[key]}
-                onChange={() => setNotifications((prev) => ({ ...prev, [key]: !prev[key] }))} />
-              <span className={styles.slider} />
-            </label>
-          </div>
-        ))}
-
-        <div className={styles.notifFoot}>
-          <SavedBadge show={notificationsSaved} />
-          <button type="button" className={styles.primaryBtn} onClick={handleNotificationsSave}>
-            Save preferences
-          </button>
-        </div>
-      </section>
+    
     </div>
   );
 }
