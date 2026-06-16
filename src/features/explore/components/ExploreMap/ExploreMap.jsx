@@ -9,6 +9,7 @@ import {
 import { useEffect, memo } from "react";
 import L from "leaflet";
 import styles from "./ExploreMap.module.css";
+import { FaLocationCrosshairs } from "react-icons/fa6";
 
 const placeTypes = {
   Restaurant: { icon: "ti-tools-kitchen-2", color: "#378ADD" },
@@ -51,14 +52,13 @@ function createCustomIcon(type, isSelected = false) {
   });
 }
 
-/* ⭐ NEW: Fit Egypt bounds */
 function FitEgyptBounds() {
   const map = useMap();
 
   useEffect(() => {
     const egyptBounds = [
-      [31.9167, 24.7000], // north-west
-      [22.0000, 36.9000], // south-east
+      [31.9167, 24.7000], 
+      [22.0000, 36.9000], 
     ];
 
     map.fitBounds(egyptBounds, {
@@ -69,7 +69,6 @@ function FitEgyptBounds() {
   return null;
 }
 
-/* Keep your fly-to behavior */
 function FlyToPlace({ selectedPlace }) {
   const map = useMap();
 
@@ -112,14 +111,14 @@ function NearMeButton({ userLocation, sortByDistance, setSortByDistance }) {
   };
 
   return (
-    <button
-      className={`${styles.nearMeBtn} ${
-        sortByDistance ? styles.active : ""
-      }`}
-      onClick={handleNearMe}
-    >
-      📍
-    </button>
+<button
+  className={`${styles.nearMeBtn} ${
+    sortByDistance ? styles.active : ""
+  }`}
+  onClick={handleNearMe}
+>
+  <FaLocationCrosshairs />
+</button>
   );
 }
 
@@ -132,7 +131,7 @@ function ExploreMap({
   sortByDistance,
   setSortByDistance,
 }) {
-  const center = [26.8206, 30.8025]; // Egypt fallback center
+  const center = [26.8206, 30.8025]; 
 
   return (
     <div className={styles.mapBox} style={{ position: "relative" }}>

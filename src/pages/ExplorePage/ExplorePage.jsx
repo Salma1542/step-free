@@ -31,7 +31,6 @@ function ExplorePage() {
 
   const { places, loading: placesLoading, error, userLocation } = useFetchPlaces(category, search);
 
-  // التحقق من Authentication
   useEffect(() => {
     if (!loading && !user) {
       navigate("/login", { replace: true });
@@ -60,7 +59,6 @@ function ExplorePage() {
     setSelectedPlace(place);
   }, []);
 
-  // إذا كان قيد التحميل أو المستخدم غير مسجل دخول
   if (loading || !user) {
     return (
       <div className="explore-page container">
