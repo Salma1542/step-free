@@ -32,6 +32,8 @@ export default function PlacesPage() {
         const data = await res.json();
         if (!data.success) throw new Error(data.message || "Failed to fetch place");
         setPlace(data.data);
+        console.log(data.data);
+        
       } catch (err) {
         setError(err.message);
       } finally {
