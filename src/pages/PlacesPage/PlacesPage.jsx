@@ -28,52 +28,12 @@ export default function PlacesPage() {
   useEffect(() => {
     const fetchPlace = async () => {
       try {
-        const res = await fetch(`/api/places/${id}`);
+        const res = await fetch(`https://step-free-backend.vercel.app/api/places/${id}`);
         const data = await res.json();
-
-        console.log("Full API response:", data);
-
-        if (!data.success)
-          throw new Error(data.message || "Failed to fetch place");
-
-        // 1. اجمع كل المصادر الممكنة للميزات
-        let rawFeatures =
-          data.data.features ||
-          data.data.accessibility_features ||
-          data.data.highlights ||
-          [];
-
-        // 2. إذا لم توجد ميزات، استخدم tags إن وجدت
-        if (
-          (!rawFeatures || rawFeatures.length === 0) &&
-          data.data.tags &&
-          Array.isArray(data.data.tags)
-        ) {
-          rawFeatures = data.data.tags;
-        }
-
-        // تأكد أنها مصفوفة
-        if (!Array.isArray(rawFeatures)) rawFeatures = [];
-
-        // 3. توحيد كل عنصر إلى { icon, label }
-        const normalizedFeatures = rawFeatures.map((item) => {
-          if (typeof item === "string") {
-            // حول النص إلى أيقونة (lowercase) ونفس النص كتسمية
-            return { icon: item.toLowerCase(), label: item };
-          }
-          // إذا كان كائنًا، تأكد من وجود icon و label
-          return {
-            icon: item.icon || item.name || "check-circle",
-            label: item.label || item.name || item.title || "Feature",
-          };
-        });
-
-        console.log("Normalized features:", normalizedFeatures);
-
-        setPlace({
-          ...data.data,
-          features: normalizedFeatures,
-        });
+        if (!data.success) throw new Error(data.message || "Failed to fetch place");
+        setPlace(data.data);
+        console.log(data.data);
+        
       } catch (err) {
         setError(err.message);
       } finally {
